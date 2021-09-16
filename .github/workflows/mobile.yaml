@@ -8,11 +8,6 @@ on:
       - "mobile/**"
 env:
   SERVICE: mobile
-  REGISTRY_URL: ghcr.io
-  REGISTRY_USERNAME: ${{ github.actor }}
-  REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-  IMAGE_NAME: ghcr.io/TDP-final-game/idiomaplay-mobile
-  IMAGE_VERSION: ${{ github.sha }}
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -36,8 +31,10 @@ jobs:
         uses: expo/expo-github-action@v6
         with:
           expo-version: 4.x
+          expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Build
         run: |
+          cd "$SERVICE"
           yarn install
           expo build:android -t app-bundle --no-wait
