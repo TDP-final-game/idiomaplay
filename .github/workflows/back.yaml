@@ -1,0 +1,34 @@
+name: back
+on:
+  pull_request:
+    paths:
+      - "back/**"
+  push:
+    paths:
+      - "back/**"
+env:
+  SERVICE: back
+  REGISTRY_URL: ghcr.io
+  REGISTRY_USERNAME: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_NAME: ghcr.io/TDP-final-game/idiomaplay-back
+  IMAGE_VERSION: ${{ github.sha }}
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: .github/scripts/run_tests.sh
+
+  package:
+    runs-on: ubuntu-20.04
+    if: contains('refs/heads/main', github.ref)
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Package image
+        run: .github/scripts/package.sh
