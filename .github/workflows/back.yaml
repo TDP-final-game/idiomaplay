@@ -42,5 +42,7 @@ jobs:
     permissions:
       packages: read
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Deploy to heroku
         run: .github/scripts/deploy_to_heroku.sh
