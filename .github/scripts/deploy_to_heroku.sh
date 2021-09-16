@@ -21,3 +21,19 @@ docker tag "$IMAGE_NAME:$IMAGE_VERSION" registry.heroku.com/idiomaplay/web
 
 # Push image
 docker push registry.heroku.com/idiomaplay/web
+
+# Get image id
+IMAGE_ID=$(docker inspect my_image --format='{{.Id}}')
+
+# Release
+curl --netrc -X PATCH https://api.heroku.com/apps/idiomaplay/formation \
+  -d "{
+  \"updates\": [
+    {
+      \"type\": \"web\",
+      \"docker_image\": \"$IMAGE_ID\"
+    }
+  ]
+}" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
