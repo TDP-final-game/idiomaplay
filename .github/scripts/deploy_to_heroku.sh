@@ -23,7 +23,7 @@ docker tag "$IMAGE_NAME:$IMAGE_VERSION" registry.heroku.com/idiomaplay/web
 docker push registry.heroku.com/idiomaplay/web
 
 # Get image id
-IMAGE_ID=$(docker inspect my_image --format='{{.Id}}')
+IMAGE_ID=$(docker inspect registry.heroku.com/idiomaplay/web --format='{{.Id}}')
 
 # Release
 curl --netrc -X PATCH https://api.heroku.com/apps/idiomaplay/formation \
