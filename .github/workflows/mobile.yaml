@@ -39,32 +39,3 @@ jobs:
           cd "$SERVICE"
           yarn install
           expo build:android -t app-bundle --no-wait
-
-  publish-pr:
-    needs: 'test'
-    runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-      - name: Setup expo
-        uses: expo/expo-github-action@v6
-        with:
-          expo-version: 4.x
-          expo-cache: true
-          token: ${{ secrets.EXPO_TOKEN }}
-      - name: Build
-        run: |
-          cd "$SERVICE"
-          yarn install
-          expo build:android -t app-bundle --release-channel=pr-${{ github.event.number }}
-      - name: Comment on pr
-        uses: unsplash/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          msg: App is ready for review, you can [see it here](https://expo.dev/@seblaz/idiomaplay?release-channel=pr-${{ github.event.number }}).
