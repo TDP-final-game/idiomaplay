@@ -2,9 +2,10 @@
 #       build
 # --------------------
 FROM node:16.9.0-stretch as build
+WORKDIR /back
 COPY package.json yarn.lock ./
 RUN yarn install
-COPY src ./
+COPY src ./src
 
 # --------------------
 #       test
