@@ -11,7 +11,7 @@ check_vars \
 echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY_URL" -u "$REGISTRY_USERNAME" --password-stdin
 
 # Login to heroku registry
-echo "$HEROKU_API_KEY" | docker login "$REGISTRY_URL" -u _ --password-stdin
+echo "$HEROKU_API_KEY" | docker login registry.heroku.com -u _ --password-stdin
 
 # Pull image
 docker pull "$IMAGE_NAME:$IMAGE_VERSION"
