@@ -10,6 +10,8 @@ services:
     volumes:
       - "./back:/back"
 
+  # Support for mobile is not optimal, it may be better to disable the service
+  # and run expo natively
   mobile:
     stdin_open: true
     image: node:16.9.0-stretch

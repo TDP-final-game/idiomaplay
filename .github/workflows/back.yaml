@@ -25,6 +25,7 @@ jobs:
   package:
     runs-on: ubuntu-20.04
     if: contains('refs/heads/main', github.ref)
+    needs: 'test'
     permissions:
       packages: write
     steps:
