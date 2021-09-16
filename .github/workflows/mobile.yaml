@@ -1,0 +1,41 @@
+name: mobile
+on:
+  pull_request:
+    paths:
+      - "mobile/**"
+  push:
+    paths:
+      - "mobile/**"
+env:
+  SERVICE: mobile
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: .github/scripts/run_tests.sh
+
+  publish:
+    needs: 'test'
+    runs-on: ubuntu-20.04
+    if: contains('refs/heads/main', github.ref)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Setup expo
+        uses: expo/expo-github-action@v6
+        with:
+          expo-version: 4.x
+          expo-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build
+        run: |
+          cd "$SERVICE"
+          yarn install
+          expo build:android -t app-bundle --no-wait
