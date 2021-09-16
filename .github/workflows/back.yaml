@@ -39,8 +39,6 @@ jobs:
     runs-on: ubuntu-20.04
     if: contains('refs/heads/main', github.ref)
     needs: 'package'
-    permissions:
-      packages: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
