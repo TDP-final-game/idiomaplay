@@ -9,16 +9,7 @@ on:
 env:
   SERVICE: mobile
 jobs:
-  test:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests
-        run: .github/scripts/run_tests.sh
-
   publish:
-    needs: 'test'
     runs-on: ubuntu-20.04
     if: contains('refs/heads/main', github.ref)
     steps:
@@ -37,5 +28,5 @@ jobs:
       - name: Build
         run: |
           cd "$SERVICE"
-          yarn install
+          npm install
           expo build:android -t app-bundle --no-wait
