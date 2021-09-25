@@ -13,7 +13,7 @@ function App() {
           headerShown: true,
         })}
       >
-        <Stack.Screen name="Excersise" component={Excercise} />
+        <Stack.Screen name="Excercise" component={Excercise} />
       </Stack.Navigator>
     </NavigationContainer>
   );
