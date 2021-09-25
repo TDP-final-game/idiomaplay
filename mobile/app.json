@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "IdiomaPlay",
+    "name": "idiomaplay",
     "slug": "idiomaplay",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,13 +17,9 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.tdp2.idiomaplay",
-      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.tdp2.idiomaplay",
-      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
