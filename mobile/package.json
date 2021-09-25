@@ -6,7 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject", 
-    "test": ""
+    "test": "echo 'we are missing some tests!'"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.2",
