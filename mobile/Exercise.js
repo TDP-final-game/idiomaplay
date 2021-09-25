@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { AnswerButton } from './components/AnswerButton';
 import { ChapterHeader } from './components/ChapterHeader';
 import { ChapterFooter } from './components/ChapterFooter';
+import { ProgressBar } from './components/ProgressBar';
 
 const TOTAL_QUESTIONS = 8;
 const TOTAL_OPTIONS = 6;
@@ -46,6 +47,11 @@ const Excercise = () => {
       <View style={{ flex: 0.12 }}>
         <ChapterHeader />
       </View>
+
+      <View style={{ flex: 0.02, paddingHorizontal: '2%'}}>
+        <ProgressBar currentQuestion={7}/>
+      </View>
+
 
       <View style={{ marginLeft: '2%' }}>
         <Text>Traduzca la siguiente frase al español:</Text>
