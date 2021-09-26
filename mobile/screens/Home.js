@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { colors } from '../config/colors';
-import { constants } from '../config/constants';
 import { View, StyleSheet, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,23 +11,23 @@ const Home = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title={'Ejercicio 1'} />
+        <Button title={'Ejercicio 1'} disabled />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title={'Ejercicio 1'} />
+        <Button title={'Ejercicio 1'} disabled />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title={'Ejercicio 1'} />
+        <Button title={'Ejercicio 1'} disabled />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title={'Ejercicio 1'} />
+        <Button title={'Ejercicio 1'} disabled />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title={'Ejercicio 1'} />
+        <Button title={'Ejercicio 1'} disabled />
       </View>
     </SafeAreaView>
   );

@@ -6,17 +6,21 @@ import { FontAwesome } from '@expo/vector-icons';
 // list of { true, false, null }
 export const ChapterFooter = ({ questionResults }) => {
   const resultIcon = {
-    correct: <FontAwesome name="times-circle" size={30} color="red" />,
-    incorrect: <FontAwesome name="check-circle" size={30} color="green" />,
-    current: <FontAwesome name="circle-o" size={30} color={colors.SECONDARY_LIGHT} />,
-    [null]: <FontAwesome name="circle-o" size={30} color={colors.PRIMARY_DARK} />,
+    correct: (key) => <FontAwesome name="times-circle" size={30} color="red" key={key} />,
+    incorrect: (key) => <FontAwesome name="check-circle" size={30} color="green" key={key} />,
+    current: (key) => (
+      <FontAwesome name="circle-o" size={30} color={colors.SECONDARY_LIGHT} key={key} />
+    ),
+    [null]: (key) => (
+      <FontAwesome name="circle-o" size={30} color={colors.PRIMARY_DARK} key={key} />
+    ),
   };
 
   const printCurrentResults = () => {
     const icons = [];
 
     questionResults.forEach((result, i) => {
-      icons.push(resultIcon[result]);
+      icons.push(resultIcon[result](i));
     });
 
     return icons;

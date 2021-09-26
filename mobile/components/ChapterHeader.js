@@ -3,11 +3,11 @@ import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const ChapterHeader = () => {
+export const ChapterHeader = ({ returnButtonFunction }) => {
   return (
     <View style={styles.headerContainer}>
       <View style={{ marginLeft: '5%' }}>
-        <TouchableOpacity onPress={console.log('hola')}>
+        <TouchableOpacity onPress={returnButtonFunction}>
           <Ionicons name="arrow-undo" size={45} color={colors.PRIMARY_DARK} />
         </TouchableOpacity>
       </View>

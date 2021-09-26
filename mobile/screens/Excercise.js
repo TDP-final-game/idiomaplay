@@ -28,13 +28,13 @@ const questionResults = [
   null,
 ];
 
-const Excercise = () => {
+const Excercise = ({ navigation }) => {
   const renderButtons = () => {
     const buttons = [];
     for (let i = 0; i < constants.TOTAL_OPTIONS; ++i) {
       buttons.push(
-        <View style={styles.buttonContainer}>
-          <AnswerButton text={opciones[i]} key={i} />
+        <View style={styles.buttonContainer} key={i}>
+          <AnswerButton text={opciones[i]} />
         </View>
       );
     }
@@ -44,7 +44,7 @@ const Excercise = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ flex: 0.12 }}>
-        <ChapterHeader />
+        <ChapterHeader returnButtonFunction={() => navigation.navigate('Home')} />
       </View>
 
       <View style={{ flex: 0.02, paddingHorizontal: '2%' }}>

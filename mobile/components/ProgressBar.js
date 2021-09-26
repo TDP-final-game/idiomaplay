@@ -5,14 +5,18 @@ import { commonStyles } from '../config/styles';
 export const ProgressBar = ({ currentQuestion }) => {
   const porcentage = String((currentQuestion / 8) * 100) + '%';
 
-  return [
+  return (
     <View style={styles.progressBar}>
       <Animated.View
         style={[
-          StyleSheet.absoluteFill, styles.progressFill, { width: porcentage }, commonStyles.shadow]}
+          StyleSheet.absoluteFill,
+          styles.progressFill,
+          commonStyles.shadow,
+          { width: porcentage },
+        ]}
       />
-    </View>,
-  ];
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
