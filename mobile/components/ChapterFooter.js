@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: 'pink',
     flexDirection: 'row',
     paddingHorizontal: '10%',
     borderTopWidth: 3,
