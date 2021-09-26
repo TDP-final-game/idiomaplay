@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Run tests
         run: .github/scripts/run_tests.sh
-
+	
   publish:
     needs: 'test'
     runs-on: ubuntu-20.04
@@ -37,5 +37,5 @@ jobs:
       - name: Build
         run: |
           cd "$SERVICE"
-          yarn install
+          npm install
           expo build:android -t app-bundle --no-wait
