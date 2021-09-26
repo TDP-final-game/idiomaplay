@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { colors } from './config/colors';
+import { colors } from '../config/colors';
+import { constants } from '../config/constants';
 import { View, Text, StyleSheet } from 'react-native';
-import { AnswerButton } from './components/AnswerButton';
-import { ChapterHeader } from './components/ChapterHeader';
-import { ChapterFooter } from './components/ChapterFooter';
-import { ProgressBar } from './components/ProgressBar';
-
-const TOTAL_QUESTIONS = 8;
-const TOTAL_OPTIONS = 6;
+import { AnswerButton } from '../components/AnswerButton';
+import { ChapterHeader } from '../components/ChapterHeader';
+import { ChapterFooter } from '../components/ChapterFooter';
+import { ProgressBar } from '../components/ProgressBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const opciones = [
   'Hoy es un buen día para salvar vidas',
@@ -32,7 +31,7 @@ const questionResults = [
 const Excercise = () => {
   const renderButtons = () => {
     const buttons = [];
-    for (let i = 0; i < TOTAL_OPTIONS; ++i) {
+    for (let i = 0; i < constants.TOTAL_OPTIONS; ++i) {
       buttons.push(
         <View style={styles.buttonContainer}>
           <AnswerButton text={opciones[i]} key={i} />
@@ -43,15 +42,14 @@ const Excercise = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={{ flex: 0.12 }}>
         <ChapterHeader />
       </View>
 
-      <View style={{ flex: 0.02, paddingHorizontal: '2%'}}>
-        <ProgressBar currentQuestion={7}/>
+      <View style={{ flex: 0.02, paddingHorizontal: '2%' }}>
+        <ProgressBar currentQuestion={5} />
       </View>
-
 
       <View style={{ marginLeft: '2%' }}>
         <Text>Traduzca la siguiente frase al español:</Text>
@@ -70,7 +68,7 @@ const Excercise = () => {
       <View style={{ flex: 0.12 }}>
         <ChapterFooter questionResults={questionResults} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
