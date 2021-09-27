@@ -1,21 +1,11 @@
 import * as React from 'react';
 import { colors } from '../config/colors';
-import { constants } from '../config/constants';
 import { View, Text, StyleSheet } from 'react-native';
 import { AnswerButton } from '../components/AnswerButton';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
-import { ProgressBar } from '../components/ProgressBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const opciones = [
-  'Hoy es un buen día para salvar vidas',
-  'Soy bueno salvando vidas',
-  'Muchos dias no salvamos vidas',
-  'Muchos dias no salvamos vidas',
-  'Las vidas no son siempre salvables',
-  'Ayer fue un gran dia para salvar vidas',
-];
+import { exerciseTypes } from '../config/exercisesTypes';
 
 const questionResults = [
   'correct',
@@ -28,39 +18,49 @@ const questionResults = [
   null,
 ];
 
-const Excercise = ({ navigation }) => {
+const Excercise = ({ navigation, route }) => {
+  const { unit, lesson, options, type, statement } = route.params;
+
+  const explanationByType = {
+    [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
+    [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
+    [exerciseTypes.TRANSLATE_TO_FOREIGN]: 'Traduzca la siguiente frase',
+  };
+
   const renderButtons = () => {
     const buttons = [];
-    for (let i = 0; i < constants.TOTAL_OPTIONS; ++i) {
+
+    options.forEach((option, i) => {
       buttons.push(
         <View style={styles.buttonContainer} key={i}>
-          <AnswerButton text={opciones[i]} />
+          <AnswerButton text={option} />
         </View>
       );
-    }
+    });
+
     return buttons;
+  };
+
+  const returnHome = () => {
+    return navigation.navigate('Home');
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ flex: 0.12 }}>
-        <ChapterHeader returnButtonFunction={() => navigation.navigate('Home')} />
-      </View>
-
-      <View style={{ flex: 0.02, paddingHorizontal: '2%' }}>
-        <ProgressBar currentQuestion={5} />
+        <ChapterHeader returnButtonFunction={returnHome} unit={unit} lesson={lesson} />
       </View>
 
       <View style={{ marginLeft: '2%' }}>
-        <Text>Traduzca la siguiente frase al español:</Text>
+        <Text>{explanationByType[type]}</Text>
       </View>
 
       <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>“Today It's a great day to save lives”</Text>
+        <Text style={styles.questionText}>{statement}</Text>
       </View>
 
       <View style={{ marginLeft: '2%' }}>
-        <Text>Traduzca la siguiente frase al español:</Text>
+        <Text>Seleccione la opción correcta:</Text>
       </View>
 
       {renderButtons()}
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
 
   questionText: {
     fontSize: 18,
+    marginHorizontal: '5%',
   },
 });
 

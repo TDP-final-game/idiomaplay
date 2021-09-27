@@ -3,7 +3,7 @@ import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const ChapterHeader = ({ returnButtonFunction }) => {
+export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
   return (
     <View style={styles.headerContainer}>
       <View style={{ marginLeft: '5%' }}>
@@ -12,8 +12,8 @@ export const ChapterHeader = ({ returnButtonFunction }) => {
         </TouchableOpacity>
       </View>
       <View>
-        <Text style={styles.chapterText}>Unidad 1</Text>
-        <Text style={styles.lessonText}>Leccion 1</Text>
+        <Text style={styles.chapterText}>Unidad {unit}</Text>
+        <Text style={styles.lessonText}>Leccion {lesson}</Text>
       </View>
       <View style={{ marginRight: '5%' }}>
         <Ionicons name="arrow-undo" size={45} color="transparent" />
