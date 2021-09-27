@@ -7,7 +7,7 @@ import { Text, StyleSheet } from 'react-native';
 export const AnswerButton = ({ text }) => {
   return (
     <TouchableOpacity style={[styles.button, commonStyles.shadow]}>
-      <Text>{text}</Text>
+      <Text style={{ fontSize: 15 }}>{text}</Text>
     </TouchableOpacity>
   );
 };
