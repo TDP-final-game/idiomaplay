@@ -3,11 +3,11 @@
 # --------------------
 FROM node:16.9.0-stretch as build
 COPY package.json package-lock.json ./
-RUN yarn install
+RUN npm ci
 COPY . ./
 
 # --------------------
 #       test
 # --------------------
 FROM build as test
-RUN yarn test
+RUN npm test
