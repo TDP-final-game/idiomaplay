@@ -1,10 +1,11 @@
 {
   "name": "back",
   "version": "0.0.1",
-  "main": "src/index.js",
+  "main": "src/main.js",
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "dependable": "^1.1.0",
     "express": "^4.17.1",
     "mongoose": "^6.0.6"
   },
@@ -12,7 +13,7 @@
     "nodemon": "^2.0.12"
   },
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node .",
     "start:dev": "nodemon -x yarn start",
     "test": "echo 'we are missing some tests!'"
   }
