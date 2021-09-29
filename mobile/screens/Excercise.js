@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { AnswerButton } from '../components/AnswerButton';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
+import { ProgressBar } from '../components/ProgressBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { exerciseTypes } from '../config/exercisesTypes';
 
@@ -49,6 +50,11 @@ const Excercise = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <View style={{ flex: 0.12 }}>
         <ChapterHeader returnButtonFunction={returnHome} unit={unit} lesson={lesson} />
+      </View>
+
+      <View style={{ flex: 0.02, paddingHorizontal:'2%' }}>
+
+        <ProgressBar></ProgressBar>
       </View>
 
       <View style={{ marginLeft: '2%' }}>
