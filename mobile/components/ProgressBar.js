@@ -1,9 +1,33 @@
 import * as React from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated, Text } from 'react-native';
 import { commonStyles } from '../config/styles';
+import { useState, useEffect } from 'react';
+const MAX_TIME = 300;
 
-export const ProgressBar = ({ currentQuestion }) => {
-  const porcentage = String((currentQuestion / 8) * 100) + '%';
+export const ProgressBar = () => {
+  const [percentagePassed, setPercentagePassed] = useState('0%');
+  const initialTime = new Date();
+
+  function getPercentagePassed() {
+    var endTime = new Date();
+    var timeDiff = endTime - initialTime; //in ms
+    timeDiff /= 1000;
+
+    var seconds = Math.round(timeDiff);
+    const percentage = Math.min(100, seconds * 100 / MAX_TIME);
+    
+    return String(percentage) + '%';
+  }
+
+  useEffect(() => {
+    let secTimer = setInterval(() => {
+      setPercentagePassed(getPercentagePassed());
+    }, 1000);
+
+    return () => clearInterval(secTimer);
+  }, []);
+
+  // const porcentage = String((currentQuestion / 8) * 100) + '%';
 
   return (
     <View style={styles.progressBar}>
@@ -12,7 +36,7 @@ export const ProgressBar = ({ currentQuestion }) => {
           StyleSheet.absoluteFill,
           styles.progressFill,
           commonStyles.shadow,
-          { width: porcentage },
+          { width: percentagePassed },
         ]}
       />
     </View>
