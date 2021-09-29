@@ -1,10 +1,8 @@
 const connectToMongo = require('./startup/db');
-const app = require('./app');
-const openapi = require('./openapi/generate');
+const appCallback = require('./app');
 
 const main = async () => {
-  await openapi();
-
+  const app = await appCallback()
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);

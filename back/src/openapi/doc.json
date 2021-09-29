@@ -1,9 +1,8 @@
 {
   "info": {
-    "title": "My API",
-    "description": "Description"
+    "title": "IdiomaPlay Api",
+    "description": "The best api"
   },
-  "host": "localhost:3000",
   "schemes": [
     "http"
   ]

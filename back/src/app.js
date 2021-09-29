@@ -1,14 +1,28 @@
 const express = require('express');
 const routers = require('./routers/index');
- 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded());
+const generateOpenapi = require('./openapi/generate');
 
-app.use('/api/v1', routers);
+module.exports = async () => {
+    const app = express();
+    app.use(express.json());
+    app.use(express.urlencoded());
 
-app.get('/healthz', function (req, res) {
-    res.send("hi!");
-});
+    /*
+     * Api
+     */
+    app.use('/api/v1', routers);
 
-module.exports = app;
+    /*
+     * Health
+     */
+    app.get('/healthz', function (req, res) {
+        res.send("hi!");
+    });
+
+    /*
+     * Openapi
+     */
+    app.use('/api-docs', await generateOpenapi())
+
+    return app;
+}
