@@ -42,7 +42,7 @@ const Excercise = ({ navigation, route }) => {
   const [currentExercise, setCurrentExercise] = useState(excercise);
 
   useEffect(() => {
-    loadExercise;
+    loadExercise();
   }, []);
 
   const explanationByType = {
