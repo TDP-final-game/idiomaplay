@@ -6,8 +6,11 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-const adminRouter = require('./domainRouter');
+const domainRouter = require('./domainRouter');
 
-router.use('/domain', adminRouter);
+const userRouter = require('./usersRouter');
+
+router.use('/domain', domainRouter);
+router.use('/users/me', userRouter);
 
 module.exports = router;
