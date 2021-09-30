@@ -4,9 +4,9 @@ import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet } from 'react-native';
 
-export const AnswerButton = ({ text }) => {
+export const AnswerButton = ({ text, onPress }) => {
   return (
-    <TouchableOpacity style={[styles.button, commonStyles.shadow]}>
+    <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onPress}>
       <Text style={{ fontSize: 15 }}>{text}</Text>
     </TouchableOpacity>
   );

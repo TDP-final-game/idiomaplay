@@ -11,4 +11,7 @@ export const colors = {
   SECONDARY_BUTTON_COLOR: '',
 
   BACKGROUND: '#ffffff',
+
+  CORRECT_COLOR: 'red',
+  INCORRECT_COLOR: 'green',
 };

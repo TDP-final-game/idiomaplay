@@ -6,8 +6,12 @@ import { FontAwesome } from '@expo/vector-icons';
 // list of { true, false, null }
 export const ChapterFooter = ({ questionResults }) => {
   const resultIcon = {
-    correct: (key) => <FontAwesome name="times-circle" size={30} color="red" key={key} />,
-    incorrect: (key) => <FontAwesome name="check-circle" size={30} color="green" key={key} />,
+    correct: (key) => (
+      <FontAwesome name="times-circle" size={30} color={colors.INCORRECT_COLOR} key={key} />
+    ),
+    incorrect: (key) => (
+      <FontAwesome name="check-circle" size={30} color={colors.CORRECT_COLOR} key={key} />
+    ),
     current: (key) => (
       <FontAwesome name="circle-o" size={30} color={colors.SECONDARY_LIGHT} key={key} />
     ),

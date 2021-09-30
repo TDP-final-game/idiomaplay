@@ -1,6 +1,7 @@
 import { exerciseTypes } from './exercisesTypes';
 
 export const translateToNativeMock = {
+  id: 1,
   unit: 1,
   lesson: 1,
   type: exerciseTypes.TRANSLATE_TO_NATIVE,
@@ -16,6 +17,7 @@ export const translateToNativeMock = {
 };
 
 export const translateToForeignMock = {
+  id: 2,
   unit: 1,
   lesson: 1,
   type: exerciseTypes.TRANSLATE_TO_FOREIGN,
@@ -31,6 +33,7 @@ export const translateToForeignMock = {
 };
 
 export const completeSentenceMock = {
+  id: 3,
   unit: 1,
   lesson: 1,
   type: exerciseTypes.COMPLETE_SENTENCE,

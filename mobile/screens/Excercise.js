@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { colors } from '../config/colors';
 import { View, Text, StyleSheet } from 'react-native';
 import { AnswerButton } from '../components/AnswerButton';
@@ -7,6 +7,8 @@ import { ChapterFooter } from '../components/ChapterFooter';
 import { ProgressBar } from '../components/ProgressBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { exerciseTypes } from '../config/exercisesTypes';
+
+import { getNextExercise, sendAnswer } from '../services/exerciseServices';
 
 const questionResults = [
   'correct',
@@ -19,8 +21,29 @@ const questionResults = [
   null,
 ];
 
+// const excercise = {
+//   unit = 1,
+//   lesson = 1,
+//   options = [],
+//   type = 'type',
+//   statement = ''
+// }
+
+const excercise = {
+  id: 0,
+  unit: 0,
+  lesson: 0,
+  options: [],
+  statement: '',
+  type: exerciseTypes.COMPLETE_SENTENCE,
+};
+
 const Excercise = ({ navigation, route }) => {
-  const { unit, lesson, options, type, statement } = route.params;
+  const [currentExercise, setCurrentExercise] = useState(excercise);
+
+  useEffect(() => {
+    loadExercise;
+  }, []);
 
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
@@ -28,13 +51,21 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.TRANSLATE_TO_FOREIGN]: 'Traduzca la siguiente frase',
   };
 
+  const loadExercise = () => {
+    getNextExercise().then(setCurrentExercise);
+  };
+
+  const onAnswerSelected = (option) => {
+    const correctAnswer = sendAnswer(option, currentExercise.id);
+  };
+
   const renderButtons = () => {
     const buttons = [];
 
-    options.forEach((option, i) => {
+    currentExercise.options.forEach((option, i) => {
       buttons.push(
         <View style={styles.buttonContainer} key={i}>
-          <AnswerButton text={option} />
+          <AnswerButton text={option} onPress={onAnswerSelected} />
         </View>
       );
     });
@@ -49,20 +80,19 @@ const Excercise = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ flex: 0.12 }}>
-        <ChapterHeader returnButtonFunction={returnHome} unit={unit} lesson={lesson} />
-      </View>
-
-      <View style={{ flex: 0.02, paddingHorizontal:'2%' }}>
-
-        <ProgressBar></ProgressBar>
+        <ChapterHeader
+          returnButtonFunction={returnHome}
+          unit={currentExercise.unit}
+          lesson={currentExercise.lesson}
+        />
       </View>
 
       <View style={{ marginLeft: '2%' }}>
-        <Text>{explanationByType[type]}</Text>
+        <Text>{explanationByType[currentExercise.type]}</Text>
       </View>
 
       <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>{statement}</Text>
+        <Text style={styles.questionText}>{currentExercise.statement}</Text>
       </View>
 
       <View style={{ marginLeft: '2%' }}>
