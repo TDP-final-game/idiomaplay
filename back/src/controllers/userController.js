@@ -1,4 +1,4 @@
-const userServices = require('../services/userServices');
+const userServices = require('../services/userService');
 const STATUS_CODES = require('../utils/status_codes');
 
 // TODO: remove this

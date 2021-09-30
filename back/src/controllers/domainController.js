@@ -1,4 +1,4 @@
-const challengesServices = require('../services/challengesServices');
+const challengesServices = require('../services/challengesService');
 const STATUS_CODES = require('../utils/status_codes');
 
 const findChallenge = async (req, res) => {
