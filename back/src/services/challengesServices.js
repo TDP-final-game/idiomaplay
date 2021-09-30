@@ -1,54 +1,54 @@
 const Challenge = require('../model/domain/challenge');
 const mongoose = require('mongoose');
 
-const findChallenge = challangeId => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	return  challangeModel.findOne({ _id: challangeId });
+const findChallenge = challengeId => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	return  challengeModel.findOne({ _id: challengeId });
 };
 
-const createChallenge = challange => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	return challangeModel.create(challange);
+const createChallenge = challenge => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	return challengeModel.create(challenge);
 };
 
-const addUnit = async (challangeId, unit) => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	const challange = await challangeModel.findOne({ _id: challangeId });
-	challange.units.push(unit);
-	return challange.save();
+const addUnit = async (challengeId, unit) => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	const challenge = await challengeModel.findOne({ _id: challengeId });
+	challenge.units.push(unit);
+	return challenge.save();
 };
 
-const addLesson = async (challangeId, unitId, lesson) => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	const challange = await challangeModel.findOne({ _id: challangeId });
-	const unit = challange.units.find(unitToUpdate => unitToUpdate.orderNumber == unitId);
+const addLesson = async (challengeId, unitId, lesson) => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	const challenge = await challengeModel.findOne({ _id: challengeId });
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber == unitId);
 	unit.lessons.push(lesson);
-	return challange.save();
+	return challenge.save();
 };
 
-const addExam = async (challangeId, unitId, exam) => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	const challange = await challangeModel.findOne({ _id: challangeId });
-	const unit = challange.units.find(unitToUpdate => unitToUpdate.orderNumber === unitId);
+const addExam = async (challengeId, unitId, exam) => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	const challenge = await challengeModel.findOne({ _id: challengeId });
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitId);
 	unit.exam = exam;
-	return challange.save();
+	return challenge.save();
 };
 
-const addExerciseToLesson = async (challangeId, unitId, lessonId, exercise) => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	const challange = await challangeModel.findOne({ _id: challangeId });
-	const unit = challange.units.find(unit => unit.orderNumber === unitId);
+const addExerciseToLesson = async (challengeId, unitId, lessonId, exercise) => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	const challenge = await challengeModel.findOne({ _id: challengeId });
+	const unit = challenge.units.find(unit => unit.orderNumber === unitId);
 	const lesson = unit.lessons.find(lesson => lesson.orderNumber === lessonId);
 	lesson.exercises.push(exercise);
-	return challange.save();
+	return challenge.save();
 };
 
-const addExerciseToExam = async (challangeId, unitId, exercise) => {
-	const challangeModel = mongoose.model('challange', Challenge);
-	const challange = await challangeModel.findOne({ _id: challangeId });
-	const unit = challange.units.find(unit => unit.orderNumber === unitId);
+const addExerciseToExam = async (challengeId, unitId, exercise) => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	const challenge = await challengeModel.findOne({ _id: challengeId });
+	const unit = challenge.units.find(unit => unit.orderNumber === unitId);
 	unit.exam.exercises.push(exercise);
-	return challange.save();
+	return challenge.save();
 };
 
 
