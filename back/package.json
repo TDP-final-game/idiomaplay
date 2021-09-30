@@ -7,7 +7,9 @@
   "dependencies": {
     "dependable": "^1.1.0",
     "express": "^4.17.1",
-    "mongoose": "^6.0.6"
+    "mongoose": "^6.0.6",
+    "swagger-autogen": "^2.11.2",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
