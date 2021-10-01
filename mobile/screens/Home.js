@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../config/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, StyleSheet, Button, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { decrement, increment } from '../actions/countActions';
-import { append, remove } from '../actions/concatActions';
+import { getHealth } from '../redux/challenge';
 
 const Home = ({ navigation }) => {
-  const counter = useSelector((state) => state.counter.value);
-  const string = useSelector((state) => state.concat.string);
+  const [string, setString] = useState('local string');
+  const { healthy } = useSelector(state => state.challenge)
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const doStuff = async () => {
+      const { payload } = await dispatch(getHealth());
+      setString(payload)
+    }
+    setTimeout(doStuff, 2000)
+  })
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,15 +36,15 @@ const Home = ({ navigation }) => {
         }}
       >
         <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'-'} onPress={() => dispatch(decrement())} />
+          <Button title={'-'} />
         </View>
 
         <View style={{ backgroundColor: 'green' }}>
-          <Text style={{ fontSize: 50 }}>{counter}</Text>
+          <Text style={{ fontSize: 50 }}>healthy: {String(healthy)}</Text>
         </View>
 
         <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'+'} onPress={() => dispatch(increment())} />
+          <Button title={'+'} />
         </View>
       </View>
 
@@ -53,11 +60,11 @@ const Home = ({ navigation }) => {
         }}
       >
         <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'append "A"'} onPress={() => dispatch(append('a'))} />
+          <Button title={'append "A"'} />
         </View>
 
         <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'remove last'} onPress={() => dispatch(remove())} />
+          <Button title={'remove last'}  />
         </View>
       </View>
     </SafeAreaView>
