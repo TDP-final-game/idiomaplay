@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { colors } from '../config/colors';
 import { View, Text, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { AnswerButton } from '../components/AnswerButton';
+import { exerciseTypes } from '../config/exercisesTypes';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
-import { ProgressBar } from '../components/ProgressBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { exerciseTypes } from '../config/exercisesTypes';
 
 import { getNextExercise, sendAnswer } from '../services/exerciseServices';
 
@@ -39,7 +39,10 @@ const excercise = {
 };
 
 const Excercise = ({ navigation, route }) => {
+  const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(excercise);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     loadExercise();
@@ -56,7 +59,7 @@ const Excercise = ({ navigation, route }) => {
   };
 
   const onAnswerSelected = (option) => {
-    const correctAnswer = sendAnswer(option, currentExercise.id);
+    sendAnswer(option, currentExercise.id).then(setCorrectAnswer);
   };
 
   const renderButtons = () => {
@@ -65,7 +68,11 @@ const Excercise = ({ navigation, route }) => {
     currentExercise.options.forEach((option, i) => {
       buttons.push(
         <View style={styles.buttonContainer} key={i}>
-          <AnswerButton text={option} onPress={onAnswerSelected} />
+          <AnswerButton
+            answer={option}
+            onPress={() => onAnswerSelected(option)}
+            correctAnswer={correctAnswer}
+          />
         </View>
       );
     });
