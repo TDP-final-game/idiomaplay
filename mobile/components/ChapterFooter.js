@@ -1,10 +1,15 @@
-import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Animated, Text, Button } from 'react-native';
 import { colors } from '../config/colors';
 import { FontAwesome } from '@expo/vector-icons';
+import { AnswerButton } from './AnswerButton';
+import { PrimaryButton } from './Button';
 
 // list of { true, false, null }
-export const ChapterFooter = ({ questionResults }) => {
+export const ChapterFooter = ({ questionResults, correctAnswer }) => {
+  const [bounceValue, _] = useState(new Animated.Value(100));
+  const [sliderIsHidden, setSliderIsHidden] = useState(true);
+
   const resultIcon = {
     correct: (key) => (
       <FontAwesome name="times-circle" size={30} color={colors.INCORRECT_COLOR} key={key} />
@@ -30,7 +35,38 @@ export const ChapterFooter = ({ questionResults }) => {
     return icons;
   };
 
-  return <View style={styles.footerContainer}>{printCurrentResults()}</View>;
+  useEffect(() => {
+    if (correctAnswer) toggle();
+  }, [correctAnswer]);
+
+  const toggle = () => {
+    const toValue = sliderIsHidden ? 0 : 100;
+
+    // This will animate the transalteY of the subview
+    // between 0 & 100 depending on its current state
+    // 100 comes from the style below, which is the height
+    // of the subview.
+    Animated.spring(bounceValue, {
+      useNativeDriver: true,
+      toValue: toValue,
+      velocity: 3,
+      friction: 8,
+      tension: 2,
+    }).start();
+
+    setSliderIsHidden(!sliderIsHidden);
+  };
+
+  return (
+    <View style={styles.footerContainer}>
+      {printCurrentResults()}
+      <Animated.View style={[styles.slider, { transform: [{ translateY: bounceValue }] }]}>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton text={'Continuar'} />
+        </View>
+      </Animated.View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -43,5 +79,20 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     backgroundColor: colors.PRIMARY,
     borderTopColor: colors.PRIMARY_DARK,
+  },
+
+  buttonContainer: {
+    flexGrow: 0.4,
+    marginHorizontal: '20%',
+  },
+
+  slider: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 100,
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: colors.PRIMARY_DARK,
   },
 });

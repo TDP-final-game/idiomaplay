@@ -109,7 +109,7 @@ const Excercise = ({ navigation, route }) => {
       {renderButtons()}
 
       <View style={{ flex: 0.12 }}>
-        <ChapterFooter questionResults={questionResults} />
+        <ChapterFooter questionResults={questionResults} correctAnswer={correctAnswer} />
       </View>
     </SafeAreaView>
   );
