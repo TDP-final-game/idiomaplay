@@ -26,11 +26,17 @@ export const nextExercise = createAsyncThunk(
 const challengeSlice = createSlice({
   name: 'challenge',
   initialState: {
-    healthy: false
+    healthy: false,
+    exerciseResults: new Array(8).fill(null)
   },
   extraReducers: builder => {
-    builder.addCase(getHealth.fulfilled, (state, action) => {
+    builder.addCase(getHealth.fulfilled, (state) => {
       state.healthy = true;
+    });
+
+    builder.addCase(answerExercise.fulfilled, (state, { payload }) => {
+      const index = state.exerciseResults.indexOf(null)
+      state.exerciseResults[index] = payload.result
     });
   }
 });

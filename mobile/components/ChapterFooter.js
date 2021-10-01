@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Animated, Text, Button } from 'react-native';
-import { colors } from '../config/colors';
+import React, { useState } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
+import { useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
-import { AnswerButton } from './AnswerButton';
+
+import { colors } from '../config/colors';
 import { PrimaryButton } from './Button';
 
-const questionResults = [
-  'correct',
-  'incorrect',
-  'incorrect',
-  'correct',
-  'correct',
-  'current',
-  null,
-  null,
-];
-
-// list of { true, false, null }
 export const ChapterFooter = ({ showContinue, onContinue }) => {
   const [bounceValue, _] = useState(new Animated.Value(100));
+  const results = useSelector(state => state.challenge.exerciseResults)
 
   // This will animate the transalteY of the subview
   // between 0 & 100 depending on its current state
@@ -32,15 +22,14 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
     tension: 2,
   }).start();
 
-
   const resultIcon = {
-    correct: (key) => (
-      <FontAwesome name="times-circle" size={30} color={colors.INCORRECT_COLOR} key={key} />
-    ),
-    incorrect: (key) => (
+    [true]: (key) => (
       <FontAwesome name="check-circle" size={30} color={colors.CORRECT_COLOR} key={key} />
     ),
-    current: (key) => (
+    [false]: (key) => (
+      <FontAwesome name="times-circle" size={30} color={colors.INCORRECT_COLOR} key={key} />
+    ),
+    ['current']: (key) => (
       <FontAwesome name="circle-o" size={30} color={colors.SECONDARY_LIGHT} key={key} />
     ),
     [null]: (key) => (
@@ -49,14 +38,10 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   };
 
   const printCurrentResults = () => {
-    const icons = [];
-
-    questionResults.forEach((result, i) => {
-      icons.push(resultIcon[result](i));
-    });
-
-    return icons;
-  };
+    const res = [...results]
+    res[res.indexOf(null)] = 'current'
+    return res.map((result, i) => resultIcon[result](i));
+  }
 
   return (
     <View style={styles.footerContainer}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors } from '../config/colors';
@@ -33,7 +33,7 @@ const Excercise = ({navigation, route}) => {
 
   const handleAnswerSelected = async (option) => {
     const { payload } = await dispatch(answerExercise([option, currentExercise.id]))
-    setCorrectAnswer(payload)
+    setCorrectAnswer(payload.correctAnswer)
   };
 
   const renderButtons = () =>
