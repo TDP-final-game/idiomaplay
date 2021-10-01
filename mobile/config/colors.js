@@ -12,6 +12,6 @@ export const colors = {
 
   BACKGROUND: '#ffffff',
 
-  CORRECT_COLOR: 'red',
-  INCORRECT_COLOR: 'green',
+  CORRECT_COLOR: 'green',
+  INCORRECT_COLOR: 'red',
 };

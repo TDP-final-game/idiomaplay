@@ -12,9 +12,7 @@ function getRandomInt(min, max) {
 
 function getCorrectAswer(excerciseId) {
   const currEx = ex.find((e) => e.id === excerciseId);
-  console.log(currEx);
   const answer = currEx.options[getRandomInt(0, currEx.options.length)];
-  console.log(answer);
   return answer;
 }
 

@@ -35,37 +35,12 @@ const Home = ({ navigation }) => {
           justifyContent: 'space-evenly',
         }}
       >
-        <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'-'} />
-        </View>
-
         <View style={{ backgroundColor: 'green' }}>
           <Text style={{ fontSize: 50 }}>healthy: {String(healthy)}</Text>
         </View>
-
-        <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'+'} />
-        </View>
       </View>
-
       <View style={{ backgroundColor: 'green', alignItems: 'center' }}>
         <Text style={{ fontSize: 20 }}>{string}</Text>
-      </View>
-
-      <View
-        style={{
-          backgroundColor: 'red',
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-        }}
-      >
-        <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'append "A"'} />
-        </View>
-
-        <View style={{ width: '40%', justifyContent: 'center' }}>
-          <Button title={'remove last'}  />
-        </View>
       </View>
     </SafeAreaView>
   );
