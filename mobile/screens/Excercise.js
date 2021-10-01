@@ -42,17 +42,15 @@ const Excercise = ({ navigation, route }) => {
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(excercise);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    loadExercise();
-  }, []);
-
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_FOREIGN]: 'Traduzca la siguiente frase',
   };
+
+  useEffect(() => {
+    loadExercise();
+  }, []);
 
   const loadExercise = () => {
     getNextExercise().then(setCurrentExercise);
@@ -109,7 +107,11 @@ const Excercise = ({ navigation, route }) => {
       {renderButtons()}
 
       <View style={{ flex: 0.12 }}>
-        <ChapterFooter questionResults={questionResults} correctAnswer={correctAnswer} />
+        <ChapterFooter
+          questionResults={questionResults}
+          correctAnswer={correctAnswer}
+          onContinuePress={loadExercise}
+        />
       </View>
     </SafeAreaView>
   );

@@ -6,7 +6,7 @@ import { AnswerButton } from './AnswerButton';
 import { PrimaryButton } from './Button';
 
 // list of { true, false, null }
-export const ChapterFooter = ({ questionResults, correctAnswer }) => {
+export const ChapterFooter = ({ questionResults, correctAnswer, onContinuePress }) => {
   const [bounceValue, _] = useState(new Animated.Value(100));
   const [sliderIsHidden, setSliderIsHidden] = useState(true);
 
@@ -62,7 +62,7 @@ export const ChapterFooter = ({ questionResults, correctAnswer }) => {
       {printCurrentResults()}
       <Animated.View style={[styles.slider, { transform: [{ translateY: bounceValue }] }]}>
         <View style={styles.buttonContainer}>
-          <PrimaryButton text={'Continuar'} />
+          <PrimaryButton text={'Continuar'} onPress={onContinuePress} />
         </View>
       </Animated.View>
     </View>
