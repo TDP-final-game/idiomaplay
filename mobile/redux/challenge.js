@@ -4,7 +4,15 @@ import ChallengeService from '../services/challenge';
 
 export const getHealth = createAsyncThunk(
   'challenge/getHealth',
-  () => ChallengeService.getHealth().then(({ data }) => data)
+  () => ChallengeService.getHealth().then(({data}) => data)
+);
+
+export const answerExercise = createAsyncThunk(
+  'challenge/answerExercise',
+  ([answer, exerciseId]) =>
+    ChallengeService
+      .answerExercise(answer, exerciseId)
+      .then(({data}) => data)
 );
 
 const challengeSlice = createSlice({

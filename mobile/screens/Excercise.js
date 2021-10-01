@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { colors } from '../config/colors';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { colors } from '../config/colors';
 import { AnswerButton } from '../components/AnswerButton';
 import { exerciseTypes } from '../config/exercisesTypes';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { getNextExercise, sendAnswer } from '../services/exerciseServices';
+import { answerExercise } from '../redux/challenge'
+import { getNextExercise } from '../services/exerciseServices';
 
 const questionResults = [
   'correct',
@@ -41,6 +42,7 @@ const excercise = {
 const Excercise = ({ navigation, route }) => {
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(excercise);
+  const dispatch = useDispatch();
 
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
@@ -56,8 +58,9 @@ const Excercise = ({ navigation, route }) => {
     getNextExercise().then(setCurrentExercise);
   };
 
-  const onAnswerSelected = (option) => {
-    sendAnswer(option, currentExercise.id).then(setCorrectAnswer);
+  const onAnswerSelected = async (option) => {
+    const { payload } = await dispatch(answerExercise([option, currentExercise.id]))
+    setCorrectAnswer(payload)
   };
 
   const renderButtons = () => {
