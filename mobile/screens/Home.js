@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../config/colors';
 import { View, StyleSheet, Button, Text, TouchableHighlight, Animated } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getHealth } from '../redux/challenge';
 
 const Home = ({ navigation }) => {
   const [isHidden, setHidden] = useState(true);
@@ -28,6 +30,19 @@ const Home = ({ navigation }) => {
 
     setHidden(!isHidden);
   };
+
+  const [string, setString] = useState('local string');
+  const { healthy } = useSelector((state) => state.challenge);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const doStuff = async () => {
+      const { payload } = await dispatch(getHealth());
+      setString(payload);
+    };
+    setTimeout(doStuff, 2000);
+  });
 
   return (
     <SafeAreaView style={styles.container}>

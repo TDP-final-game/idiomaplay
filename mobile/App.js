@@ -1,5 +1,5 @@
 import * as React from 'react';
-import store from './store/store';
+import store from './redux/store';
 import Home from './screens/Home';
 import { Provider } from 'react-redux';
 import Excercise from './screens/Excercise';
