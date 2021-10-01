@@ -10,16 +10,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function getCorrectAswer(excerciseId) {
-  const currEx = ex.find((e) => e.id === excerciseId);
-  const answer = currEx.options[getRandomInt(0, currEx.options.length)];
-  return answer;
-}
-
 export const getNextExercise = async () => {
   return ex[getRandomInt(0, 3)];
-};
-
-export const sendAnswer = async (answer, exerciseId) => {
-  return getCorrectAswer(exerciseId);
 };

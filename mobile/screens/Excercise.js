@@ -39,7 +39,7 @@ const excercise = {
   type: exerciseTypes.COMPLETE_SENTENCE,
 };
 
-const Excercise = ({ navigation, route }) => {
+const Excercise = ({navigation, route}) => {
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(excercise);
   const dispatch = useDispatch();
@@ -59,27 +59,20 @@ const Excercise = ({ navigation, route }) => {
   };
 
   const onAnswerSelected = async (option) => {
-    const { payload } = await dispatch(answerExercise([option, currentExercise.id]))
+    const {payload} = await dispatch(answerExercise([option, currentExercise.id]))
     setCorrectAnswer(payload)
   };
 
-  const renderButtons = () => {
-    const buttons = [];
-
-    currentExercise.options.forEach((option, i) => {
-      buttons.push(
-        <View style={styles.buttonContainer} key={i}>
-          <AnswerButton
-            answer={option}
-            onPress={() => onAnswerSelected(option)}
-            correctAnswer={correctAnswer}
-          />
-        </View>
-      );
-    });
-
-    return buttons;
-  };
+  const renderButtons = () =>
+    currentExercise.options.map((option, i) =>
+      <View style={styles.buttonContainer} key={i}>
+        <AnswerButton
+          answer={option}
+          onPress={() => onAnswerSelected(option)}
+          correctAnswer={correctAnswer}
+        />
+      </View>
+    );
 
   const returnHome = () => {
     return navigation.navigate('Home');
@@ -87,7 +80,7 @@ const Excercise = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 0.12 }}>
+      <View style={{flex: 0.12}}>
         <ChapterHeader
           returnButtonFunction={returnHome}
           unit={currentExercise.unit}
@@ -95,7 +88,7 @@ const Excercise = ({ navigation, route }) => {
         />
       </View>
 
-      <View style={{ marginLeft: '2%' }}>
+      <View style={{marginLeft: '2%'}}>
         <Text>{explanationByType[currentExercise.type]}</Text>
       </View>
 
@@ -103,13 +96,13 @@ const Excercise = ({ navigation, route }) => {
         <Text style={styles.questionText}>{currentExercise.statement}</Text>
       </View>
 
-      <View style={{ marginLeft: '2%' }}>
+      <View style={{marginLeft: '2%'}}>
         <Text>Seleccione la opción correcta:</Text>
       </View>
 
       {renderButtons()}
 
-      <View style={{ flex: 0.12 }}>
+      <View style={{flex: 0.12}}>
         <ChapterFooter
           questionResults={questionResults}
           correctAnswer={correctAnswer}
