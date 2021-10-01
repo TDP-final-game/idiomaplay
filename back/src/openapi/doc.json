@@ -1,0 +1,9 @@
+{
+  "info": {
+    "title": "IdiomaPlay Api",
+    "description": "The best api"
+  },
+  "schemes": [
+    "http"
+  ]
+}
