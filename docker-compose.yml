@@ -11,9 +11,7 @@ services:
       - "./back:/back"
     environment:
       NODE_ENV: development
-      DATABASE_URL: mongodb://db:27017/idiomaplaydb
-      DATABASE_USERNAME: root
-      DATABASE_PASSWORD: example
+      DATABASE_URL: mongodb://root:example@mongo:27017/idiomaplay?authSource=admin
     depends_on:
       - mongo
 
@@ -25,6 +23,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
 
   mongo-express:
     image: mongo-express:0.54.0
@@ -35,7 +35,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-      ME_CONFIG_OPTIONS_EDITORTHEME: ayu-mirage
+      ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
     depends_on:
       - mongo
 
@@ -53,3 +53,6 @@ services:
   #      EXPO_DEVTOOLS_LISTEN_ADDRESS: 0.0.0.0
   #    volumes:
   #      - "./mobile:/mobile"
+
+volumes:
+  mongo-data:
