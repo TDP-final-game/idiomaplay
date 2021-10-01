@@ -2,6 +2,8 @@ const challengesServices = require('../services/challengesService');
 const STATUS_CODES = require('../utils/status_codes');
 
 const findChallenge = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const response = await challengesServices.findChallenge(challengeId);
@@ -13,6 +15,8 @@ const findChallenge = async (req, res) => {
 };
 
 const createChallenge = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const response = await challengesServices.createChallenge(req.body);
 		res.status(STATUS_CODES.OK)
@@ -23,6 +27,8 @@ const createChallenge = async (req, res) => {
 };
 
 const addUnit = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const response = await challengesServices.addUnit(challengeId, req.body);
@@ -34,6 +40,8 @@ const addUnit = async (req, res) => {
 };
 
 const addLesson = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId, unitId } = req.params;
 		console.log(challengeId, unitId)
@@ -46,6 +54,8 @@ const addLesson = async (req, res) => {
 };
 
 const addExam = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId, unitId } = req.params;
 		const response = await challengesServices.addExam(challengeId, parseInt(unitId, 10), req.body);
@@ -57,6 +67,8 @@ const addExam = async (req, res) => {
 };
 
 const addExerciseToLesson = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId, unitId, lessonId } = req.params;
 		const response = await challengesServices.addExerciseToLesson(challengeId, parseInt(unitId, 10), parseInt(lessonId, 10), req.body);
@@ -68,6 +80,8 @@ const addExerciseToLesson = async (req, res) => {
 };
 
 const addExerciseToExam = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId, unitId } = req.params;
 		const response = await challengesServices.addExerciseToExam(challengeId, parseInt(unitId, 10), req.body);

@@ -5,6 +5,8 @@ const STATUS_CODES = require('../utils/status_codes');
 const USER_ID = '61553000155f46e004a252c4';
 
 const startChallenge = async (req, res) => {
+	// #swagger.tags = ['User challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const response = await userServices.startChallenge(challengeId, USER_ID);
@@ -16,6 +18,8 @@ const startChallenge = async (req, res) => {
 };
 
 const startUnit = async (req, res) => {
+	// #swagger.tags = ['User challenge']
+
 	try {
         const { challengeId } = req.params;
 		const response = await userServices.startUnit(challengeId);
@@ -27,6 +31,8 @@ const startUnit = async (req, res) => {
 };
 
 const startLesson = async (req, res) => {
+	// #swagger.tags = ['User challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const response = await userServices.startLesson(challengeId);
@@ -38,6 +44,8 @@ const startLesson = async (req, res) => {
 };
 
 const getExerciseToComplete = async (req, res) => {
+	// #swagger.tags = ['User challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const response = await userServices.getExerciseToComplete(challengeId);
@@ -49,6 +57,8 @@ const getExerciseToComplete = async (req, res) => {
 };
 
 const saveUserExerciseSolution = async (req, res) => {
+	// #swagger.tags = ['User challenge']
+
 	try {
 		const { challengeId, exerciseId } = req.params;
 		const response = await userServices.saveUserExerciseSolution(challengeId, exerciseId);
