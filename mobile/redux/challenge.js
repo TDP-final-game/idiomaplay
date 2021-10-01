@@ -15,6 +15,14 @@ export const answerExercise = createAsyncThunk(
       .then(({data}) => data)
 );
 
+export const nextExercise = createAsyncThunk(
+  'challenge/nextExercise',
+  () =>
+    ChallengeService
+      .nextExercise()
+      .then(({data}) => data)
+);
+
 const challengeSlice = createSlice({
   name: 'challenge',
   initialState: {

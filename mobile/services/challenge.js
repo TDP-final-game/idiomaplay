@@ -12,7 +12,12 @@ function getCorrectAswer(excerciseId) {
   return currEx.options[getRandomInt(0, currEx.options.length)];
 }
 
+export const getNextExercise = async () => {
+  return ex[getRandomInt(0, 3)];
+};
+
 export default {
   getHealth: () => api.get('../../healthz'),
-  answerExercise: (answer, exerciseId) => new Promise.resolve({data: getCorrectAswer(exerciseId)})
+  answerExercise: (answer, exerciseId) => new Promise.resolve({data: getCorrectAswer(exerciseId)}),
+  nextExercise: () => new Promise.resolve({data: getNextExercise()})
 }

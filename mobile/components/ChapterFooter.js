@@ -5,10 +5,33 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AnswerButton } from './AnswerButton';
 import { PrimaryButton } from './Button';
 
+const questionResults = [
+  'correct',
+  'incorrect',
+  'incorrect',
+  'correct',
+  'correct',
+  'current',
+  null,
+  null,
+];
+
 // list of { true, false, null }
-export const ChapterFooter = ({ questionResults, correctAnswer, onContinuePress }) => {
+export const ChapterFooter = ({ showContinue, onContinue }) => {
   const [bounceValue, _] = useState(new Animated.Value(100));
-  const [sliderIsHidden, setSliderIsHidden] = useState(true);
+
+  // This will animate the transalteY of the subview
+  // between 0 & 100 depending on its current state
+  // 100 comes from the style below, which is the height
+  // of the subview.
+  Animated.spring(bounceValue, {
+    useNativeDriver: true,
+    toValue: showContinue ? 0 : 100,
+    velocity: 3,
+    friction: 8,
+    tension: 2,
+  }).start();
+
 
   const resultIcon = {
     correct: (key) => (
@@ -35,34 +58,12 @@ export const ChapterFooter = ({ questionResults, correctAnswer, onContinuePress 
     return icons;
   };
 
-  useEffect(() => {
-    if (correctAnswer) toggle();
-  }, [correctAnswer]);
-
-  const toggle = () => {
-    const toValue = sliderIsHidden ? 0 : 100;
-
-    // This will animate the transalteY of the subview
-    // between 0 & 100 depending on its current state
-    // 100 comes from the style below, which is the height
-    // of the subview.
-    Animated.spring(bounceValue, {
-      useNativeDriver: true,
-      toValue: toValue,
-      velocity: 3,
-      friction: 8,
-      tension: 2,
-    }).start();
-
-    setSliderIsHidden(!sliderIsHidden);
-  };
-
   return (
     <View style={styles.footerContainer}>
       {printCurrentResults()}
       <Animated.View style={[styles.slider, { transform: [{ translateY: bounceValue }] }]}>
         <View style={styles.buttonContainer}>
-          <PrimaryButton text={'Continuar'} onPress={onContinuePress} />
+          <PrimaryButton text={'Continuar'} onPress={onContinue} />
         </View>
       </Animated.View>
     </View>
