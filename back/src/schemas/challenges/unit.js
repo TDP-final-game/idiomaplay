@@ -3,7 +3,6 @@ const Lesson = require('./lesson');
 const Exam = require('./exam');
 
 const Unit = new mongoose.Schema({
-  _id: false,
   orderNumber: {
     type: Number,
     required: [true, 'orderNumber is required']

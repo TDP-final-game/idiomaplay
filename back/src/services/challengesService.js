@@ -28,29 +28,29 @@ const addUnit = async (challengeId, unit) => {
 
 const addLesson = async (challengeId, unitId, lesson) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber == unitId);
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate._id === unitId);
 	unit.lessons.push(lesson);
 	return challenge.save();
 };
 
 const addExam = async (challengeId, unitId, exam) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitId);
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate._id === unitId);
 	unit.exam = exam;
 	return challenge.save();
 };
 
 const addExerciseToLesson = async (challengeId, unitId, lessonId, exercise) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unit => unit.orderNumber === unitId);
-	const lesson = unit.lessons.find(lesson => lesson.orderNumber === lessonId);
+	const unit = challenge.units.find(unit => unit._id === unitId);
+	const lesson = unit.lessons.find(lesson => lesson._id === lessonId);
 	lesson.exercises.push(exercise);
 	return challenge.save();
 };
 
 const addExerciseToExam = async (challengeId, unitId, exercise) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unit => unit.orderNumber === unitId);
+	const unit = challenge.units.find(unit => unit._id === unitId);
 	unit.exam.exercises.push(exercise);
 	return challenge.save();
 };
