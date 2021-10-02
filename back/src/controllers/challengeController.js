@@ -26,6 +26,16 @@ const createChallenge = async (req, res) => {
 	}
 };
 
+const listChallenges = async(req, res) => {
+	try {
+		const response = await challengesServices.listChallenges(req.body);
+		res.status(STATUS_CODES.OK)
+			.send(response);
+	} catch(error) {
+		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+	}
+}
+
 const addUnit = async (req, res) => {
 	// #swagger.tags = ['Challenge']
 
@@ -95,6 +105,7 @@ const addExerciseToExam = async (req, res) => {
 module.exports = { 
   findChallenge,
   createChallenge,
+  listChallenges,
   addUnit,
   addLesson,
   addExam,

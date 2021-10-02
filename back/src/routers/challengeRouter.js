@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/challenges', challengeController.createChallenge);
 router.get('/challenges/:challengeId', challengeController.findChallenge);
+router.get('/challenges', challengeController.listChallenges);
 router.post('/challenges/:challengeId/units/', challengeController.addUnit);
 router.post('/challenges/:challengeId/units/:unitId/exams', challengeController.addExam);
 router.post('/challenges/:challengeId/units/:unitId/exams/exercises', challengeController.addExerciseToExam);

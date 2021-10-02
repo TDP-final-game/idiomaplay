@@ -1,10 +1,17 @@
 const Challenge = require('../schemas/challenges/challenge');
 const mongoose = require('mongoose');
 
+const {pageSize} = require('../constants/pagination_default.json');
+
 const findChallenge = challengeId => {
 	const challengeModel = mongoose.model('challenge', Challenge);
 	return challengeModel.findOne({ _id: challengeId });
 };
+
+const listChallenges = async ({pageNumber}) => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	return challengeModel.find({}).skip(pageNumber * pageSize).limit(pageSize);
+}
 
 const deleteChallenges = () => {
 	const challengeModel = mongoose.model('challenge', Challenge);
@@ -59,6 +66,7 @@ const addExerciseToExam = async (challengeId, unitId, exercise) => {
 
 module.exports = { 
 	findChallenge,
+	listChallenges,
 	createChallenge,
 	addUnit,
 	addLesson,
