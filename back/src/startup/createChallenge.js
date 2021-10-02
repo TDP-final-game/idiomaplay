@@ -1,5 +1,5 @@
 const challengesServices = require('../services/challengesService');
-const challenge = require('./challenge.json');
+const challenge = require('./challenge');
 
 module.exports = async () => {
   try {

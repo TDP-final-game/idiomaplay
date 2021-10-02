@@ -5,7 +5,7 @@ const Exercise = new mongoose.Schema({
   _id: false,
   type: {
     type: String,
-    enum: Object.keys(exerciseTypes),
+    enum: Object.values(exerciseTypes),
     required: [true, 'type is required']
   },
   statement: {
