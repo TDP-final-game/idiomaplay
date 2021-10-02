@@ -8,9 +8,18 @@ const Exercise = new mongoose.Schema({
     enum: Object.keys(EXERCISE_TYPES),
     required: [true, 'type is required']
   },
-  data: {
-    type: Object,
-    required: [true, 'data is required']
+  options: {
+    type: [{
+      text: {
+        type: String,
+        required: true
+      },
+      correct: {
+        type: Boolean,
+        required: true
+      }
+    }],
+    required: [true, 'options is required']
   }
 });
 

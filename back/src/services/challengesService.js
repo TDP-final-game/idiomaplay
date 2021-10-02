@@ -3,8 +3,13 @@ const mongoose = require('mongoose');
 
 const findChallenge = challengeId => {
 	const challengeModel = mongoose.model('challenge', Challenge);
-	return  challengeModel.findOne({ _id: challengeId });
+	return challengeModel.findOne({ _id: challengeId });
 };
+
+const deleteChallenges = () => {
+	const challengeModel = mongoose.model('challenge', Challenge);
+	return challengeModel.deleteMany();
+}
 
 const createChallenge = challenge => {
 	const challengeModel = mongoose.model('challenge', Challenge);
@@ -59,5 +64,6 @@ module.exports = {
 	addLesson,
 	addExam,
 	addExerciseToLesson,
-	addExerciseToExam
+	addExerciseToExam,
+	deleteChallenges
 };
