@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -7,8 +7,11 @@ import { colors } from '../config/colors';
 import { PrimaryButton } from './Button';
 
 export const ChapterFooter = ({ showContinue, onContinue }) => {
-  const [bounceValue, _] = useState(new Animated.Value(100));
-  const results = useSelector(state => state.challenge.exerciseResults)
+  const initialHeight = 100;
+
+  const [h, setH] = useState(initialHeight);
+  const results = useSelector((state) => state.challenge.exerciseResults);
+  const [bounceValue, setBounceValue] = useState(new Animated.Value(initialHeight));
 
   // This will animate the transalteY of the subview
   // between 0 & 100 depending on its current state
@@ -16,7 +19,7 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   // of the subview.
   Animated.spring(bounceValue, {
     useNativeDriver: true,
-    toValue: showContinue ? 0 : 100,
+    toValue: showContinue ? 0 : h,
     velocity: 3,
     friction: 8,
     tension: 2,
@@ -38,13 +41,22 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   };
 
   const printCurrentResults = () => {
-    const res = [...results]
-    res[res.indexOf(null)] = 'current'
+    const res = [...results];
+    res[res.indexOf(null)] = 'current';
     return res.map((result, i) => resultIcon[result](i));
-  }
+  };
+
+  const updateHeight = (layout) => {
+    const { height } = layout;
+    setH(height);
+    console.log('H setted to ', height);
+  };
 
   return (
-    <View style={styles.footerContainer}>
+    <View
+      style={styles.footerContainer}
+      onLayout={(event) => updateHeight(event.nativeEvent.layout)}
+    >
       {printCurrentResults()}
       <Animated.View style={[styles.slider, { transform: [{ translateY: bounceValue }] }]}>
         <View style={styles.buttonContainer}>
@@ -58,11 +70,11 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
 const styles = StyleSheet.create({
   footerContainer: {
     flexGrow: 1,
-    justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: '10%',
     borderTopWidth: 3,
+    justifyContent: 'space-evenly',
     backgroundColor: colors.PRIMARY,
     borderTopColor: colors.PRIMARY_DARK,
   },
@@ -76,7 +88,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 100,
+    height: '100%',
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: colors.PRIMARY_DARK,

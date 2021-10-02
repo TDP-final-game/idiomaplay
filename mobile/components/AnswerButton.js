@@ -6,7 +6,6 @@ import { Text, StyleSheet } from 'react-native';
 
 export const AnswerButton = ({ answer, onPress, correctAnswer }) => {
   const getBackroundColor = () => {
-    console.log(answer, correctAnswer);
     if (!correctAnswer) return colors.SECONDARY;
     return answer === correctAnswer ? colors.CORRECT_COLOR : colors.INCORRECT_COLOR;
   };

@@ -13,7 +13,6 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     const doStuff = async () => {
-      console.log('hhola');
       const { payload } = await dispatch(getHealth());
       setString(payload);
     };
