@@ -1,4 +1,4 @@
-const Challenge = require('../model/domain/challenge');
+const Challenge = require('../schemas/challenges/challenge');
 const mongoose = require('mongoose');
 
 const findChallenge = challengeId => {

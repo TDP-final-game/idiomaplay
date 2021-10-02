@@ -1,5 +1,5 @@
 const challengesServices = require('../services/challengesService');
-const STATUS_CODES = require('../utils/status_codes');
+const STATUS_CODES = require('../constants/status_codes');
 
 const findChallenge = async (req, res) => {
 	// #swagger.tags = ['Challenge']

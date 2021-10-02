@@ -1,5 +1,5 @@
 const userServices = require('../services/userService');
-const STATUS_CODES = require('../utils/status_codes');
+const STATUS_CODES = require('../constants/status_codes');
 
 // TODO: remove this
 const USER_ID = '61553000155f46e004a252c4';
