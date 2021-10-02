@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Unit = require('../unit');
-const STATUSES = require('../../../constants/statuses');
 const UserLesson = require('./userLesson');
 const UserExam = require('./userExam');
+
+const STATUSES = require('../../../constants/statuses');
 
 const UserUnit = new mongoose.Schema({
   _id: false,
