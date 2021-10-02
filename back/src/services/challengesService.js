@@ -1,37 +1,32 @@
 const Challenge = require('../schemas/challenges/challenge');
 const mongoose = require('mongoose');
-
 const {pageSize} = require('../constants/pagination_default.json');
 
+const challengeModel = mongoose.model('challenge', Challenge);
+
 const findChallenge = challengeId => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	return challengeModel.findOne({ _id: challengeId });
 };
 
 const listChallenges = async ({pageNumber}) => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	return challengeModel.find({}).skip(pageNumber * pageSize).limit(pageSize);
 }
 
 const deleteChallenges = () => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	return challengeModel.deleteMany();
 }
 
 const createChallenge = challenge => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	return challengeModel.create(challenge);
 };
 
 const addUnit = async (challengeId, unit) => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	challenge.units.push(unit);
 	return challenge.save();
 };
 
 const addLesson = async (challengeId, unitId, lesson) => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber == unitId);
 	unit.lessons.push(lesson);
@@ -39,7 +34,6 @@ const addLesson = async (challengeId, unitId, lesson) => {
 };
 
 const addExam = async (challengeId, unitId, exam) => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitId);
 	unit.exam = exam;
@@ -47,7 +41,6 @@ const addExam = async (challengeId, unitId, exam) => {
 };
 
 const addExerciseToLesson = async (challengeId, unitId, lessonId, exercise) => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	const unit = challenge.units.find(unit => unit.orderNumber === unitId);
 	const lesson = unit.lessons.find(lesson => lesson.orderNumber === lessonId);
@@ -56,7 +49,6 @@ const addExerciseToLesson = async (challengeId, unitId, lessonId, exercise) => {
 };
 
 const addExerciseToExam = async (challengeId, unitId, exercise) => {
-	const challengeModel = mongoose.model('challenge', Challenge);
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	const unit = challenge.units.find(unit => unit.orderNumber === unitId);
 	unit.exam.exercises.push(exercise);
