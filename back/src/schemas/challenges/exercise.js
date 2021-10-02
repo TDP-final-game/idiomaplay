@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const EXERCISE_TYPES = require('../../constants/exercise_types');
+const EXERCISE_TYPES = require('../../constants/exerciseTypes');
 
 const Exercise = new mongoose.Schema({
   _id: false,
