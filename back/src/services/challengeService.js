@@ -1,8 +1,10 @@
 const Challenge = require('../schemas/challenges/challenge');
+const ChallengeAttempt = require('../schemas/challenges/attempts/challengeAttempt');
 const mongoose = require('mongoose');
 const {pageSize} = require('../constants/pagination_default.json');
 
 const challengeModel = mongoose.model('challenge', Challenge);
+const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttempt);
 
 const findChallenge = challengeId => {
 	return challengeModel.findOne({ _id: challengeId });
@@ -55,6 +57,16 @@ const addExerciseToExam = async (challengeId, unitId, exercise) => {
 	return challenge.save();
 };
 
+const startChallengeAttempt = async (challengeId, userId) => {
+	const challenge = await challengeModel.findOne({ _id: challengeId });
+	const challengeAttempt = {userId, challenge};
+	return challengeAttemptModel.create(challengeAttempt);
+};
+
+const listChallengeAttempts = async (challengeId) => {
+	const challengeAttempts = await challengeAttemptModel.find({"challenge._id": challengeId});
+	return challengeAttempts;
+};
 
 module.exports = { 
 	findChallenge,
@@ -65,5 +77,7 @@ module.exports = {
 	addExam,
 	addExerciseToLesson,
 	addExerciseToExam,
-	deleteChallenges
+	deleteChallenges,
+	startChallengeAttempt,
+	listChallengeAttempts
 };

@@ -5,8 +5,7 @@ const userRouter = require('./userRouter');
 
 const router = express.Router();
 
-router.use('/domain', challengeRouter);
-router.use('/users/me', userRouter);
+router.use('/challenges', challengeRouter);
+router.use('/users', userRouter);
 
 module.exports = router;
-

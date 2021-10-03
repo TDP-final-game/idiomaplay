@@ -4,10 +4,6 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-router.post('/challenges/:challengeId', userController.startChallenge);
-router.post('/challenges/:challengeId/units', userController.startUnit);
-router.post('/challenges/:challengeId/lessons', userController.startLesson);
-router.get('/challenges/:challengeId/exercises', userController.getExerciseToComplete);
-router.put('/challenges/:challengeId/exercises/:exerciseId', userController.saveUserExerciseSolution);
+router.get('/:userId/challengeAttempts', userController.listChallengesAttempts);
 
 module.exports = router;
