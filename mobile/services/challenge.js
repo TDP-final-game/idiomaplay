@@ -6,6 +6,8 @@ import {
   corrtectAnswers,
 } from '../config/mocks';
 
+import store from '../redux/store';
+
 const ex = [translateToNativeMock, translateToForeignMock, completeSentenceMock];
 
 function getRandomInt(min, max) {
@@ -21,6 +23,9 @@ function answerExercise(answer, exerciseId) {
 }
 
 export const getNextExercise = async () => {
+  var results = store.getState().challenge.exerciseResults;
+  // HARDCODED para que se peuda pasar a la pantalla de examen
+  if (results.length == 8) return null;
   return ex[getRandomInt(0, 3)];
 };
 

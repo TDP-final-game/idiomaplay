@@ -28,6 +28,7 @@ const Excercise = ({ navigation }) => {
 
   const handleContinue = async () => {
     const { payload } = await dispatch(nextExercise());
+    if (!payload) return navigation.navigate('ExamEntry');
     setCurrentExercise(payload);
     setCorrectAnswer(null);
     setIncorrectAnswer(null);
