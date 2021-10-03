@@ -4,6 +4,7 @@ const ExerciseAttempt = require('./exerciseAttempt');
 const STATUSES = require('../../../constants/statuses');
 
 const ExamAttempt = new mongoose.Schema({
+    _id: false,
     exam: {
         type: Exam,
         required: [true, 'exam is required']

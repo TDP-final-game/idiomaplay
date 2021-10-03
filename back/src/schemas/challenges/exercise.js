@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const exerciseTypes = require('../../constants/exerciseTypes');
 
 const Exercise = new mongoose.Schema({
+  _id: false,
   type: {
     type: String,
     enum: Object.values(exerciseTypes),
@@ -13,6 +14,7 @@ const Exercise = new mongoose.Schema({
   },
   options: {
     type: [{
+      _id: false,
       text: {
         type: String,
         required: true
