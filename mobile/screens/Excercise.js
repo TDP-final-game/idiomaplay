@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors } from '../config/colors';
@@ -16,6 +16,8 @@ const Excercise = ({ navigation }) => {
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const dispatch = useDispatch();
 
+  const results = useSelector((state) => state.challenge.exerciseResults);
+
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
@@ -27,8 +29,10 @@ const Excercise = ({ navigation }) => {
   }, []);
 
   const handleContinue = async () => {
+    console.log(results);
+    if (results.filter((x) => x == null).length == 0) return navigation.navigate('ExamEntry');
+
     const { payload } = await dispatch(nextExercise());
-    if (!payload) return navigation.navigate('ExamEntry');
     setCurrentExercise(payload);
     setCorrectAnswer(null);
     setIncorrectAnswer(null);
