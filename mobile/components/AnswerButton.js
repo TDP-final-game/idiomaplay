@@ -4,10 +4,10 @@ import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet } from 'react-native';
 
-export const AnswerButton = ({ answer, onPress, correctAnswer }) => {
+export const AnswerButton = ({ answer, onPress, correctAnswer, incorrectAnswer }) => {
   const getBackroundColor = () => {
-    if (!correctAnswer) return colors.SECONDARY;
-    return answer === correctAnswer ? colors.CORRECT_COLOR : colors.INCORRECT_COLOR;
+    if (incorrectAnswer === answer) return colors.INCORRECT_COLOR;
+    return answer === correctAnswer ? colors.CORRECT_COLOR : colors.SECONDARY;
   };
 
   return (

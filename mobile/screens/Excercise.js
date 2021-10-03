@@ -13,6 +13,7 @@ import { answerExercise, nextExercise } from '../redux/challenge'
 const Excercise = ({navigation, route}) => {
   const [currentExercise, setCurrentExercise] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const dispatch = useDispatch();
 
   const explanationByType = {
@@ -29,11 +30,15 @@ const Excercise = ({navigation, route}) => {
     const { payload } = await dispatch(nextExercise());
     setCurrentExercise(payload);
     setCorrectAnswer(null);
+    setIncorrectAnswer(null);
   };
 
   const handleAnswerSelected = async (option) => {
     const { payload } = await dispatch(answerExercise([option, currentExercise.id]))
     setCorrectAnswer(payload.correctAnswer)
+    if(payload.correctAnswer !== option) {
+      setIncorrectAnswer(option)
+    }
   };
 
   const renderButtons = () =>
@@ -43,6 +48,7 @@ const Excercise = ({navigation, route}) => {
           answer={option}
           onPress={() => handleAnswerSelected(option)}
           correctAnswer={correctAnswer}
+          incorrectAnswer={incorrectAnswer}
         />
       </View>
     );
