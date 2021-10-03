@@ -10,7 +10,7 @@ export const translateToNativeMock = {
     'Hoy es un buen día para salvar vidas',
     'Soy bueno salvando vidas',
     'Muchos dias no salvamos vidas',
-    'Muchos dias no salvamos vidas',
+    'Muchos de estos dias no salvamos vidas',
     'Las vidas no son siempre salvables',
     'Ayer fue un gran dia para salvar vidas',
   ],
