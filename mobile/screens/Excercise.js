@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors } from '../config/colors';
@@ -8,9 +8,9 @@ import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
-import { answerExercise, nextExercise } from '../redux/challenge'
+import { answerExercise, nextExercise } from '../redux/challenge';
 
-const Excercise = ({navigation, route}) => {
+const Excercise = ({ navigation }) => {
   const [currentExercise, setCurrentExercise] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const dispatch = useDispatch();
@@ -32,12 +32,12 @@ const Excercise = ({navigation, route}) => {
   };
 
   const handleAnswerSelected = async (option) => {
-    const { payload } = await dispatch(answerExercise([option, currentExercise.id]))
-    setCorrectAnswer(payload.correctAnswer)
+    const { payload } = await dispatch(answerExercise([option, currentExercise.id]));
+    setCorrectAnswer(payload.correctAnswer);
   };
 
   const renderButtons = () =>
-    currentExercise.options.map((option, i) =>
+    currentExercise.options.map((option, i) => (
       <View style={styles.buttonContainer} key={i}>
         <AnswerButton
           answer={option}
@@ -45,7 +45,7 @@ const Excercise = ({navigation, route}) => {
           correctAnswer={correctAnswer}
         />
       </View>
-    );
+    ));
 
   const handleReturn = () => {
     return navigation.navigate('Home');
@@ -53,36 +53,35 @@ const Excercise = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {currentExercise && (<>
-        <View style={{flex: 0.12}}>
-          <ChapterHeader
-            returnButtonFunction={handleReturn}
-            unit={currentExercise.unit}
-            lesson={currentExercise.lesson}
-          />
-        </View>
+      {currentExercise && (
+        <>
+          <View style={{ flex: 0.12 }}>
+            <ChapterHeader
+              returnButtonFunction={handleReturn}
+              unit={currentExercise.unit}
+              lesson={currentExercise.lesson}
+            />
+          </View>
 
-        <View style={{marginLeft: '2%'}}>
-          <Text>{explanationByType[currentExercise.type]}</Text>
-        </View>
+          <View style={{ marginLeft: '2%' }}>
+            <Text>{explanationByType[currentExercise.type]}</Text>
+          </View>
 
-        <View style={styles.questionContainer}>
-          <Text style={styles.questionText}>{currentExercise.statement}</Text>
-        </View>
+          <View style={styles.questionContainer}>
+            <Text style={styles.questionText}>{currentExercise.statement}</Text>
+          </View>
 
-        <View style={{marginLeft: '2%'}}>
-          <Text>Seleccione la opción correcta:</Text>
-        </View>
+          <View style={{ marginLeft: '2%' }}>
+            <Text>Seleccione la opción correcta:</Text>
+          </View>
 
-        {renderButtons()}
+          {renderButtons()}
 
-        <View style={{flex: 0.12}}>
-          <ChapterFooter
-            showContinue={Boolean(correctAnswer)}
-            onContinue={handleContinue}
-          />
-        </View>
-      </>)}
+          <View style={{ flex: 0.12 }}>
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} />
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };

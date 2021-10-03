@@ -28,6 +28,10 @@ const Home = ({ navigation }) => {
         />
       </View>
 
+      <View style={styles.buttonContainer}>
+        <Button title={'Exam entry'} onPress={() => navigation.navigate('ExamEntry')} />
+      </View>
+
       <Text>{string}</Text>
     </SafeAreaView>
   );

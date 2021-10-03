@@ -1,11 +1,13 @@
 import * as React from 'react';
 import store from './redux/store';
-import Home from './screens/Home';
 import { Provider } from 'react-redux';
-import Excercise from './screens/Excercise';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import Home from './screens/Home';
+import Excercise from './screens/Excercise';
+import ExamEntry from './screens/ExamEntry';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,11 +18,12 @@ function App() {
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Home"
-            screenOptions={({ route }) => ({
+            screenOptions={() => ({
               headerShown: false,
             })}
           >
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="ExamEntry" component={ExamEntry} />
             <Stack.Screen name="Excercise" component={Excercise} />
           </Stack.Navigator>
         </NavigationContainer>

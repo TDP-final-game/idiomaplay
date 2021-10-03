@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { colors } from '../config/colors';
-import { PrimaryButton } from './Button';
+import { PrimaryButton } from './PrimaryButton';
 
 export const ChapterFooter = ({ showContinue, onContinue }) => {
   const initialHeight = 100;
+  const bounceValue = new Animated.Value(initialHeight);
 
-  const [h, setH] = useState(initialHeight);
+  const [footerHeight, setFooterHeight] = useState(initialHeight);
   const results = useSelector((state) => state.challenge.exerciseResults);
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(initialHeight));
 
   // This will animate the transalteY of the subview
   // between 0 & 100 depending on its current state
@@ -19,7 +19,7 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   // of the subview.
   Animated.spring(bounceValue, {
     useNativeDriver: true,
-    toValue: showContinue ? 0 : h,
+    toValue: showContinue ? 0 : footerHeight,
     velocity: 3,
     friction: 8,
     tension: 2,
@@ -48,7 +48,7 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
 
   const updateHeight = (layout) => {
     const { height } = layout;
-    setH(height);
+    setFooterHeight(height);
     console.log('H setted to ', height);
   };
 
