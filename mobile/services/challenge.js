@@ -1,5 +1,10 @@
 import api from './api';
-import { completeSentenceMock, translateToForeignMock, translateToNativeMock, } from '../config/mocks';
+import {
+  completeSentenceMock,
+  translateToForeignMock,
+  translateToNativeMock,
+  corrtectAnswers,
+} from '../config/mocks';
 
 const ex = [translateToNativeMock, translateToForeignMock, completeSentenceMock];
 
@@ -8,11 +13,10 @@ function getRandomInt(min, max) {
 }
 
 function answerExercise(answer, exerciseId) {
-  const currEx = ex.find((e) => e.id === exerciseId);
-  const correctAnswer = currEx.options[getRandomInt(0, currEx.options.length)];
+  const correctAnswer = corrtectAnswers[exerciseId];
   return {
     correctAnswer,
-    result: correctAnswer === answer
+    result: correctAnswer === answer,
   };
 }
 
@@ -22,6 +26,7 @@ export const getNextExercise = async () => {
 
 export default {
   getHealth: () => api.get('../../healthz'),
-  answerExercise: (answer, exerciseId) => new Promise.resolve({data: answerExercise(answer, exerciseId)}),
-  nextExercise: () => new Promise.resolve({data: getNextExercise()})
-}
+  answerExercise: (answer, exerciseId) =>
+    new Promise.resolve({ data: answerExercise(answer, exerciseId) }),
+  nextExercise: () => new Promise.resolve({ data: getNextExercise() }),
+};

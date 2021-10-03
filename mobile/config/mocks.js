@@ -23,9 +23,9 @@ export const translateToForeignMock = {
   type: exerciseTypes.TRANSLATE_TO_FOREIGN,
   statement: 'Hoy es un buen día para salvar vidas',
   options: [
-    "Today It's a great day to save lives",
     'Tomorrow Its a great day to save lifes',
     'Next year I will move to Lisboa',
+    "Today It's a great day to save lives",
     'I care about people lives',
     'Hyde, how you doing?',
     'Bye, hope you have a nice day',
@@ -39,4 +39,10 @@ export const completeSentenceMock = {
   type: exerciseTypes.COMPLETE_SENTENCE,
   statement: 'There was a __________________ when people do not shower”',
   options: ['Cute', 'Time', 'Dirty', 'Place'],
+};
+
+export const corrtectAnswers = {
+  1: 'Hoy es un buen día para salvar vidas',
+  2: "Today It's a great day to save lives",
+  3: 'Time',
 };
