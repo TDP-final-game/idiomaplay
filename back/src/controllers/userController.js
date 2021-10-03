@@ -2,6 +2,8 @@ const userService = require('../services/userService');
 const STATUS_CODES = require('../constants/status_codes');
 
 const listChallengesAttempts = async (req, res) => {
+  // #swagger.tags = ['User']
+
   try {
       const { userId } = req.params;
       const response = await userService.listChallengeAttempts(userId);

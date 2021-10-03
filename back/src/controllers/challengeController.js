@@ -27,6 +27,8 @@ const createChallenge = async (req, res) => {
 };
 
 const listChallenges = async(req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const response = await challengeService.listChallenges(req.body);
 		res.status(STATUS_CODES.OK)
@@ -103,6 +105,8 @@ const addExerciseToExam = async (req, res) => {
 };
 
 const startChallengeAttempt = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const { userId } = req.query;
@@ -115,6 +119,8 @@ const startChallengeAttempt = async (req, res) => {
 };
 
 const listChallengeAttempts = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
 	try {
 		const { challengeId } = req.params;
 		const response = await challengeService.listChallengeAttempts(challengeId);

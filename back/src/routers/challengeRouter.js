@@ -8,8 +8,8 @@ const router = express.Router();
  * Challenges CRUD
  */
 
-router.post('', challengeController.createChallenge);
-router.get('', challengeController.listChallenges);
+router.post('/', challengeController.createChallenge);
+router.get('/', challengeController.listChallenges);
 router.get('/:challengeId', challengeController.findChallenge);
 router.post('/:challengeId/units/', challengeController.addUnit);
 router.post('/:challengeId/units/:unitId/exams', challengeController.addExam);
@@ -20,7 +20,6 @@ router.post('/:challengeId/units/:unitId/lessons/:lessonId/exercises', challenge
 /*
  * Challenges Attempts
  */
-
 router.post('/:challengeId/attempts', challengeController.startChallengeAttempt);
 router.get('/:challengeId/attempts', challengeController.listChallengeAttempts);
 
