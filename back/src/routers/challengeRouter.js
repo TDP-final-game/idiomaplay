@@ -20,7 +20,7 @@ router.post('/:challengeId/units/:unitId/lessons/:lessonId/exercises', challenge
 /*
  * Challenges Attempts
  */
-router.post('/:challengeId/attempts', challengeController.startChallengeAttempt);
+router.post('/:challengeId/attempts', challengeController.attemptChallenge);
 router.get('/:challengeId/attempts', challengeController.listChallengeAttempts);
 
 module.exports = router;

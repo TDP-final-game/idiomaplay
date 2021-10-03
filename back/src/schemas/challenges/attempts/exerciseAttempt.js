@@ -1,15 +1,29 @@
 const mongoose = require('mongoose');
-const Exercise = require('../exercise');
+const exerciseTypes = require('../../../constants/exerciseTypes');
 const STATUSES = require('../../../constants/statuses');
 
 const ExerciseAttempt = new mongoose.Schema({
-    exercise: {
-        type: Exercise,
-        required: [true, 'exercise is required']
-    },
-    userId: {
+    type: {
         type: String,
-        required: [true, 'userId is required']
+        enum: Object.values(exerciseTypes),
+        required: [true, 'type is required']
+    },
+    statement: {
+        type: String,
+        required: true
+    },
+    options: {
+        type: [{
+            text: {
+                type: String,
+                required: true
+            },
+            correct: {
+                type: Boolean,
+                required: true
+            }
+        }],
+        required: [true, 'options is required']
     },
     status: {
         type: String,

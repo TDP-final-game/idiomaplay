@@ -1,24 +1,32 @@
 const mongoose = require('mongoose');
-const Challenge = require('../challenge');
 const UnitAttempt = require('./unitAttempt');
 const STATUSES = require("../../../constants/statuses");
 
 const ChallengeAttempt = new mongoose.Schema({
-  challenge: {
-    type: Challenge,
-    required: [true, 'challenge is required']
-  },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: [true, 'userId is required']
   },
-  unitsAttempts: [{type: UnitAttempt, required: false}],
+  name: {
+    type: String,
+    required: [true, 'name is required']
+  },
+  difficulty: {
+    type: String,
+    required: [true, 'difficulty is required']
+  },
+  description: {
+    type: String,
+    required: [true, 'description is required']
+  },
   status: {
     type: String,
     enum: Object.keys(STATUSES),
     required: [true, 'status is required'],
-    default: "IN_PROGRESS" // todo: start challenge attempt as 'in progress'?
-  }
+    default: STATUSES.IN_PROGRESS // todo: start challenge attempt as 'in progress'?
+  },
+  unitsAttempts: [{type: UnitAttempt, required: false}],
 });
 
 

@@ -1,26 +1,29 @@
 const mongoose = require('mongoose');
-const Unit = require('../unit');
 const LessonAttempt = require('./lessonAttempt');
 const ExamAttempt = require('./examAttempt');
 
 const STATUSES = require('../../../constants/statuses');
 
 const UnitAttempt = new mongoose.Schema({
-    unit: {
-        type: Unit,
-        required: [true, 'unit is required']
+    orderNumber: {
+        type: Number,
+        required: [true, 'orderNumber is required']
     },
-    userId: {
+    name: {
         type: String,
-        required: [true, 'userId is required']
+        required: [true, 'name is required']
     },
-    lessonsAttempts: [{type: LessonAttempt, required: false}],
-    examsAttempts: {type: ExamAttempt, required: false},
+    description: {
+        type: String,
+        required: [true, 'description is required']
+    },
     status: {
         type: String,
         enum: Object.keys(STATUSES),
         required: [true, 'status is required']
-    }
+    },
+    lessonsAttempts: [{type: LessonAttempt, required: false}],
+    examsAttempts: {type: ExamAttempt, required: false},
 });
 
 module.exports = UnitAttempt;
