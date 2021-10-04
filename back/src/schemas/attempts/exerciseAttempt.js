@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const exerciseTypes = require('../../../constants/exerciseTypes');
-const STATUSES = require('../../../constants/statuses');
+const exerciseTypes = require('../../constants/exerciseTypes');
+const STATUSES = require('../../constants/statuses.json');
 
 const ExerciseAttempt = new mongoose.Schema({
   _id: false,

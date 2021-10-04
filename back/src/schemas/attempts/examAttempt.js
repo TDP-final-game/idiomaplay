@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Exam = require('../exam');
+const Exam = require('../exams/exam');
 const ExerciseAttempt = require('./exerciseAttempt');
-const STATUSES = require('../../../constants/statuses');
+const STATUSES = require('../../constants/statuses.json');
 
 const ExamAttempt = new mongoose.Schema({
     _id: false,

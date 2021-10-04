@@ -1,6 +1,7 @@
-const Challenge = require('../schemas/challenges/challenge');
-const ChallengeAttempt = require('../schemas/challenges/attempts/challengeAttempt');
 const mongoose = require('mongoose');
+const Challenge = require('../schemas/challenges/challenge');
+const ChallengeAttempt = require('../schemas/attempts/challengeAttempt');
+
 const {pageSize} = require('../constants/pagination_default.json');
 const STATUSES = require("../constants/statuses");
 
@@ -21,13 +22,26 @@ const deleteChallenges = () => {
   return challengeModel.deleteMany();
 }
 
-const createChallenge = challenge => {
-  return challengeModel.create(challenge);
+const createChallenge = async challengeData => {
+  return challengeModel.create({
+    challengeInfo: {
+      name: challengeData.name,
+      description: challengeData.description,
+      difficulty: challengeData.difficulty
+    }
+  });
 };
 
-const addUnit = async (challengeId, unit) => {
+const addUnit = async (challengeId, unitData) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
-  challenge.units.push(unit);
+
+  challenge.units.push({
+    unitInfo: {
+      orderNumber: unitData.orderNumber,
+      name: unitData.name,
+      description: unitData.description
+    }
+  });
   return challenge.save();
 };
 
@@ -38,10 +52,16 @@ const addLesson = async (challengeId, unitId, lesson) => {
   return challenge.save();
 };
 
-const addExam = async (challengeId, unitId, exam) => {
+const addExam = async (challengeId, unitName, examData) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
-  const unit = challenge.units.find(unitToUpdate => unitToUpdate._id === unitId);
-  unit.exam = exam;
+  const unit = challenge.units.find(unitToUpdate => unitToUpdate.unitInfo.name === unitName);
+  unit.exam = {
+    examInfo: {
+      name: examData.name,
+      description: examData.description,
+      durationInMinutes: examData.durationInMinutes
+    }
+  };
   return challenge.save();
 };
 

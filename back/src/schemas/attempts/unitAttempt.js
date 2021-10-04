@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const LessonAttempt = require('./lessonAttempt');
 const ExamAttempt = require('./examAttempt');
 
-const STATUSES = require('../../../constants/statuses');
+const STATUSES = require('../../constants/statuses.json');
 
 const UnitAttempt = new mongoose.Schema({
   _id: false,
