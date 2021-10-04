@@ -96,7 +96,7 @@ const attemptChallenge = async (challengeId, userId = USER_ID) => {
 };
 
 const listChallengeAttempts = (challengeId) => {
-  return challengeAttemptModel.find({"challenge._id": challengeId});
+  return challengeAttemptModel.find({challengeId: challengeId});
 };
 
 module.exports = {
