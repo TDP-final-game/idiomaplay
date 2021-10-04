@@ -41,8 +41,20 @@ export const completeSentenceMock = {
   options: ['Cute', 'Time', 'Dirty', 'Place'],
 };
 
-export const corrtectAnswers = {
+
+export const listenSentenceMock = {
+  id: 4,
+  unit: 1,
+  lesson: 1,
+  type: exerciseTypes.LISTEN_AUDIO,
+  statement: 'Hello my friend”',
+  options: ['Hello my friend', 'Hello my bestman', 'Hello there', 'Hi'],
+
+}
+
+export const correctAnswers = {
   1: 'Hoy es un buen día para salvar vidas',
   2: "Today It's a great day to save lives",
   3: 'Time',
+  4: 'Hello my friend'
 };
