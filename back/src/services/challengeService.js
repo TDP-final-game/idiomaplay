@@ -90,7 +90,8 @@ const attemptChallenge = async (challengeId, userId = USER_ID) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
   return challengeAttemptModel.create({
     userId,
-    challengeInfo: challenge.challengeInfo
+    challengeInfo: challenge.challengeInfo,
+    challengeId: challenge._id
   });
 };
 

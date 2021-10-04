@@ -13,6 +13,11 @@ const ChallengeAttempt = new mongoose.Schema({
     type: ChallengeInfo,
     required: [true, 'challengeInfo is required']
   },
+  challengeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Challenge',
+    required: [true, 'challengeId is required']
+  },
   status: {
     type: String,
     enum: Object.keys(STATUSES),
