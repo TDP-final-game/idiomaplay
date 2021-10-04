@@ -87,6 +87,7 @@ const addExerciseToExam = async (challengeId, unitName, exercise) => {
 };
 
 const attemptChallenge = async (challengeId, userId = USER_ID) => {
+  // todo: si hay Challenge Attempt de este Challenge 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez el Challenge
   const challenge = await challengeModel.findOne({_id: challengeId});
   return challengeAttemptModel.create({
     userId,
@@ -96,7 +97,7 @@ const attemptChallenge = async (challengeId, userId = USER_ID) => {
 };
 
 const attemptUnit = async(challengeId, userId) => {
-  // si hay unidad 'IN_PROGRESS' o 'PENDING' error diciendo q no se puede arrancar otra unidad
+  // todo: si hay Unit Attempt de esta unidad 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez esta unidad
   const challenge = await challengeModel.findOne({_id: challengeId});
   const challengeAttempt = await challengeAttemptModel.findOne({challengeId: challengeId, userId: userId});
 
@@ -110,10 +111,9 @@ const attemptUnit = async(challengeId, userId) => {
   // buscamos la unidad con menor orderNumber que cumpla orderNumber > lastOrderNumber
   let unitToAssign = challenge.units[0];
   challenge.units.forEach(unit => {
-    if (unit.unitInfo.orderNumber > lastOrderNumber) {
-      if (unit.unitInfo.orderNumber < unitToAssign.unitInfo.orderNumber) {
+    const currentOrderNumber = unit.unitInfo.orderNumber;
+    if (currentOrderNumber > lastOrderNumber && currentOrderNumber < unitToAssign.unitInfo.orderNumber) {
         unitToAssign = unit;
-      }
     }
   });
 
@@ -122,6 +122,22 @@ const attemptUnit = async(challengeId, userId) => {
   });
 
   return challengeAttempt.save();
+};
+
+const attemptExam = async(challengeId, userId, unitName) => {
+  // todo: si hay Exam Attempt de este examen 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez el examen
+  // todo: validar si completo todas las lecciones!
+  const challenge = await challengeModel.findOne({_id: challengeId});
+  const unit = challenge.units.find(unit => unit.unitInfo.name === unitName);
+
+  const challengeAttempt = await challengeAttemptModel.findOne({challengeId: challengeId, userId: userId});
+  const unitAttempt = challengeAttempt.unitsAttempts.find(unitAttempt => unitAttempt.unitInfo.name === unitName);
+
+  unitAttempt.examAttempt = {
+    examInfo: unit.exam.examInfo
+  };
+
+  return unitAttempt.save();
 };
 
 const listChallengeAttempts = (challengeId) => {
@@ -140,5 +156,6 @@ module.exports = {
   deleteChallenges,
   attemptChallenge,
   attemptUnit,
+  attemptExam,
   listChallengeAttempts
 };

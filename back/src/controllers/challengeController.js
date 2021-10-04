@@ -110,6 +110,7 @@ const addExerciseToExam = async (req, res) => {
 /*
  * Attempts
  */
+
 const attemptChallenge = async (req, res) => {
   // #swagger.tags = ['Challenge']
 
@@ -130,6 +131,17 @@ const attemptUnit = async (req, res) => {
     const {challengeId} = req.params;
     const {userId} = req.query;
     const response = await challengeService.attemptUnit(challengeId, userId);
+    res.status(STATUS_CODES.OK).send(response);
+  } catch (error) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
+  }
+};
+
+const attemptExam = async (req, res) => {
+  try {
+    const {challengeId} = req.params;
+    const {userId, unitName} = req.query;
+    const response = await challengeService.attemptExam(challengeId, userId, unitName);
     res.status(STATUS_CODES.OK).send(response);
   } catch (error) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
@@ -160,5 +172,6 @@ module.exports = {
   addExerciseToExam,
   attemptChallenge,
   attemptUnit,
+  attemptExam,
   listChallengeAttempts
 };

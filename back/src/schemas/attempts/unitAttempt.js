@@ -18,7 +18,7 @@ const UnitAttempt = new mongoose.Schema({
     default: STATUSES.IN_PROGRESS
   },
   lessonsAttempts: [{type: LessonAttempt, required: false}],
-  examsAttempts: {type: ExamAttempt, required: false},
+  examAttempt: {type: ExamAttempt, required: false},
 });
 
 module.exports = UnitAttempt;
