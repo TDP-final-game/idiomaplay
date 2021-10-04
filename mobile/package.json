@@ -15,6 +15,7 @@
     "apisauce": "^2.1.1",
     "cerealizr": "^1.0.1-alpha",
     "expo": "~42.0.1",
+    "expo-speech": "^9.2.1",
     "expo-status-bar": "~1.0.4",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
