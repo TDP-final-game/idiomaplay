@@ -8,6 +8,7 @@ import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
+import { AudioExercise } from '../components/AudioExercise';
 import { answerExercise, nextExercise } from '../redux/challenge';
 
 const Excercise = ({ navigation }) => {
@@ -79,7 +80,14 @@ const Excercise = ({ navigation }) => {
           </View>
 
           <View style={styles.questionContainer}>
-            <Text style={styles.questionText}>{currentExercise.statement}</Text>
+            {currentExercise.type === 'listen_audio' ? (
+              <AudioExercise
+                style={styles.questionText}
+                sentence={currentExercise.statement}
+              ></AudioExercise>
+            ) : (
+              <Text style={styles.questionText}>{currentExercise.statement}</Text>
+            )}
           </View>
 
           <View style={{ marginLeft: '2%' }}>
