@@ -1,19 +1,16 @@
 import api from './api';
-import {
-  completeSentenceMock,
-  translateToForeignMock,
-  translateToNativeMock,
-  corrtectAnswers,
-} from '../config/mocks';
+import { completeSentenceMock, translateToForeignMock, translateToNativeMock, listenSentenceMock, correctAnswers} from '../config/mocks';
 
-const ex = [translateToNativeMock, translateToForeignMock, completeSentenceMock];
+
+
+const ex = [listenSentenceMock, translateToNativeMock, translateToForeignMock, completeSentenceMock];
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function answerExercise(answer, exerciseId) {
-  const correctAnswer = corrtectAnswers[exerciseId];
+  const correctAnswer = correctAnswers[exerciseId];
   return {
     correctAnswer,
     result: correctAnswer === answer,
@@ -21,7 +18,7 @@ function answerExercise(answer, exerciseId) {
 }
 
 export const getNextExercise = async () => {
-  return ex[getRandomInt(0, 3)];
+  return ex[getRandomInt(0, 4)];
 };
 
 export default {
