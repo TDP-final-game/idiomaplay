@@ -23,6 +23,7 @@ const Excercise = ({ navigation }) => {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_FOREIGN]: 'Traduzca la siguiente frase',
+    [exerciseTypes.LISTEN_AUDIO]: 'Escucha el siguiente audio',
   };
 
   useEffect(() => {
