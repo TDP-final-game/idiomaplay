@@ -87,26 +87,11 @@ const addExerciseToExam = async (challengeId, unitName, exercise) => {
 };
 
 const attemptChallenge = async (challengeId, userId = USER_ID) => {
-  const challenge = await challengeModel.findOne({_id: challengeId}).lean();
-  const challengeAttempt = {
-    ...challenge,
+  const challenge = await challengeModel.findOne({_id: challengeId});
+  return challengeAttemptModel.create({
     userId,
-    status: STATUSES.IN_PROGRESS,
-    unitsAttempts: challenge.units.map(unit => ({
-      ...unit,
-      status: STATUSES.IN_PROGRESS,
-      lessonsAttempts: unit.lessons.map(lesson => ({
-        ...lesson,
-        status: STATUSES.IN_PROGRESS,
-        exercisesAttempts: lesson.exercises.map(exercise => ({
-          ...exercise,
-          status: STATUSES.IN_PROGRESS,
-        }))
-      }))
-    }))
-  };
-
-  return challengeAttemptModel.create(challengeAttempt);
+    challengeInfo: challenge.challengeInfo
+  });
 };
 
 const listChallengeAttempts = (challengeId) => {
