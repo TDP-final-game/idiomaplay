@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ChallengeInfo = require('../challenges/challengeInfo');
 const UnitAttempt = require('./unitAttempt');
 const STATUSES = require("../../constants/statuses.json");
 
@@ -8,17 +9,9 @@ const ChallengeAttempt = new mongoose.Schema({
     ref: 'User',
     required: [true, 'userId is required']
   },
-  name: {
-    type: String,
-    required: [true, 'name is required']
-  },
-  difficulty: {
-    type: String,
-    required: [true, 'difficulty is required']
-  },
-  description: {
-    type: String,
-    required: [true, 'description is required']
+  challengeInfo: {
+    type: ChallengeInfo,
+    required: [true, 'challengeInfo is required']
   },
   status: {
     type: String,
