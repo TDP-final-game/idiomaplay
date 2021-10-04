@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
-const Exam = require('../exams/exam');
+const ExamInfo = require('../exams/examInfo');
 const ExerciseAttempt = require('./exerciseAttempt');
 const STATUSES = require('../../constants/statuses.json');
 
 const ExamAttempt = new mongoose.Schema({
     _id: false,
-    exam: {
-        type: Exam,
-        required: [true, 'exam is required']
-    },
-    userId: {
-        type: String,
-        required: [true, 'userId is required']
+    examInfo: {
+      type: ExamInfo,
+      required: [true, 'examInfo is required']
     },
     exercisesAttempts: [{type: ExerciseAttempt, required: false}],
     status: {

@@ -1,20 +1,13 @@
 const mongoose = require('mongoose');
+const LessonInfo = require('../lessons/lessonInfo');
 const ExerciseAttempt = require('./exerciseAttempt');
 const STATUSES = require('../../constants/statuses.json');
 
 const LessonAttempt = new mongoose.Schema({
   _id: false,
-  name: {
-    type: String,
-    required: [true, 'name is required']
-  },
-  description: {
-    type: String,
-    required: [true, 'difficulty is required']
-  },
-  orderNumber: {
-    type: Number,
-    required: [true, 'orderNumber is required']
+  lessonInfo: {
+    type: LessonInfo,
+    required: [true, 'lessonInfo is required']
   },
   status: {
     type: String,

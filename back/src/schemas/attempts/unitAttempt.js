@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const UnitInfo = require('../units/unitInfo');
 const LessonAttempt = require('./lessonAttempt');
 const ExamAttempt = require('./examAttempt');
 
@@ -6,17 +7,9 @@ const STATUSES = require('../../constants/statuses.json');
 
 const UnitAttempt = new mongoose.Schema({
   _id: false,
-  orderNumber: {
-    type: Number,
-    required: [true, 'orderNumber is required']
-  },
-  name: {
-    type: String,
-    required: [true, 'name is required']
-  },
-  description: {
-    type: String,
-    required: [true, 'description is required']
+  unitInfo: {
+    type: UnitInfo,
+    required: [true, 'unitInfo is required']
   },
   status: {
     type: String,
