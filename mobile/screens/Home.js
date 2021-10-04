@@ -1,49 +1,38 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../config/colors';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, Text, TouchableHighlight, Animated } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import {
-  translateToNativeMock,
-  translateToForeignMock,
-  completeSentenceMock,
-} from '../config/mocks';
+import { getHealth } from '../redux/challenge';
 
 const Home = ({ navigation }) => {
+  const [string, setString] = useState('local string');
+  const { healthy } = useSelector((state) => state.challenge);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const doStuff = async () => {
+      const { payload } = await dispatch(getHealth());
+      setString(payload);
+    };
+    setTimeout(doStuff, 2000);
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
         <Button
           title={'Traducir frase al idioma nativo'}
-          onPress={() => navigation.navigate('Excercise', translateToNativeMock)}
+          onPress={() => navigation.navigate('Excercise')}
         />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          title={'Traducir frase al idioma extrangero'}
-          onPress={() => navigation.navigate('Excercise', translateToForeignMock)}
-        />
+        <Button title={'Exam entry'} onPress={() => navigation.navigate('ExamEntry')} />
       </View>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title={'Completar frase'}
-          onPress={() => navigation.navigate('Excercise', completeSentenceMock)}
-        />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title={'Coming soon'} disabled />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title={'Coming soon'} disabled />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title={'Coming soon'} disabled />
-      </View>
+      <Text>{string}</Text>
     </SafeAreaView>
   );
 };

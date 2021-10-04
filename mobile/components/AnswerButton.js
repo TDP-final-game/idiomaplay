@@ -4,10 +4,18 @@ import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet } from 'react-native';
 
-export const AnswerButton = ({ text }) => {
+export const AnswerButton = ({ answer, onPress, correctAnswer, incorrectAnswer }) => {
+  const getBackroundColor = () => {
+    if (incorrectAnswer === answer) return colors.INCORRECT_COLOR;
+    return answer === correctAnswer ? colors.CORRECT_COLOR : colors.SECONDARY;
+  };
+
   return (
-    <TouchableOpacity style={[styles.button, commonStyles.shadow]}>
-      <Text style={{ fontSize: 15 }}>{text}</Text>
+    <TouchableOpacity
+      style={[styles.button, commonStyles.shadow, { backgroundColor: getBackroundColor() }]}
+      onPress={onPress}
+    >
+      <Text style={{ fontSize: 15 }}>{answer}</Text>
     </TouchableOpacity>
   );
 };
@@ -19,6 +27,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '5%',
     justifyContent: 'center',
-    backgroundColor: colors.SECONDARY,
   },
 });
