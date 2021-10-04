@@ -71,7 +71,7 @@ const addExam = async (challengeId, unitName, examData) => {
   return challenge.save();
 };
 
-const addExerciseToLesson = async (challengeId, unitId, lessonId, exercise) => {
+const addExerciseToLesson = async (challengeId, unitName, lessonName, exerciseData) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
   const unit = challenge.units.find(unit => unit._id === unitId);
   const lesson = unit.lessons.find(lesson => lesson._id === lessonId);
@@ -79,9 +79,9 @@ const addExerciseToLesson = async (challengeId, unitId, lessonId, exercise) => {
   return challenge.save();
 };
 
-const addExerciseToExam = async (challengeId, unitId, exercise) => {
+const addExerciseToExam = async (challengeId, unitName, exercise) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
-  const unit = challenge.units.find(unit => unit._id === unitId);
+  const unit = challenge.units.find(unitToUpdate => unitToUpdate.unitInfo.name === unitName);
   unit.exam.exercises.push(exercise);
   return challenge.save();
 };
