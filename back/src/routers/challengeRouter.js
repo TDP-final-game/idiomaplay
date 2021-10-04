@@ -11,6 +11,7 @@ const router = express.Router();
 router.post('/', challengeController.createChallenge);
 router.get('/', challengeController.listChallenges);
 router.get('/:challengeId', challengeController.findChallenge);
+router.get('/:challengeId/units/exams', challengeController.getExam);
 router.post('/:challengeId/units/', challengeController.addUnit);
 router.post('/:challengeId/units/exams/', challengeController.addExam);
 router.post('/:challengeId/units/exams/exercises', challengeController.addExerciseToExam);

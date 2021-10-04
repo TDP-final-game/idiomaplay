@@ -107,6 +107,20 @@ const addExerciseToExam = async (req, res) => {
   }
 };
 
+const getExam = async (req, res) => {
+  // #swagger.tags = ['Challenge']
+
+  try {
+    const {challengeId} = req.params;
+    const {unitName} = req.query;
+    const response = await challengeService.getExam(challengeId, unitName);
+    res.status(STATUS_CODES.OK)
+        .send(response);
+  } catch (error) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
+  }
+};
+
 /*
  * Attempts
  */
@@ -168,6 +182,7 @@ module.exports = {
   addUnit,
   addLesson,
   addExam,
+  getExam,
   addExerciseToLesson,
   addExerciseToExam,
   attemptChallenge,

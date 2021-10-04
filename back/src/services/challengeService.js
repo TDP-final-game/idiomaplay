@@ -71,6 +71,12 @@ const addExam = async (challengeId, unitName, examData) => {
   return challenge.save();
 };
 
+const getExam = async(challengeId, unitName) => {
+  const challenge = await challengeModel.findOne({_id: challengeId});
+  const unit = challenge.units.find(unit => unit.unitInfo.name === unitName);
+  return unit.exam;
+};
+
 const addExerciseToLesson = async (challengeId, unitName, lessonName, exercise) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
   const unit = challenge.units.find(unit => unit.unitInfo.name === unitName);
@@ -151,6 +157,7 @@ module.exports = {
   addUnit,
   addLesson,
   addExam,
+  getExam,
   addExerciseToLesson,
   addExerciseToExam,
   deleteChallenges,
