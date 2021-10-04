@@ -55,9 +55,9 @@ const addLesson = async (req, res) => {
   // #swagger.tags = ['Challenge']
 
   try {
-    const {challengeId, unitId} = req.params;
-    console.log(challengeId, unitId)
-    const response = await challengeService.addLesson(challengeId, parseInt(unitId, 10), req.body);
+    const {challengeId} = req.params;
+    const {unitName} = req.query;
+    const response = await challengeService.addLesson(challengeId, unitName, req.body);
     res.status(STATUS_CODES.OK)
       .send(response);
   } catch (error) {

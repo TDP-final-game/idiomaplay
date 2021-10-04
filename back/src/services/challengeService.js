@@ -45,10 +45,16 @@ const addUnit = async (challengeId, unitData) => {
   return challenge.save();
 };
 
-const addLesson = async (challengeId, unitId, lesson) => {
+const addLesson = async (challengeId, unitName, lessonData) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
-  const unit = challenge.units.find(unitToUpdate => unitToUpdate._id === unitId);
-  unit.lessons.push(lesson);
+  const unit = challenge.units.find(unitToUpdate => unitToUpdate.unitInfo.name === unitName);
+  unit.lessons.push({
+    lessonInfo: {
+      name: lessonData.name,
+      description: lessonData.description,
+      orderNumber: lessonData.orderNumber
+    }
+  });
   return challenge.save();
 };
 
