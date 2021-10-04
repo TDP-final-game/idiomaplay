@@ -10,7 +10,10 @@ const main = async () => {
   });
 
   connectToMongo();
-  //createChallenge(); todo: revisar esto porq al usar nodemon hace q todo el tiempo deletee la db!
+
+  if (process.env['CREATE_CHALLENGE']) {
+    createChallenge();
+  }
 };
  
 if (require.main === module) {
