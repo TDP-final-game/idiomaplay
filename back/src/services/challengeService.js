@@ -143,7 +143,7 @@ const attemptExam = async(challengeId, userId, unitName) => {
     examInfo: unit.exam.examInfo
   };
 
-  return unitAttempt.save();
+  return challengeAttempt.save();
 };
 
 const listChallengeAttempts = (challengeId) => {
