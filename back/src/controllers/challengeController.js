@@ -83,8 +83,9 @@ const addExerciseToLesson = async (req, res) => {
   // #swagger.tags = ['Challenge']
 
   try {
-    const {challengeId, unitId, lessonId} = req.params;
-    const response = await challengeService.addExerciseToLesson(challengeId, parseInt(unitId, 10), parseInt(lessonId, 10), req.body);
+    const {challengeId} = req.params;
+    const {unitName, lessonName} = req.query;
+    const response = await challengeService.addExerciseToLesson(challengeId, unitName, lessonName, req.body);
     res.status(STATUS_CODES.OK)
       .send(response);
   } catch (error) {

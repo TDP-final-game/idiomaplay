@@ -71,10 +71,10 @@ const addExam = async (challengeId, unitName, examData) => {
   return challenge.save();
 };
 
-const addExerciseToLesson = async (challengeId, unitName, lessonName, exerciseData) => {
+const addExerciseToLesson = async (challengeId, unitName, lessonName, exercise) => {
   const challenge = await challengeModel.findOne({_id: challengeId});
-  const unit = challenge.units.find(unit => unit._id === unitId);
-  const lesson = unit.lessons.find(lesson => lesson._id === lessonId);
+  const unit = challenge.units.find(unit => unit.unitInfo.name === unitName);
+  const lesson = unit.lessons.find(lesson => lesson.lessonInfo.name === lessonName);
   lesson.exercises.push(exercise);
   return challenge.save();
 };

@@ -15,7 +15,7 @@ router.post('/:challengeId/units/', challengeController.addUnit);
 router.post('/:challengeId/units/exams/', challengeController.addExam);
 router.post('/:challengeId/units/exams/exercises', challengeController.addExerciseToExam);
 router.post('/:challengeId/units/lessons/', challengeController.addLesson);
-router.post('/:challengeId/units/:unitId/lessons/:lessonId/exercises', challengeController.addExerciseToLesson);
+router.post('/:challengeId/units/lessons/exercises', challengeController.addExerciseToLesson);
 
 /*
  * Challenges Attempts
