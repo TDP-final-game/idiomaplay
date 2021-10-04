@@ -8,6 +8,10 @@ const ExerciseAttempt = new mongoose.Schema({
     type: Exercise,
     required: [true, 'exercise is required']
   },
+  optionAnswered: {
+    type: String,
+    required: false
+  },
   status: {
     type: String,
     enum: Object.keys(STATUSES),

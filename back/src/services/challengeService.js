@@ -95,6 +95,35 @@ const attemptChallenge = async (challengeId, userId = USER_ID) => {
   });
 };
 
+const attemptUnit = async(challengeId, userId) => {
+  // si hay unidad 'IN_PROGRESS' o 'PENDING' error diciendo q no se puede arrancar otra unidad
+  const challenge = await challengeModel.findOne({_id: challengeId});
+  const challengeAttempt = await challengeAttemptModel.findOne({challengeId: challengeId, userId: userId});
+
+  // en la ultima posicion del array de UnitsAttempts voy a encontrar la ultima unidad en curso
+  const len = challengeAttempt.unitsAttempts.length;
+  let lastOrderNumber = -1;
+  if (len !== 0) {
+    lastOrderNumber = challengeAttempt.unitsAttempts[len - 1].unitInfo.orderNumber;
+  }
+
+  // buscamos la unidad con menor orderNumber que cumpla orderNumber > lastOrderNumber
+  let unitToAssign = challenge.units[0];
+  challenge.units.forEach(unit => {
+    if (unit.unitInfo.orderNumber > lastOrderNumber) {
+      if (unit.unitInfo.orderNumber < unitToAssign.unitInfo.orderNumber) {
+        unitToAssign = unit;
+      }
+    }
+  });
+
+  challengeAttempt.unitsAttempts.push({
+    unitInfo: unitToAssign.unitInfo
+  });
+
+  return challengeAttempt.save();
+};
+
 const listChallengeAttempts = (challengeId) => {
   return challengeAttemptModel.find({challengeId: challengeId});
 };
@@ -110,5 +139,6 @@ module.exports = {
   addExerciseToExam,
   deleteChallenges,
   attemptChallenge,
+  attemptUnit,
   listChallengeAttempts
 };

@@ -22,5 +22,6 @@ router.post('/:challengeId/units/lessons/exercises', challengeController.addExer
  */
 router.post('/:challengeId/attempts', challengeController.attemptChallenge);
 router.get('/:challengeId/attempts', challengeController.listChallengeAttempts);
+router.post('/:challengeId/attempts/units', challengeController.attemptUnit);
 
 module.exports = router;

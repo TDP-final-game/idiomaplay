@@ -14,7 +14,8 @@ const UnitAttempt = new mongoose.Schema({
   status: {
     type: String,
     enum: Object.keys(STATUSES),
-    required: [true, 'status is required']
+    required: [true, 'status is required'],
+    default: STATUSES.IN_PROGRESS
   },
   lessonsAttempts: [{type: LessonAttempt, required: false}],
   examsAttempts: {type: ExamAttempt, required: false},

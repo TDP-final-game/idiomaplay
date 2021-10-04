@@ -22,7 +22,7 @@ const ChallengeAttempt = new mongoose.Schema({
     type: String,
     enum: Object.keys(STATUSES),
     required: [true, 'status is required'],
-    default: STATUSES.IN_PROGRESS // todo: start challenge attempt as 'in progress'?
+    default: STATUSES.IN_PROGRESS
   },
   unitsAttempts: [{type: UnitAttempt, required: false}],
 });
