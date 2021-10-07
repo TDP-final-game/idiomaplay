@@ -92,16 +92,6 @@ const addExerciseToExam = async (challengeId, unitName, exercise) => {
   return challenge.save();
 };
 
-const attemptChallenge = async (challengeId, userId = USER_ID) => {
-  // todo: si hay Challenge Attempt de este Challenge 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez el Challenge
-  const challenge = await challengeModel.findOne({_id: challengeId});
-  return challengeAttemptModel.create({
-    userId,
-    challengeInfo: challenge.challengeInfo,
-    challengeId: challenge._id
-  });
-};
-
 const attemptUnit = async(challengeId, userId) => {
   // todo: si hay Unit Attempt de esta unidad 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez esta unidad
   const challenge = await challengeModel.findOne({_id: challengeId});
@@ -188,7 +178,6 @@ module.exports = {
   addExerciseToLesson,
   addExerciseToExam,
   deleteChallenges,
-  attemptChallenge,
   attemptUnit,
   attemptExam,
   resolveExercise,
