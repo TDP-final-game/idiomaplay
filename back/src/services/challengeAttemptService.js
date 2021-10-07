@@ -10,11 +10,10 @@ const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttemp
 
 const attemptChallenge = async (challengeId, userId) => {
     const attemptsInProgress = await challengeAttemptModel.find({challengeId: challengeId, userId: userId, status: STATUSES.IN_PROGRESS});
-    if (attemptsInProgress.length !== 0) {
-        throw Error('Ya tenes este desafio en curso'); // todo: refactor por exceptions
-    }
+    if (attemptsInProgress.length !== 0) throw Error('Challenge already in progress'); // todo: use exceptions
 
     const challenge = await challengeModel.findOne({_id: challengeId});
+    if (!challenge) throw Error('Challenge not found');
     //const minOrderNumber = Math.min(...challenge.units.map(unit => unit.unitInfo.orderNumber));
     const unitsAttempts = challenge.units.map(unit => {
         return {
@@ -31,6 +30,11 @@ const attemptChallenge = async (challengeId, userId) => {
     });
 };
 
+const attemptUnit = async (challengeAttemptId, userId, unitOrderNumber) => {
+
+};
+
 module.exports = {
-    attemptChallenge
+    attemptChallenge,
+    attemptUnit
 };
