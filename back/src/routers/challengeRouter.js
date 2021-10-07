@@ -20,7 +20,6 @@ router.post('/:challengeId/units/lessons/exercises', challengeController.addExer
 
 router.get('/:challengeId/attempts', challengeController.listChallengeAttempts); // todo: pasarlo al otro router (con filtros)
 
-router.post('/:challengeId/attempts/units', challengeController.attemptUnit);
 router.post('/:challengeId/attempts/units/exams', challengeController.attemptExam);
 router.post('/:challengeId/attempts/units/exams/:exerciseId', challengeController.resolveExercise);
 

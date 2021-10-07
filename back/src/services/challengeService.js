@@ -92,34 +92,6 @@ const addExerciseToExam = async (challengeId, unitName, exercise) => {
   return challenge.save();
 };
 
-const attemptUnit = async(challengeId, userId) => {
-  // todo: si hay Unit Attempt de esta unidad 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez esta unidad
-  const challenge = await challengeModel.findOne({_id: challengeId});
-  const challengeAttempt = await challengeAttemptModel.findOne({challengeId: challengeId, userId: userId});
-
-  // en la ultima posicion del array de UnitsAttempts voy a encontrar la ultima unidad en curso
-  const len = challengeAttempt.unitsAttempts.length;
-  let lastOrderNumber = -1;
-  if (len !== 0) {
-    lastOrderNumber = challengeAttempt.unitsAttempts[len - 1].unitInfo.orderNumber;
-  }
-
-  // buscamos la unidad con menor orderNumber que cumpla orderNumber > lastOrderNumber
-  let unitToAssign = challenge.units[0];
-  challenge.units.forEach(unit => {
-    const currentOrderNumber = unit.unitInfo.orderNumber;
-    if (currentOrderNumber > lastOrderNumber && currentOrderNumber < unitToAssign.unitInfo.orderNumber) {
-        unitToAssign = unit;
-    }
-  });
-
-  challengeAttempt.unitsAttempts.push({
-    unitInfo: unitToAssign.unitInfo
-  });
-
-  return challengeAttempt.save();
-};
-
 const attemptExam = async(challengeId, userId, unitName) => {
   // todo: si hay Exam Attempt de este examen 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez el examen
   // todo: validar si completo todas las lecciones!
@@ -178,7 +150,6 @@ module.exports = {
   addExerciseToLesson,
   addExerciseToExam,
   deleteChallenges,
-  attemptUnit,
   attemptExam,
   resolveExercise,
   listChallengeAttempts

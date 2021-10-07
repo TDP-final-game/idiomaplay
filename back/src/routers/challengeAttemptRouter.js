@@ -5,5 +5,6 @@ const challengeAttemptController = require('../controllers/challengeAttemptContr
 const router = express.Router();
 
 router.post('/', challengeAttemptController.attemptChallenge);
+router.post('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
 
 module.exports = router;

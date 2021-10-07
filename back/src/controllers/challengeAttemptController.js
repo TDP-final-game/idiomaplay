@@ -11,6 +11,18 @@ const attemptChallenge = async (req, res) => {
     }
 };
 
+const attemptUnit = async (req, res) => {
+    try {
+        const {challengeAttemptId} = req.params;
+        const {orderNumber} = req.body;
+        const response = await challengeAttemptService.attemptUnit(challengeAttemptId, orderNumber);
+        res.status(STATUS_CODES.OK).send(response);
+    } catch (error) {
+        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
+    }
+};
+
 module.exports = {
-    attemptChallenge
+    attemptChallenge,
+    attemptUnit
 };

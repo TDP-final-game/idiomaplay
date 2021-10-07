@@ -10,17 +10,12 @@ const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttemp
 
 const attemptChallenge = async (challengeId, userId) => {
     const attemptsInProgress = await challengeAttemptModel.find({challengeId: challengeId, userId: userId, status: STATUSES.IN_PROGRESS});
-    if (attemptsInProgress.length !== 0) throw Error('Challenge already in progress'); // todo: use exceptions
+    if (attemptsInProgress.length !== 0) throw Error('Challenge already in progress'); // todo: avoid using generic error
 
     const challenge = await challengeModel.findOne({_id: challengeId});
     if (!challenge) throw Error('Challenge not found');
-    //const minOrderNumber = Math.min(...challenge.units.map(unit => unit.unitInfo.orderNumber));
-    const unitsAttempts = challenge.units.map(unit => {
-        return {
-            unitInfo: unit.unitInfo,
-            //status: unit.unitInfo.orderNumber === minOrderNumber ? STATUSES.IN_PROGRESS : STATUSES.PENDING
-        };
-    });
+
+    const unitsAttempts = challenge.units.map(unit => ({ unitInfo: unit.unitInfo }));
 
     return challengeAttemptModel.create({
         userId,
@@ -30,8 +25,33 @@ const attemptChallenge = async (challengeId, userId) => {
     });
 };
 
-const attemptUnit = async (challengeAttemptId, userId, unitOrderNumber) => {
+const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
+    const attemptsInProgress = await challengeAttemptModel.find({_id: challengeAttemptId, status: STATUSES.IN_PROGRESS});
+    if (attemptsInProgress.length === 0) throw Error('Challenge attempt is not in progress'); // todo: avoid using generic error
 
+    const challengeAttempt = attemptsInProgress[0];
+    const challenge = await challengeModel.findOne({_id: challengeAttempt.challengeId});
+
+    console.log(challenge);
+    const lessons = challenge.units.find(unit => unit.unitInfo.orderNumber === unitOrderNumber)?.lessons
+    console.log(lessons);
+    if (!lessons) throw Error('Unit order number not found'); // todo: avoid using generic error
+
+    const addLessonsAttempts = function (unitAttempt) {
+        unitAttempt.lessonsAttempts = lessons.map(lesson => ({lessonInfo: lesson.lessonInfo}));
+    };
+
+    // todo si tiene alguna unidad in progress fallar diciendo q ya tiene una unidad en progreso
+    // todo si no tiene ninguna unidad in progress validar si la unit order number que quiere arrancar es la
+    //  siguiente a la ultima que esta en estado PASSED, secuencialidad necesaria??
+    challengeAttempt.unitsAttempts.forEach(unitAttempt => {
+        if (unitAttempt.unitInfo.orderNumber === unitOrderNumber) {
+            unitAttempt.status = STATUSES.IN_PROGRESS;
+            addLessonsAttempts(unitAttempt);
+        }
+    });
+
+    return challengeAttempt.save();
 };
 
 module.exports = {
