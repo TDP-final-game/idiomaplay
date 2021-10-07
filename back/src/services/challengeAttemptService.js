@@ -31,10 +31,8 @@ const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
 
     const challengeAttempt = attemptsInProgress[0];
     const challenge = await challengeModel.findOne({_id: challengeAttempt.challengeId});
-
-    console.log(challenge);
+    
     const lessons = challenge.units.find(unit => unit.unitInfo.orderNumber === unitOrderNumber)?.lessons
-    console.log(lessons);
     if (!lessons) throw Error('Unit order number not found'); // todo: avoid using generic error
 
     const addLessonsAttempts = function (unitAttempt) {
