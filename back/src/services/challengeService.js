@@ -5,8 +5,6 @@ const ChallengeAttempt = require('../schemas/attempts/challengeAttempt');
 const {pageSize} = require('../constants/pagination_default.json');
 const STATUSES = require("../constants/statuses");
 
-const USER_ID = '61553000155f46e004a252c4';
-
 const challengeModel = mongoose.model('challenge', Challenge);
 const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttempt);
 
@@ -92,20 +90,8 @@ const addExerciseToExam = async (challengeId, unitName, exercise) => {
   return challenge.save();
 };
 
-const attemptExam = async(challengeId, userId, unitName) => {
-  // todo: si hay Exam Attempt de este examen 'IN_PROGRESS' error diciendo q no se puede arrancar otra vez el examen
-  // todo: validar si completo todas las lecciones!
-  const challenge = await challengeModel.findOne({_id: challengeId});
-  const unit = challenge.units.find(unit => unit.unitInfo.name === unitName);
-
-  const challengeAttempt = await challengeAttemptModel.findOne({challengeId: challengeId, userId: userId});
-  const unitAttempt = challengeAttempt.unitsAttempts.find(unitAttempt => unitAttempt.unitInfo.name === unitName);
-
-  unitAttempt.examAttempt = {
-    examInfo: unit.exam.examInfo
-  };
-
-  return challengeAttempt.save();
+const listChallengeAttempts = (challengeId) => {
+  return challengeAttemptModel.find({challengeId: challengeId});
 };
 
 const resolveExercise = async(challengeId, userId, unitName, exerciseId, solution) => {
@@ -135,10 +121,6 @@ const resolveExercise = async(challengeId, userId, unitName, exerciseId, solutio
   return challengeAttempt.save();
 }
 
-const listChallengeAttempts = (challengeId) => {
-  return challengeAttemptModel.find({challengeId: challengeId});
-};
-
 module.exports = {
   findChallenge,
   listChallenges,
@@ -150,7 +132,6 @@ module.exports = {
   addExerciseToLesson,
   addExerciseToExam,
   deleteChallenges,
-  attemptExam,
   resolveExercise,
   listChallengeAttempts
 };

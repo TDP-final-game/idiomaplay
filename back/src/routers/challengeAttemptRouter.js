@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/', challengeAttemptController.attemptChallenge);
 router.post('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
+router.post('/:challengeAttemptId/unitsAttempts/examAttempts', challengeAttemptController.attemptExam);
 
 module.exports = router;

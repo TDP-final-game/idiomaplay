@@ -24,6 +24,10 @@ const Exercise = new mongoose.Schema({
       }
     }],
     required: [true, 'options is required']
+  },
+  orderNumber: {
+    type: Number,
+    required: [true, 'orderNumber is required']
   }
 });
 

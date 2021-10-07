@@ -17,10 +17,8 @@ router.post('/:challengeId/units/exams/', challengeController.addExam);
 router.post('/:challengeId/units/exams/exercises', challengeController.addExerciseToExam);
 router.post('/:challengeId/units/lessons/', challengeController.addLesson);
 router.post('/:challengeId/units/lessons/exercises', challengeController.addExerciseToLesson);
+router.get('/:challengeId/attempts', challengeController.listChallengeAttempts);
 
-router.get('/:challengeId/attempts', challengeController.listChallengeAttempts); // todo: pasarlo al otro router (con filtros)
-
-router.post('/:challengeId/attempts/units/exams', challengeController.attemptExam);
 router.post('/:challengeId/attempts/units/exams/:exerciseId', challengeController.resolveExercise);
 
 module.exports = router;

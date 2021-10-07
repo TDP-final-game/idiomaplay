@@ -15,7 +15,8 @@ const ExerciseAttempt = new mongoose.Schema({
   status: {
     type: String,
     enum: Object.keys(STATUSES),
-    required: [true, 'status is required']
+    required: [true, 'status is required'],
+    default: STATUSES.PENDING
   }
 });
 
