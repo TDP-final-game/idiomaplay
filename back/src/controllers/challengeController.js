@@ -55,9 +55,8 @@ const addLesson = async (req, res) => {
   // #swagger.tags = ['Challenge']
 
   try {
-    const {challengeId} = req.params;
-    const {unitName} = req.query;
-    const response = await challengeService.addLesson(challengeId, unitName, req.body);
+    const {challengeId, unitOrderNumber} = req.params;
+    const response = await challengeService.addLesson(challengeId, unitOrderNumber, req.body);
     res.status(STATUS_CODES.OK)
       .send(response);
   } catch (error) {
@@ -69,37 +68,8 @@ const addExam = async (req, res) => {
   // #swagger.tags = ['Challenge']
 
   try {
-    const {challengeId} = req.params;
-    const {unitName} = req.query;
-    const response = await challengeService.addExam(challengeId, unitName, req.body);
-    res.status(STATUS_CODES.OK)
-      .send(response);
-  } catch (error) {
-    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
-  }
-};
-
-const addExerciseToLesson = async (req, res) => {
-  // #swagger.tags = ['Challenge']
-
-  try {
-    const {challengeId} = req.params;
-    const {unitName, lessonName} = req.query;
-    const response = await challengeService.addExerciseToLesson(challengeId, unitName, lessonName, req.body);
-    res.status(STATUS_CODES.OK)
-      .send(response);
-  } catch (error) {
-    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
-  }
-};
-
-const addExerciseToExam = async (req, res) => {
-  // #swagger.tags = ['Challenge']
-
-  try {
-    const {challengeId} = req.params;
-    const {unitName} = req.query;
-    const response = await challengeService.addExerciseToExam(challengeId, unitName, req.body);
+    const {challengeId, unitOrderNumber} = req.params;
+    const response = await challengeService.addExam(challengeId, unitOrderNumber, req.body);
     res.status(STATUS_CODES.OK)
       .send(response);
   } catch (error) {
@@ -111,11 +81,36 @@ const getExam = async (req, res) => {
   // #swagger.tags = ['Challenge']
 
   try {
-    const {challengeId} = req.params;
-    const {unitName} = req.query;
-    const response = await challengeService.getExam(challengeId, unitName);
+    const {challengeId, unitOrderNumber} = req.params;
+    const response = await challengeService.getExam(challengeId, unitOrderNumber);
     res.status(STATUS_CODES.OK)
         .send(response);
+  } catch (error) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
+  }
+};
+
+const addExerciseToLesson = async (req, res) => {
+  // #swagger.tags = ['Challenge']
+
+  try {
+    const {challengeId, unitOrderNumber, lessonOrderNumber} = req.params;
+    const response = await challengeService.addExerciseToLesson(challengeId, unitOrderNumber, lessonOrderNumber, req.body);
+    res.status(STATUS_CODES.OK)
+      .send(response);
+  } catch (error) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
+  }
+};
+
+const addExerciseToExam = async (req, res) => {
+  // #swagger.tags = ['Challenge']
+
+  try {
+    const {challengeId, unitOrderNumber} = req.params;
+    const response = await challengeService.addExerciseToExam(challengeId, unitOrderNumber, req.body);
+    res.status(STATUS_CODES.OK)
+      .send(response);
   } catch (error) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
   }
