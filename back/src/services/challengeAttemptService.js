@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const Challenge = require('../schemas/challenges/challenge');
 const ChallengeAttempt = require('../schemas/attempts/challengeAttempt');
 
-const {pageSize} = require('../constants/pagination_default.json');
 const STATUSES = require("../constants/statuses");
-const {exercises} = require("../startup/challenge/unit1/lesson1");
 
 const challengeModel = mongoose.model('challenge', Challenge);
 const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttempt);
