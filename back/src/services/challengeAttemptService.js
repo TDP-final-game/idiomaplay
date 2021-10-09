@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Challenge = require('../schemas/challenges/challenge');
-const ChallengeAttempt = require('../schemas/attempts/challengeAttempt');
+const Challenge = require('../model/challenges/challenge');
+const ChallengeAttempt = require('../model/attempts/challengeAttempt');
 
 const STATUSES = require("../constants/statuses");
 

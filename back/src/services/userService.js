@@ -1,5 +1,5 @@
-const User = require('../schemas/users/user');
-const ChallengeAttempt = require('../schemas/attempts/challengeAttempt');
+const User = require('../model/users/user');
+const ChallengeAttempt = require('../model/attempts/challengeAttempt');
 const mongoose = require('mongoose');
 
 const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttempt);
