@@ -55,14 +55,11 @@ ChallengeAttempt.methods.getUnitAttempt = function (unitOrderNumber) {
   return unit
 }
 
-ChallengeAttempt.methods.attemptUnit = function (unit) {
+ChallengeAttempt.methods.attemptUnit = function ({unitOrderNumber}) {
   if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
 
-  const unitAttempt = this.getUnitAttempt(unit.unitInfo.orderNumber)
-  unitAttempt.attempt({
-    lessons: unit.lessons,
-    exam: unit.exam
-  })
+  const unitAttempt = this.getUnitAttempt(unitOrderNumber)
+  unitAttempt.attempt()
 }
 
 ChallengeAttempt.methods.attemptExam = async function ({unitOrderNumber}) {

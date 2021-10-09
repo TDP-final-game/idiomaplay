@@ -32,7 +32,10 @@ UnitAttempt.methods.isInProgress = function () {
   return this.status === STATUSES.IN_PROGRESS
 }
 
-UnitAttempt.methods.attempt = function ({lessons, exam}) {
+UnitAttempt.methods.attempt = function () {
+  const {challenge} = this.ownerDocument()
+  const {lessons, exam} = challenge.getUnit(this.unitInfo.orderNumber)
+
   this.status = STATUSES.IN_PROGRESS
   this.lessonsAttempts = lessons.map(lesson => lesson.newAttempt())
   this.examAttempt = exam.newAttempt()

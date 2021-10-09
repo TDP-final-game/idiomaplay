@@ -20,9 +20,8 @@ const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
     const challengeAttempt = await challengeAttemptModel.findOne({_id: challengeAttemptId});
     if(!challengeAttempt) throw errors.ChallengeAttemptNotFound();
 
-    const unit = challengeAttempt.challenge.getUnit(unitOrderNumber);
-    await challengeAttempt.attemptUnit(unit)
-    return challengeAttempt.save()
+    await challengeAttempt.attemptUnit({unitOrderNumber})
+    return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber)
 };
 
 const attemptExam = async (challengeAttemptId, unitOrderNumber) => {
@@ -30,36 +29,7 @@ const attemptExam = async (challengeAttemptId, unitOrderNumber) => {
     if(!challengeAttempt) throw errors.ChallengeAttemptNotFound();
 
     await challengeAttempt.attemptExam({unitOrderNumber})
-    return challengeAttempt.save();
-
-    // const attemptsInProgress = await challengeAttemptModel.find({_id: challengeAttemptId, status: STATUSES.IN_PROGRESS});
-    // if (attemptsInProgress.length === 0) throw Error('Challenge attempt does not exist or it is not in progress'); // todo: avoid using generic error
-    //
-    // const unitAttempt = attemptsInProgress[0].unitsAttempts.find(unitAttempt => unitAttempt.unitInfo.orderNumber == unitOrderNumber);
-    //
-    // if (!unitAttempt) {
-    //     throw Error(`Unit with order number ${unitOrderNumber} not found`); // todo: avoid using generic error
-    // }
-    //
-    // unitAttempt.lessonsAttempts.forEach(lessonAttempt => {
-    //     if (lessonAttempt.status !== STATUSES.PASSED) {
-    //         throw Error('Lessons uncompleted yet'); // todo: avoid using generic error
-    //     }
-    // });
-    //
-    // const challengeAttempt = attemptsInProgress[0];
-    // const challenge = await challengeModel.findOne({_id: challengeAttempt.challengeId});
-    //
-    // const exam = challenge.units.find(unit => unit.unitInfo.orderNumber == unitOrderNumber)?.exam;
-    // const examAttempt = unitAttempt.examAttempt;
-    // exam.exercises.forEach(exercise => {
-    //     examAttempt.exercisesAttempts.push({
-    //        exercise: exercise,
-    //     });
-    // });
-    // examAttempt.status = STATUSES.IN_PROGRESS;
-    //
-    // return challengeAttempt.save();
+    return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt;
 }
 
 const attemptLesson = async(challengeAttemptId, unitOrderNumber, lessonOrderNumber) => {
