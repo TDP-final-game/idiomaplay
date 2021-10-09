@@ -41,39 +41,11 @@ const attemptLesson = async(challengeAttemptId, unitOrderNumber, lessonOrderNumb
 }
 
 const attemptExamExercise = async(challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer) => {
-    const attemptsInProgress = await challengeAttemptModel.find({_id: challengeAttemptId, status: STATUSES.IN_PROGRESS});
-    if (attemptsInProgress.length === 0) throw Error('Challenge attempt does not exist or it is not in progress'); // todo: avoid using generic error
+    const challengeAttempt = await challengeAttemptModel.findOne({_id: challengeAttemptId});
+    if(!challengeAttempt) throw errors.ChallengeAttemptNotFound();
 
-    const challengeAttempt = attemptsInProgress[0];
-
-    const unitAttempt = challengeAttempt.unitsAttempts.find(unitAttempt => unitAttempt.unitInfo.orderNumber == unitOrderNumber);
-    if (!unitAttempt) {
-        throw Error(`Unit with order number ${unitOrderNumber} not found`); // todo: avoid using generic error
-    } else if (unitAttempt.status !== STATUSES.IN_PROGRESS) {
-        throw Error('Unit is not in progress'); // todo: avoid using generic error
-    } else if (unitAttempt.examAttempt.status !== STATUSES.IN_PROGRESS) {
-        throw Error('Exam is not in progress'); // todo: avoid using generic error
-    }
-
-    if (!unitAttempt.examAttempt) {
-        throw Error('Exam not found'); // todo: avoid using generic error
-    } else if (unitAttempt.examAttempt.status !== STATUSES.IN_PROGRESS) {
-        throw Error('Exam is not in progress'); // todo: avoid using generic error
-    }
-
-    const exerciseAttempt = unitAttempt.examAttempt.exercisesAttempts[exerciseOrderNumber];
-    if (!exerciseAttempt) throw Error('Exercise not found'); // todo: avoid using generic error
-
-    const correctAnswer = exerciseAttempt.exercise.options.find(option => option.correct === true).text;
-    if (answer === correctAnswer) {
-        exerciseAttempt.status = STATUSES.PASSED;
-    } else {
-        exerciseAttempt.status = STATUSES.FAILED;
-    }
-
-    exerciseAttempt.optionAnswered = answer;
-
-    return challengeAttempt.save();
+    await challengeAttempt.attemptExamExercise({unitOrderNumber, exerciseOrderNumber, answer})
+    return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt.getExercise(exerciseOrderNumber);
 };
 
 const attemptLessonExercise = async(challengeAttemptId, unitOrderNumber, lessonOrderNumber, exerciseOrderNumber, answer) => {

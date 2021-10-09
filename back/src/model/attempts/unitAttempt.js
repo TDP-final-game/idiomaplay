@@ -64,6 +64,12 @@ UnitAttempt.methods.attemptExam = function () {
   this.examAttempt.attempt()
 }
 
+UnitAttempt.methods.attemptExamExercise = function ({exerciseOrderNumber, answer}) {
+  if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
+  // if(!this.allLessonsArePassed()) throw errors.ExamAttemptWithUnfinishedLessons();
+  this.examAttempt.attemptExercise({exerciseOrderNumber, answer})
+}
+
 /*
  * Exports
  */

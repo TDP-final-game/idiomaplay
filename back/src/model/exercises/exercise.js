@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const exerciseTypes = require('../../constants/exerciseTypes');
 const STATUSES = require('../../constants/statuses.json');
+const errors = require('./errors');
 
 /*
  * Schema
@@ -43,6 +44,19 @@ Exercise.methods.newAttempt = function () {
     exercise: this,
     status: STATUSES.PENDING
   })
+}
+
+Exercise.methods.validAnswer = function (answer) {
+  return this.options.some(option => option.text === answer)
+}
+
+Exercise.methods.correctOption = function () {
+  return this.options.find(option => option.correct === true)
+}
+
+Exercise.methods.correctAnswer = function (answer) {
+  if(!this.validAnswer(answer)) throw errors.AnswerNotFound({answer})
+  return answer === this.correctOption().text
 }
 
 /*

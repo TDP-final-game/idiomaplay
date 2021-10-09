@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+
 const {schema: Exercise} = require('../exercises/exercise');
+const errors = require('./errors')
 const STATUSES = require('../../constants/statuses.json');
 
 /*
@@ -22,6 +24,19 @@ const ExerciseAttempt = new mongoose.Schema({
     default: STATUSES.PENDING
   }
 }, {autoCreate: false});
+
+/*
+ * Instance methods
+ */
+ExerciseAttempt.methods.isPending = function () {
+  return this.status === STATUSES.PENDING
+}
+
+ExerciseAttempt.methods.attempt = function ({answer}) {
+  if(!this.isPending()) throw errors.ExerciseNotPending()
+  this.status = this.exercise.correctAnswer(answer) ? STATUSES.PASSED : STATUSES.FAILED;
+  this.optionAnswered = answer
+}
 
 /*
  * Exports

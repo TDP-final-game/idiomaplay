@@ -75,6 +75,11 @@ ChallengeAttempt.methods.attemptExam = async function ({unitOrderNumber}) {
   await this.getUnitAttempt(unitOrderNumber).attemptExam();
 }
 
+ChallengeAttempt.methods.attemptExamExercise = async function ({unitOrderNumber, exerciseOrderNumber, answer}) {
+  if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
+  await this.getUnitAttempt(unitOrderNumber).attemptExamExercise({exerciseOrderNumber, answer});
+}
+
 /*
  * Exports
  */
