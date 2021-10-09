@@ -1,4 +1,5 @@
 const connectToMongo = require('./startup/db');
+const createChallenge = require('./startup/createChallenge');
 const appCallback = require('./app');
 
 const main = async () => {
@@ -9,6 +10,10 @@ const main = async () => {
   });
 
   connectToMongo();
+
+  if (process.env['CREATE_CHALLENGE']) {
+    createChallenge();
+  }
 };
  
 if (require.main === module) {
