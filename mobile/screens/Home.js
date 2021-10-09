@@ -13,6 +13,10 @@ const Home = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <Button title={'Login'} onPress={() => navigation.navigate('Login')} />
       </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title={'Confirmation'} onPress={() => navigation.navigate('SignupConfirmation')} />
+      </View>
     </SafeAreaView>
   );
 };

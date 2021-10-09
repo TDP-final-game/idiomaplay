@@ -10,6 +10,7 @@ import Login from './screens/Login';
 import Excercise from './screens/Excercise';
 import ExamEntry from './screens/ExamEntry';
 import LessonsList from './screens/LessonsList';
+import SignupConfirmation from './screens/SignupConfirmation';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ function App() {
             <Stack.Screen name="ExamEntry" component={ExamEntry} />
             <Stack.Screen name="Excercise" component={Excercise} />
             <Stack.Screen name="LessonsList" component={LessonsList} />
+            <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

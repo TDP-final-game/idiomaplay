@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
 
   questionContainer: {
     flex: 0.15,
-    borderColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.LIGHT_GRAY,
+    borderColor: colors.DARK_GRAY,
     borderTopWidth: 2,
     borderBottomWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eeeeee',
   },
 
   buttonContainer: {

@@ -15,6 +15,7 @@ export const colors = {
 
   BACKGROUND: '#ffffff',
   LIGHT_GRAY: '#eeeeee',
+  DARK_GRAY: '#bcbcbc',
 
   CORRECT_COLOR: '#2e7d32',
   INCORRECT_COLOR: '#f44336',
