@@ -4,6 +4,7 @@ const UnitInfo = require('./unitInfo');
 const {schema: Lesson} = require('../lessons/lesson');
 const {schema: Exam} = require('../exams/exam');
 const {model: UnitAttempt} = require('../attempts/unitAttempt');
+const errors = require('./errors')
 
 /*
  * Schema
@@ -25,6 +26,12 @@ Unit.methods.newAttempt = function () {
   return new UnitAttempt({
     unitInfo: this.unitInfo,
   });
+}
+
+Unit.methods.getLesson = function (lessonOrderNumber) {
+  const lesson = this.lessons.find(lesson => lesson.lessonInfo.orderNumber === lessonOrderNumber);
+  if (!lesson) throw errors.LessonNotFound({lessonOrderNumber})
+  return lesson
 }
 
 /*

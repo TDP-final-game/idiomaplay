@@ -49,6 +49,7 @@ ChallengeAttempt.methods.isInProgress = function () {
   return this.status === STATUSES.IN_PROGRESS
 }
 
+// Units
 ChallengeAttempt.methods.getUnitAttempt = function (unitOrderNumber) {
   const unit = this.unitsAttempts.find(unit => unit.unitInfo.orderNumber === unitOrderNumber);
   if (!unit) throw errors.UnitAttemptNotFound({unitOrderNumber})
@@ -62,6 +63,13 @@ ChallengeAttempt.methods.attemptUnit = function ({unitOrderNumber}) {
   unitAttempt.attempt()
 }
 
+// Lessons
+ChallengeAttempt.methods.attemptLesson = async function ({unitOrderNumber, lessonOrderNumber}) {
+  if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
+  await this.getUnitAttempt(unitOrderNumber).attemptLesson({lessonOrderNumber});
+}
+
+// Exams
 ChallengeAttempt.methods.attemptExam = async function ({unitOrderNumber}) {
   if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
   await this.getUnitAttempt(unitOrderNumber).attemptExam();

@@ -24,10 +24,13 @@ const ExamAttempt = new mongoose.Schema({
 /*
  * Instance methods
  */
+ExamAttempt.methods.unitAttempt = function () {
+    return this.parent()
+}
+
 ExamAttempt.methods.attempt = function () {
     const {challenge} = this.ownerDocument()
-    const unitAttempt = this.parent()
-    const exam = challenge.getUnit(unitAttempt.unitInfo.orderNumber).exam
+    const {exam} = challenge.getUnit(this.unitAttempt().unitInfo.orderNumber)
 
     this.status = STATUSES.IN_PROGRESS
     this.exercisesAttempts = exam.exercises.map(exercise => exercise.newAttempt());

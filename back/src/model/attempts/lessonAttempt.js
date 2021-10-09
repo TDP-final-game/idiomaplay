@@ -3,6 +3,9 @@ const LessonInfo = require('../lessons/lessonInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
 const STATUSES = require('../../constants/statuses.json');
 
+/*
+ * Schema
+ */
 const LessonAttempt = new mongoose.Schema({
   _id: false,
   lessonInfo: {
@@ -18,6 +21,25 @@ const LessonAttempt = new mongoose.Schema({
   exercisesAttempts: [{type: ExerciseAttempt, required: false}],
 }, {autoCreate: false});
 
+/*
+ * Instance methods
+ */
+LessonAttempt.methods.unitAttempt = function () {
+  return this.parent()
+}
+
+LessonAttempt.methods.attempt = function () {
+  const {challenge} = this.ownerDocument()
+  const unit = challenge.getUnit(this.unitAttempt().unitInfo.orderNumber)
+  const lesson = unit.getLesson(this.lessonInfo.orderNumber)
+
+  this.status = STATUSES.IN_PROGRESS
+  this.exercisesAttempts = lesson.exercises.map(exercise => exercise.newAttempt())
+}
+
+/*
+ * Exports
+ */
 module.exports = {
   schema: LessonAttempt,
   model: mongoose.model('LessonAttempt', LessonAttempt)

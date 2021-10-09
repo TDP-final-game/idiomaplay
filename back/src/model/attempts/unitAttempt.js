@@ -41,10 +41,23 @@ UnitAttempt.methods.attempt = function () {
   this.examAttempt = exam.newAttempt()
 }
 
+// Lessons
+UnitAttempt.methods.getLessonAttempt = function (lessonOrderNumber) {
+  const lesson = this.lessonsAttempts.find(lesson => lesson.lessonInfo.orderNumber === lessonOrderNumber);
+  if (!lesson) throw errors.LessonAttemptNotFound({lessonOrderNumber})
+  return lesson
+}
+
 UnitAttempt.methods.allLessonsArePassed = function () {
   return this.lessonsAttempts.every(lessonAttempt => lessonAttempt.status === STATUSES.PASSED)
 }
 
+UnitAttempt.methods.attemptLesson = function ({lessonOrderNumber}) {
+  if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
+  return this.getLessonAttempt(lessonOrderNumber).attempt()
+}
+
+// Exams
 UnitAttempt.methods.attemptExam = function () {
   if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
   if(!this.allLessonsArePassed()) throw errors.ExamAttemptWithUnfinishedLessons();

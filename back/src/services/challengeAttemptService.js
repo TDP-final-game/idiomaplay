@@ -33,35 +33,11 @@ const attemptExam = async (challengeAttemptId, unitOrderNumber) => {
 }
 
 const attemptLesson = async(challengeAttemptId, unitOrderNumber, lessonOrderNumber) => {
-    const attemptsInProgress = await challengeAttemptModel.find({_id: challengeAttemptId, status: STATUSES.IN_PROGRESS});
-    if (attemptsInProgress.length === 0) throw Error('Challenge attempt does not exist or it is not in progress'); // todo: avoid using generic error
+    const challengeAttempt = await challengeAttemptModel.findOne({_id: challengeAttemptId});
+    if(!challengeAttempt) throw errors.ChallengeAttemptNotFound();
 
-    const challengeAttempt = attemptsInProgress[0];
-
-    const unitAttempt = challengeAttempt.unitsAttempts.find(unitAttempt => unitAttempt.unitInfo.orderNumber == unitOrderNumber);
-    if (!unitAttempt) {
-        throw Error(`Unit with order number ${unitOrderNumber} not found`); // todo: avoid using generic error
-    } else if (unitAttempt.status !== STATUSES.IN_PROGRESS) {
-        throw Error('Unit is not in progress'); // todo: avoid using generic error
-    }
-
-    const lessonAttempt = unitAttempt.lessonsAttempts.find(lessonAttempt => lessonAttempt.lessonInfo.orderNumber === lessonOrderNumber);
-    if (!lessonAttempt) {
-        throw Error(`Lesson with order number ${lessonOrderNumber} not found`); // todo: avoid using generic error
-    }
-
-    const challenge = await challengeModel.findOne({_id: attemptsInProgress[0].challengeId});
-    const lesson = challenge.units.find(unit => unit.unitInfo.orderNumber == unitOrderNumber).lessons.
-        find(lesson => lesson.lessonInfo.orderNumber === lessonOrderNumber);
-
-    lesson.exercises.forEach(exercise => {
-        lessonAttempt.exercisesAttempts.push({
-            exercise: exercise
-        });
-    });
-    lessonAttempt.status = STATUSES.IN_PROGRESS;
-
-    return challengeAttempt.save();
+    await challengeAttempt.attemptLesson({unitOrderNumber, lessonOrderNumber})
+    return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
 }
 
 const attemptExamExercise = async(challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer) => {
