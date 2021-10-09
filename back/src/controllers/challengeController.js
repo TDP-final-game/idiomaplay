@@ -129,21 +129,6 @@ const listChallengeAttempts = async (req, res) => {
   }
 };
 
-/*
- * Attempts
- */
-
-const resolveExercise = async (req, res) => {
-  try {
-    const {challengeId, exerciseId} = req.params;
-    const {unitName, userId} = req.query;
-    const response = await challengeService.resolveExercise(challengeId, userId, unitName, exerciseId, req.body);
-    res.status(STATUS_CODES.OK).send(response);
-  } catch (error) {
-    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
-  }
-};
-
 module.exports = {
   findChallenge,
   createChallenge,
@@ -154,6 +139,5 @@ module.exports = {
   getExam,
   addExerciseToLesson,
   addExerciseToExam,
-  resolveExercise,
   listChallengeAttempts
 };

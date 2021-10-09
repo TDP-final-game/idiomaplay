@@ -94,33 +94,6 @@ const listChallengeAttempts = (challengeId) => {
   return challengeAttemptModel.find({challengeId: challengeId});
 };
 
-const resolveExercise = async(challengeId, userId, unitName, exerciseId, solution) => {
-  const challenge = await challengeModel.findOne({_id: challengeId});
-  const unit = challenge.units.find(unit => unit.unitInfo.name === unitName);
-
-  const challengeAttempt = await challengeAttemptModel.findOne({challengeId: challengeId, userId: userId});
-  const unitAttempt = challengeAttempt.unitsAttempts.find(unitAttempt => unitAttempt.unitInfo.name === unitName);
-  const examAttempt = unitAttempt.examAttempt;
-
-  const exerciseToResolve = unit.exam.exercises.find(exercise => exercise._id.toString() === exerciseId);
-  const correctAnswer = exerciseToResolve.options.find(option => option.correct === true).text;
-
-  const exerciseAttempt = {
-    exercise: exerciseToResolve,
-    optionAnswered: solution.answer
-  };
-
-  if (solution.answer === correctAnswer) {
-    exerciseAttempt.status = STATUSES.PASSED;
-  } else {
-    exerciseAttempt.status = STATUSES.FAILED
-  }
-
-  examAttempt.exercisesAttempts.push(exerciseAttempt);
-
-  return challengeAttempt.save();
-}
-
 module.exports = {
   findChallenge,
   listChallenges,
@@ -132,6 +105,5 @@ module.exports = {
   addExerciseToLesson,
   addExerciseToExam,
   deleteChallenges,
-  resolveExercise,
   listChallengeAttempts
 };

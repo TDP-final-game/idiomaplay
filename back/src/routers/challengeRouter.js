@@ -15,6 +15,4 @@ router.post('/:challengeId/units/:unitOrderNumber/lessons', challengeController.
 router.post('/:challengeId/units/:unitOrderNumber/exams/exercises', challengeController.addExerciseToExam);
 router.post('/:challengeId/units/:unitOrderNumber/lessons/:lessonOrderNumber/exercises', challengeController.addExerciseToLesson);
 
-router.post('/:challengeId/attempts/units/exams/:exerciseId', challengeController.resolveExercise);
-
 module.exports = router;
