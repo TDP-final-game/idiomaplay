@@ -2,12 +2,13 @@ const {model: challengeModel} = require('../model/challenges/challenge');
 const {model: challengeAttemptModel} = require('../model/attempts/challengeAttempt');
 
 const STATUSES = require("../constants/statuses");
+const errors = require("./challengeAttemptErrors")
 
 const attemptChallenge = async (challengeId, userId) => {
-    if (await challengeAttemptModel.anyInProgress({challengeId, userId})) throw Error('Challenge already in progress'); // todo: avoid using generic error
+    if (await challengeAttemptModel.anyInProgress({challengeId, userId})) throw errors.ChallengeInProgress();
 
     const challenge = await challengeModel.findOne({_id: challengeId});
-    if (!challenge) throw Error('Challenge not found');
+    if (!challenge) throw errors.ChallengeNotFound();
 
     const attempt = challenge.newAttempt();
     attempt.userId = userId;
