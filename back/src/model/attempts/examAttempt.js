@@ -22,6 +22,18 @@ const ExamAttempt = new mongoose.Schema({
 }, {autoCreate: false});
 
 /*
+ * Instance methods
+ */
+ExamAttempt.methods.attempt = function () {
+    const {challenge} = this.ownerDocument()
+    const unitAttempt = this.parent()
+    const exam = challenge.getUnit(unitAttempt.unitInfo.orderNumber).exam
+
+    this.status = STATUSES.IN_PROGRESS
+    this.exercisesAttempts = exam.exercises.map(exercise => exercise.newAttempt());
+}
+
+/*
  * Exports
  */
 module.exports = {

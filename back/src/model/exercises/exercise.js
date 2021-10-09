@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
-const exerciseTypes = require('../../constants/exerciseTypes');
 
+const exerciseTypes = require('../../constants/exerciseTypes');
+const STATUSES = require('../../constants/statuses.json');
+
+/*
+ * Schema
+ */
 const Exercise = new mongoose.Schema({
   type: {
     type: String,
@@ -27,6 +32,22 @@ const Exercise = new mongoose.Schema({
   }
 });
 
+/*
+ * Instance methods
+ */
+Exercise.methods.newAttempt = function () {
+  // This is to avoid importing the ExerciseAttempt model and therefore
+  // generate a circular dependency. In the future better solutions could be
+  // found.
+  return new (mongoose.model('ExerciseAttempt'))({
+    exercise: this,
+    status: STATUSES.PENDING
+  })
+}
+
+/*
+ * Exports
+ */
 module.exports = {
   schema: Exercise
 };

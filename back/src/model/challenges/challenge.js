@@ -34,6 +34,12 @@ Challenge.methods.getUnit = function (unitOrderNumber) {
   return unit
 }
 
+Challenge.methods.getUnit = function (unitOrderNumber) {
+  const unit = this.units.find(unit => unit.unitInfo.orderNumber === unitOrderNumber);
+  if (!unit) throw errors.UnitNotFound({unitOrderNumber})
+  return unit
+}
+
 /*
  * Exports
  */

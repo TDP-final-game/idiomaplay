@@ -4,6 +4,7 @@ const UnitInfo = require('../units/unitInfo');
 const {schema: LessonAttempt} = require('./lessonAttempt');
 const {schema: ExamAttempt} = require('./examAttempt');
 const STATUSES = require('../../constants/statuses.json');
+const errors = require('./errors');
 
 /*
  * Schema
@@ -27,10 +28,24 @@ const UnitAttempt = new mongoose.Schema({
 /*
  * Instance methods
  */
+UnitAttempt.methods.isInProgress = function () {
+  return this.status === STATUSES.IN_PROGRESS
+}
+
 UnitAttempt.methods.attempt = function ({lessons, exam}) {
   this.status = STATUSES.IN_PROGRESS
   this.lessonsAttempts = lessons.map(lesson => lesson.newAttempt())
   this.examAttempt = exam.newAttempt()
+}
+
+UnitAttempt.methods.allLessonsArePassed = function () {
+  return this.lessonsAttempts.every(lessonAttempt => lessonAttempt.status === STATUSES.PASSED)
+}
+
+UnitAttempt.methods.attemptExam = function () {
+  if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
+  if(!this.allLessonsArePassed()) throw errors.ExamAttemptWithUnfinishedLessons();
+  this.examAttempt.attempt()
 }
 
 /*

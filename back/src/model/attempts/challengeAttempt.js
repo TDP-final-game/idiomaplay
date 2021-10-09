@@ -56,14 +56,18 @@ ChallengeAttempt.methods.getUnitAttempt = function (unitOrderNumber) {
 }
 
 ChallengeAttempt.methods.attemptUnit = function (unit) {
-  if (!this.isInProgress()) throw errors.ChallengeNotInProgress();
+  if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
 
   const unitAttempt = this.getUnitAttempt(unit.unitInfo.orderNumber)
-  console.log('unit', unit)
   unitAttempt.attempt({
     lessons: unit.lessons,
     exam: unit.exam
   })
+}
+
+ChallengeAttempt.methods.attemptExam = async function ({unitOrderNumber}) {
+  if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
+  await this.getUnitAttempt(unitOrderNumber).attemptExam();
 }
 
 /*
