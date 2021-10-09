@@ -1,9 +1,18 @@
 import api from './api';
-import { completeSentenceMock, translateToForeignMock, translateToNativeMock, listenSentenceMock, correctAnswers} from '../config/mocks';
+import {
+  completeSentenceMock,
+  translateToForeignMock,
+  translateToNativeMock,
+  listenSentenceMock,
+  correctAnswers,
+} from '../config/mocks';
 
-
-
-const ex = [listenSentenceMock, translateToNativeMock, translateToForeignMock, completeSentenceMock];
+const ex = [
+  listenSentenceMock,
+  translateToNativeMock,
+  translateToForeignMock,
+  completeSentenceMock,
+];
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;

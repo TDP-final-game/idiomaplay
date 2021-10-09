@@ -12,9 +12,10 @@ import { AudioExercise } from '../components/AudioExercise';
 import { answerExercise, nextExercise } from '../redux/challenge';
 
 const Excercise = ({ navigation }) => {
-  const [currentExercise, setCurrentExercise] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
+  const [currentExercise, setCurrentExercise] = useState(null);
+
   const dispatch = useDispatch();
 
   const results = useSelector((state) => state.challenge.exerciseResults);
@@ -31,7 +32,6 @@ const Excercise = ({ navigation }) => {
   }, []);
 
   const handleContinue = async () => {
-    console.log(results);
     if (results.filter((x) => x == null).length == 0) return navigation.navigate('ExamEntry');
 
     const { payload } = await dispatch(nextExercise());
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 
   questionContainer: {
     flex: 0.15,
-    borderColor: '#bcbcbc',
+    borderColor: colors.LIGHT_GRAY,
     borderTopWidth: 2,
     borderBottomWidth: 2,
     justifyContent: 'center',
