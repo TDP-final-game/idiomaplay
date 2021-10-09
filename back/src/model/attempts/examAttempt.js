@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ExamInfo = require('../exams/examInfo');
-const ExerciseAttempt = require('./exerciseAttempt');
+const {schema: ExerciseAttempt} = require('./exerciseAttempt');
 const STATUSES = require('../../constants/statuses.json');
 
 const ExamAttempt = new mongoose.Schema({
@@ -18,4 +18,6 @@ const ExamAttempt = new mongoose.Schema({
     }
 });
 
-module.exports = ExamAttempt;
+module.exports = {
+    schema: ExamAttempt
+};

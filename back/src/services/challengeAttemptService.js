@@ -1,11 +1,7 @@
-const mongoose = require('mongoose');
-const Challenge = require('../model/challenges/challenge');
-const ChallengeAttempt = require('../model/attempts/challengeAttempt');
+const {model: challengeModel} = require('../model/challenges/challenge');
+const {model: challengeAttemptModel} = require('../model/attempts/challengeAttempt');
 
 const STATUSES = require("../constants/statuses");
-
-const challengeModel = mongoose.model('challenge', Challenge);
-const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttempt);
 
 const attemptChallenge = async (challengeId, userId) => {
     const attemptsInProgress = await challengeAttemptModel.find({challengeId: challengeId, userId: userId, status: STATUSES.IN_PROGRESS});

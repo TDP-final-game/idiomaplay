@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ChallengeInfo = require('../challenges/challengeInfo');
-const UnitAttempt = require('./unitAttempt');
+const {schema: UnitAttempt} = require('./unitAttempt');
 const STATUSES = require("../../constants/statuses.json");
 
 const ChallengeAttempt = new mongoose.Schema({
@@ -28,4 +28,7 @@ const ChallengeAttempt = new mongoose.Schema({
 });
 
 
-module.exports = ChallengeAttempt;
+module.exports = {
+  schema: ChallengeAttempt,
+  model: mongoose.model('ChallengeAttempt', ChallengeAttempt)
+};

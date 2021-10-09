@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Exercise = require('../exercises/exercise');
+const {schema: Exercise} = require('../exercises/exercise');
 const ExamInfo = require('./examInfo');
 
 const Exam = new mongoose.Schema({
@@ -11,6 +11,8 @@ const Exam = new mongoose.Schema({
 	exercises: [{type: Exercise, required: false}],
 });
 
-module.exports = Exam;
+module.exports = {
+	schema: Exam
+};
 
 

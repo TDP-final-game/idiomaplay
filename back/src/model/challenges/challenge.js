@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ChallengeInfo = require('./challengeInfo');
-const Unit = require('../units/unit');
+const {schema: Unit} = require('../units/unit');
 
 const Challenge = new mongoose.Schema({
   challengeInfo: {
@@ -11,4 +11,7 @@ const Challenge = new mongoose.Schema({
 });
 
 
-module.exports = Challenge;
+module.exports = {
+  schema: Challenge,
+  model: mongoose.model('Challenge', Challenge)
+};

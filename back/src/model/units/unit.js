@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const UnitInfo = require('./unitInfo');
-const Lesson = require('../lessons/lesson');
-const Exam = require('../exams/exam');
+const {schema: Lesson} = require('../lessons/lesson');
+const {schema: Exam} = require('../exams/exam');
 
 const Unit = new mongoose.Schema({
   _id: false,
@@ -13,4 +13,6 @@ const Unit = new mongoose.Schema({
   lessons: [{type: Lesson, required: false}]
 });
 
-module.exports = Unit;
+module.exports = {
+  schema: Unit
+};

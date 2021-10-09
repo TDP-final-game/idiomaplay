@@ -27,4 +27,6 @@ const Exercise = new mongoose.Schema({
   }
 });
 
-module.exports = Exercise;
+module.exports = {
+  schema: Exercise
+};
