@@ -57,6 +57,11 @@ UnitAttempt.methods.attemptLesson = function ({lessonOrderNumber}) {
   return this.getLessonAttempt(lessonOrderNumber).attempt()
 }
 
+UnitAttempt.methods.attemptLessonExercise = function ({lessonOrderNumber, exerciseOrderNumber, answer}) {
+  if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
+  return this.getLessonAttempt(lessonOrderNumber).attemptExercise({exerciseOrderNumber, answer})
+}
+
 // Exams
 UnitAttempt.methods.attemptExam = function () {
   if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
@@ -66,7 +71,7 @@ UnitAttempt.methods.attemptExam = function () {
 
 UnitAttempt.methods.attemptExamExercise = function ({exerciseOrderNumber, answer}) {
   if(!this.isInProgress()) throw errors.UnitAttemptNotInProgress();
-  // if(!this.allLessonsArePassed()) throw errors.ExamAttemptWithUnfinishedLessons();
+  if(!this.allLessonsArePassed()) throw errors.ExamAttemptWithUnfinishedLessons();
   this.examAttempt.attemptExercise({exerciseOrderNumber, answer})
 }
 

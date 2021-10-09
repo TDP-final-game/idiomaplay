@@ -59,8 +59,8 @@ const attemptExamExercise = async (req, res) => {
 const attemptLessonExercise = async (req, res) => {
   try {
     const {challengeAttemptId, unitOrderNumber, lessonOrderNumber} = req.params;
-    const response = await challengeAttemptService.attemptLessonExercise(challengeAttemptId, unitOrderNumber, lessonOrderNumber,
-      req.body.exerciseOrderNumber, req.body.answer);
+    const {exerciseOrderNumber, answer} = req.body;
+    const response = await challengeAttemptService.attemptLessonExercise(challengeAttemptId, parseInt(unitOrderNumber), parseInt(lessonOrderNumber), parseInt(exerciseOrderNumber), answer);
     res.status(STATUS_CODES.OK).send(response);
   } catch (error) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});

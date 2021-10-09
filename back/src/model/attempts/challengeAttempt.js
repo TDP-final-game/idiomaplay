@@ -69,6 +69,11 @@ ChallengeAttempt.methods.attemptLesson = async function ({unitOrderNumber, lesso
   await this.getUnitAttempt(unitOrderNumber).attemptLesson({lessonOrderNumber});
 }
 
+ChallengeAttempt.methods.attemptLessonExercise = async function ({unitOrderNumber, lessonOrderNumber, exerciseOrderNumber, answer}) {
+  if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();
+  await this.getUnitAttempt(unitOrderNumber).attemptLessonExercise({lessonOrderNumber, exerciseOrderNumber, answer});
+}
+
 // Exams
 ChallengeAttempt.methods.attemptExam = async function ({unitOrderNumber}) {
   if (!this.isInProgress()) throw errors.ChallengeAttemptNotInProgress();

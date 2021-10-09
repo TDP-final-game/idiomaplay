@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+
 const LessonInfo = require('../lessons/lessonInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
+const errors = require('./errors');
 const STATUSES = require('../../constants/statuses.json');
 
 /*
@@ -35,6 +37,17 @@ LessonAttempt.methods.attempt = function () {
 
   this.status = STATUSES.IN_PROGRESS
   this.exercisesAttempts = lesson.exercises.map(exercise => exercise.newAttempt())
+}
+
+LessonAttempt.methods.getExercise = function (exerciseOrderNumber) {
+  const exercise = this.exercisesAttempts[exerciseOrderNumber];
+  if (!exercise) throw errors.ExerciseAttemptNotFound({exerciseOrderNumber})
+  return exercise
+}
+
+LessonAttempt.methods.attemptExercise = function ({exerciseOrderNumber, answer}) {
+  const exercise = this.getExercise(exerciseOrderNumber);
+  exercise.attempt({answer})
 }
 
 /*
