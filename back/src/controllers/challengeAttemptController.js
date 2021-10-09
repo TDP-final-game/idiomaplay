@@ -14,14 +14,14 @@ const attemptChallenge = async (req, res) => {
 };
 
 const attemptUnit = async (req, res) => {
-    try {
+    // try {
         const {challengeAttemptId} = req.params;
         const {unitOrderNumber} = req.body;
         const response = await challengeAttemptService.attemptUnit(challengeAttemptId, unitOrderNumber);
         res.status(STATUS_CODES.OK).send(response);
-    } catch (error) {
-        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
-    }
+    // } catch (error) {
+    //     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: error.message});
+    // }
 };
 
 const attemptExam = async (req, res) => {

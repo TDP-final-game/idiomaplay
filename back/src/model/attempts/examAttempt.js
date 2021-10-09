@@ -3,6 +3,9 @@ const ExamInfo = require('../exams/examInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
 const STATUSES = require('../../constants/statuses.json');
 
+/*
+ * Schema
+ */
 const ExamAttempt = new mongoose.Schema({
     _id: false,
     examInfo: {
@@ -16,8 +19,12 @@ const ExamAttempt = new mongoose.Schema({
         required: [true, 'status is required'],
         default: STATUSES.IN_PROGRESS
     }
-});
+}, {autoCreate: false});
 
+/*
+ * Exports
+ */
 module.exports = {
-    schema: ExamAttempt
+    schema: ExamAttempt,
+    model: mongoose.model('ExamAttempt', ExamAttempt)
 };

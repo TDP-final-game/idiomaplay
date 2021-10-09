@@ -1,22 +1,28 @@
 const mongoose = require('mongoose');
+
 const ChallengeInfo = require('../challenges/challengeInfo');
 const {schema: UnitAttempt} = require('./unitAttempt');
 const STATUSES = require("../../constants/statuses.json");
+const errors = require("./errors")
 
+/*
+ * Schema
+ */
 const ChallengeAttempt = new mongoose.Schema({
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'userId is required']
   },
+  challenge: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Challenge',
+    required: [true, 'challengeId is required'],
+    autopopulate: true
+  },
   challengeInfo: {
     type: ChallengeInfo,
     required: [true, 'challengeInfo is required']
-  },
-  challengeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Challenge',
-    required: [true, 'challengeId is required']
   },
   status: {
     type: String,
@@ -26,13 +32,43 @@ const ChallengeAttempt = new mongoose.Schema({
   },
   unitsAttempts: [{type: UnitAttempt, required: false}],
 });
+ChallengeAttempt.plugin(require('mongoose-autopopulate'));
 
-
+/*
+ * Static methods
+ */
 ChallengeAttempt.statics.anyInProgress = async function ({challengeId, userId}) {
-  const attemptsInProgress = await this.find({challengeId, userId, status: STATUSES.IN_PROGRESS});
+  const attemptsInProgress = await this.find({challenge: challengeId, user: userId, status: STATUSES.IN_PROGRESS});
   return attemptsInProgress.length !== 0;
 }
 
+/*
+ * Instance methods
+ */
+ChallengeAttempt.methods.isInProgress = function () {
+  return this.status === STATUSES.IN_PROGRESS
+}
+
+ChallengeAttempt.methods.getUnitAttempt = function (unitOrderNumber) {
+  const unit = this.unitsAttempts.find(unit => unit.unitInfo.orderNumber === unitOrderNumber);
+  if (!unit) throw errors.UnitAttemptNotFound({unitOrderNumber})
+  return unit
+}
+
+ChallengeAttempt.methods.attemptUnit = function (unit) {
+  if (!this.isInProgress()) throw errors.ChallengeNotInProgress();
+
+  const unitAttempt = this.getUnitAttempt(unit.unitInfo.orderNumber)
+  console.log('unit', unit)
+  unitAttempt.attempt({
+    lessons: unit.lessons,
+    exam: unit.exam
+  })
+}
+
+/*
+ * Exports
+ */
 module.exports = {
   schema: ChallengeAttempt,
   model: mongoose.model('ChallengeAttempt', ChallengeAttempt)

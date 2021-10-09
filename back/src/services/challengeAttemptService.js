@@ -2,7 +2,7 @@ const {model: challengeModel} = require('../model/challenges/challenge');
 const {model: challengeAttemptModel} = require('../model/attempts/challengeAttempt');
 
 const STATUSES = require("../constants/statuses");
-const errors = require("./challengeAttemptErrors")
+const errors = require("./challengeErrors")
 
 const attemptChallenge = async (challengeId, userId) => {
     if (await challengeAttemptModel.anyInProgress({challengeId, userId})) throw errors.ChallengeInProgress();
@@ -11,42 +11,18 @@ const attemptChallenge = async (challengeId, userId) => {
     if (!challenge) throw errors.ChallengeNotFound();
 
     const attempt = challenge.newAttempt();
-    attempt.userId = userId;
+    attempt.user = userId;
 
     return attempt.save();
 };
 
 const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
-    const attemptsInProgress = await challengeAttemptModel.find({_id: challengeAttemptId, status: STATUSES.IN_PROGRESS});
-    if (attemptsInProgress.length === 0) throw Error('Challenge attempt is not in progress'); // todo: avoid using generic error
+    const challengeAttempt = await challengeAttemptModel.findOne({_id: challengeAttemptId});
+    if(!challengeAttempt) throw errors.ChallengeAttemptNotFound();
 
-    const challengeAttempt = attemptsInProgress[0];
-    const challenge = await challengeModel.findOne({_id: challengeAttempt.challengeId});
-
-    const unit = challenge.units.find(unit => unit.unitInfo.orderNumber == unitOrderNumber);
-    if (!unit) throw Error(`Unit with order number ${unitOrderNumber} not found`); // todo: avoid using generic error
-
-    const addLessonsAttempts = function (unitAttempt) {
-        unitAttempt.lessonsAttempts = unit.lessons.map(lesson => ({lessonInfo: lesson.lessonInfo}));
-    };
-
-    const addExamAttempt = function(unitAttempt) {
-        if (!unit.exam) throw Error('Cannot attempt unit without exam!'); // todo: avoid using generic error
-        unitAttempt.examAttempt = {examInfo: unit.exam.examInfo, status: STATUSES.PENDING};
-    };
-
-    // todo si tiene alguna unidad in progress fallar diciendo q ya tiene una unidad en progreso
-    // todo si no tiene ninguna unidad in progress validar si la unit order number que quiere arrancar es la
-    //  siguiente a la ultima que esta en estado PASSED, secuencialidad necesaria??
-    challengeAttempt.unitsAttempts.forEach(unitAttempt => {
-        if (unitAttempt.unitInfo.orderNumber == unitOrderNumber) {
-            unitAttempt.status = STATUSES.IN_PROGRESS;
-            addLessonsAttempts(unitAttempt);
-            addExamAttempt(unitAttempt);
-        }
-    });
-
-    return challengeAttempt.save();
+    const unit = challengeAttempt.challenge.getUnit(unitOrderNumber);
+    await challengeAttempt.attemptUnit(unit)
+    return challengeAttempt.save()
 };
 
 const attemptExam = async (challengeAttemptId, unitOrderNumber) => {

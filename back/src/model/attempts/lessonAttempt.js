@@ -16,8 +16,9 @@ const LessonAttempt = new mongoose.Schema({
     default: STATUSES.PENDING
   },
   exercisesAttempts: [{type: ExerciseAttempt, required: false}],
-});
+}, {autoCreate: false});
 
 module.exports = {
-  schema: LessonAttempt
+  schema: LessonAttempt,
+  model: mongoose.model('LessonAttempt', LessonAttempt)
 };
