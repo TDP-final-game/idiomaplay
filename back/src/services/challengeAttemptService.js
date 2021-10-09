@@ -4,20 +4,15 @@ const {model: challengeAttemptModel} = require('../model/attempts/challengeAttem
 const STATUSES = require("../constants/statuses");
 
 const attemptChallenge = async (challengeId, userId) => {
-    const attemptsInProgress = await challengeAttemptModel.find({challengeId: challengeId, userId: userId, status: STATUSES.IN_PROGRESS});
-    if (attemptsInProgress.length !== 0) throw Error('Challenge already in progress'); // todo: avoid using generic error
+    if (await challengeAttemptModel.anyInProgress({challengeId, userId})) throw Error('Challenge already in progress'); // todo: avoid using generic error
 
     const challenge = await challengeModel.findOne({_id: challengeId});
     if (!challenge) throw Error('Challenge not found');
 
-    const unitsAttempts = challenge.units.map(unit => ({ unitInfo: unit.unitInfo }));
+    const attempt = challenge.newAttempt();
+    attempt.userId = userId;
 
-    return challengeAttemptModel.create({
-        userId,
-        challengeInfo: challenge.challengeInfo,
-        challengeId: challenge._id,
-        unitsAttempts: unitsAttempts
-    });
+    return attempt.save();
 };
 
 const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {

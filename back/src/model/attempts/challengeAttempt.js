@@ -28,6 +28,11 @@ const ChallengeAttempt = new mongoose.Schema({
 });
 
 
+ChallengeAttempt.statics.anyInProgress = async function ({challengeId, userId}) {
+  const attemptsInProgress = await this.find({challengeId, userId, status: STATUSES.IN_PROGRESS});
+  return attemptsInProgress.length !== 0;
+}
+
 module.exports = {
   schema: ChallengeAttempt,
   model: mongoose.model('ChallengeAttempt', ChallengeAttempt)
