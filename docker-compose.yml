@@ -2,7 +2,7 @@ version: "3.8"
 services:
   back:
     stdin_open: true
-    image: node:16.9.0-stretch
+    image: node:16.10.0-stretch
     working_dir: "/back"
     command: sh -c "yarn install && yarn start:dev"
     ports:
