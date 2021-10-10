@@ -1,4 +1,5 @@
 const lesson1 = require('./lesson1');
+const exam = require('./exam');
 
 module.exports = {
   name: "Unidad 1",
@@ -6,5 +7,6 @@ module.exports = {
   description: "Unidad 1",
   lessons: [
     lesson1
-  ]
+  ],
+  exam
 }

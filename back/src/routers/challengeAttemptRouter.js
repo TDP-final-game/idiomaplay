@@ -5,10 +5,10 @@ const challengeAttemptController = require('../controllers/challengeAttemptContr
 const router = express.Router();
 
 router.post('/', challengeAttemptController.attemptChallenge);
-router.post('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
-router.post('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', challengeAttemptController.attemptExam);
-router.post('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', challengeAttemptController.attemptLesson);
-router.post('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', challengeAttemptController.attemptLessonExercise);
-router.post('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts/exercisesAttempts', challengeAttemptController.attemptExamExercise);
+router.put('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', challengeAttemptController.attemptExam);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', challengeAttemptController.attemptLesson);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', challengeAttemptController.attemptLessonExercise);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', challengeAttemptController.attemptExamExercise);
 
 module.exports = router;

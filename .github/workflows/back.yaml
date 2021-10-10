@@ -20,8 +20,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Start services
+        run: .github/scripts/start_services.sh
       - name: Run tests
-        run: .github/scripts/run_tests.sh
+        run: docker-compose exec -T back bash -c 'yarn install --check-files --cache-folder .ycache && rm -rf .ycache && yarn test'
 
   package:
     runs-on: ubuntu-20.04

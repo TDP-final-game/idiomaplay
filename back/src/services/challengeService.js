@@ -1,12 +1,7 @@
-const mongoose = require('mongoose');
-const Challenge = require('../schemas/challenges/challenge');
-const ChallengeAttempt = require('../schemas/attempts/challengeAttempt');
+const {model: challengeModel} = require('../model/challenges/challenge');
+const {model: challengeAttemptModel} = require('../model/attempts/challengeAttempt');
 
 const {pageSize} = require('../constants/pagination_default.json');
-const STATUSES = require("../constants/statuses");
-
-const challengeModel = mongoose.model('challenge', Challenge);
-const challengeAttemptModel = mongoose.model('challengeAttempt', ChallengeAttempt);
 
 const findChallenge = challengeId => {
   return challengeModel.findOne({_id: challengeId});
