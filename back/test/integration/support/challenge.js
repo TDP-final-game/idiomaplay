@@ -5,7 +5,15 @@ function Challenge(app) {
 }
 
 Challenge.prototype.create = async function() {
-  return (await createChallenge()).toObject();
+  return JSON.parse(JSON.stringify(await createChallenge()));
+};
+
+Challenge.prototype.get = async function({challengeId}) {
+  return this.app.get(`/challenges/${challengeId}`);
+};
+
+Challenge.prototype.list = async function() {
+  return this.app.get(`/challenges`);
 };
 
 module.exports = Challenge;
