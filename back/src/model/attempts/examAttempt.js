@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const examInfo = require('../exams/examInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
-const STATUSES = require('../../constants/statuses.json');
 const errors = require('./errors');
+const Status = require('./status')
 
 /*
  * Schema
@@ -12,17 +12,20 @@ const ExamAttempt = new mongoose.Schema({
     _id: false,
     ...examInfo,
     exercisesAttempts: [{type: ExerciseAttempt, required: false}],
-    status: {
-        type: String,
-        enum: Object.keys(STATUSES),
-        required: [true, 'status is required'],
-        default: STATUSES.IN_PROGRESS
-    }
-}, {autoCreate: false});
+}, {autoCreate: false, toObject: {virtuals: true}, toJSON: {virtuals: true}});
 
 /*
  * Instance methods
  */
+ExamAttempt.virtual('status').get(function () {
+    if(!this.exercisesAttempts || this.exercisesAttempts.length === 0) return Status.PENDING()
+    if(this.exercisesAttempts.every(exercise => exercise.isPassed())) return Status.PASSED()
+    if(this.exercisesAttempts.every(exercise => exercise.isCompleted())) return Status.FAILED()
+    return Status.IN_PROGRESS();
+})
+
+Status.AddMethodsToSchema(ExamAttempt)
+
 ExamAttempt.methods.unitAttempt = function () {
     return this.parent()
 }
@@ -31,7 +34,6 @@ ExamAttempt.methods.attempt = function () {
     const {challenge} = this.ownerDocument()
     const {exam} = challenge.getUnit(this.unitAttempt().orderNumber)
 
-    this.status = STATUSES.IN_PROGRESS
     this.exercisesAttempts = exam.exercises.map(exercise => exercise.newAttempt());
 }
 

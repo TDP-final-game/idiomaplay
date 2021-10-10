@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const challengeInfo = require('../challenges/challengeInfo');
 const {schema: UnitAttempt} = require('./unitAttempt');
-const STATUSES = require("../../constants/statuses.json");
 const errors = require("./errors")
+const Status = require('./status')
 
 /*
  * Schema
@@ -21,30 +21,28 @@ const ChallengeAttempt = new mongoose.Schema({
     autopopulate: true
   },
   ...challengeInfo,
-  status: {
-    type: String,
-    enum: Object.keys(STATUSES),
-    required: [true, 'status is required'],
-    default: STATUSES.IN_PROGRESS
-  },
   unitsAttempts: [{type: UnitAttempt, required: false}],
-});
+}, {toObject: {virtuals: true}, toJSON: {virtuals: true}});
 ChallengeAttempt.plugin(require('mongoose-autopopulate'));
 
 /*
  * Static methods
  */
 ChallengeAttempt.statics.anyInProgress = async function ({challengeId, userId}) {
-  const attemptsInProgress = await this.find({challenge: challengeId, user: userId, status: STATUSES.IN_PROGRESS});
-  return attemptsInProgress.length !== 0;
+  const attemptsInProgress = await this.find({challenge: challengeId, user: userId});
+  return attemptsInProgress.some(attempt => attempt.isInProgress());
 }
 
 /*
  * Instance methods
  */
-ChallengeAttempt.methods.isInProgress = function () {
-  return this.status === STATUSES.IN_PROGRESS
-}
+ChallengeAttempt.virtual('status').get(function () {
+  if(this.unitsAttempts.every(unit => unit.isPassed())) return Status.PASSED()
+  if(this.unitsAttempts.every(unit => unit.isCompleted())) return Status.FAILED()
+  return Status.IN_PROGRESS();
+})
+
+Status.AddMethodsToSchema(ChallengeAttempt)
 
 // Units
 ChallengeAttempt.methods.getUnitAttempt = function (unitOrderNumber) {

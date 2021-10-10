@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const unitInfo = require('../units/unitInfo');
 const {schema: LessonAttempt} = require('./lessonAttempt');
 const {schema: ExamAttempt} = require('./examAttempt');
-const STATUSES = require('../../constants/statuses.json');
 const errors = require('./errors');
+const Status = require('./status')
 
 /*
  * Schema
@@ -12,28 +12,26 @@ const errors = require('./errors');
 const UnitAttempt = new mongoose.Schema({
   _id: false,
   ...unitInfo,
-  status: {
-    type: String,
-    enum: Object.keys(STATUSES),
-    required: [true, 'status is required'],
-    default: STATUSES.PENDING
-  },
   lessonsAttempts: [{type: LessonAttempt, required: false}],
   examAttempt: {type: ExamAttempt, required: false},
-}, {autoCreate: false});
+}, {autoCreate: false, toObject: {virtuals: true}, toJSON: {virtuals: true}});
 
 /*
  * Instance methods
  */
-UnitAttempt.methods.isInProgress = function () {
-  return this.status === STATUSES.IN_PROGRESS
-}
+UnitAttempt.virtual('status').get(function () {
+  if(!this.lessonsAttempts || this.lessonsAttempts.length === 0) return Status.PENDING()
+  if(this.lessonsAttempts.every(lesson => lesson.isPassed()) && this.examAttempt.isPassed()) return Status.PASSED()
+  if(this.lessonsAttempts.every(lesson => lesson.isCompleted()) && this.examAttempt.isCompleted()) return Status.FAILED()
+  return Status.IN_PROGRESS();
+})
+
+Status.AddMethodsToSchema(UnitAttempt)
 
 UnitAttempt.methods.attempt = function () {
   const {challenge} = this.ownerDocument()
   const {lessons, exam} = challenge.getUnit(this.orderNumber)
 
-  this.status = STATUSES.IN_PROGRESS
   this.lessonsAttempts = lessons.map(lesson => lesson.newAttempt())
   this.examAttempt = exam.newAttempt()
 }

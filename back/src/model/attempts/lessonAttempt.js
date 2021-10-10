@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const lessonInfo = require('../lessons/lessonInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
 const errors = require('./errors');
-const STATUSES = require('../../constants/statuses.json');
+const Status = require('./status')
 
 /*
  * Schema
@@ -11,21 +11,20 @@ const STATUSES = require('../../constants/statuses.json');
 const LessonAttempt = new mongoose.Schema({
   _id: false,
   ...lessonInfo,
-  status: {
-    type: String,
-    enum: Object.keys(STATUSES),
-    required: [true, 'status is required'],
-    default: STATUSES.PENDING
-  },
   exercisesAttempts: [{type: ExerciseAttempt, required: false}],
-}, {autoCreate: false});
+}, {autoCreate: false, toObject: {virtuals: true}, toJSON: {virtuals: true}});
 
 /*
  * Instance methods
  */
-LessonAttempt.methods.isPassed = function () {
-  return this.status === STATUSES.PASSED
-}
+LessonAttempt.virtual('status').get(function () {
+  if(!this.exercisesAttempts || this.exercisesAttempts.length === 0) return Status.PENDING()
+  if(this.exercisesAttempts.every(exercise => exercise.isPassed())) return Status.PASSED()
+  if(this.exercisesAttempts.every(exercise => exercise.isCompleted())) return Status.FAILED()
+  return Status.IN_PROGRESS();
+})
+
+Status.AddMethodsToSchema(LessonAttempt)
 
 LessonAttempt.methods.unitAttempt = function () {
   return this.parent()
@@ -36,7 +35,6 @@ LessonAttempt.methods.attempt = function () {
   const unit = challenge.getUnit(this.unitAttempt().orderNumber)
   const lesson = unit.getLesson(this.orderNumber)
 
-  this.status = STATUSES.IN_PROGRESS
   this.exercisesAttempts = lesson.exercises.map(exercise => exercise.newAttempt())
 }
 
@@ -49,14 +47,6 @@ LessonAttempt.methods.getExercise = function (exerciseOrderNumber) {
 LessonAttempt.methods.attemptExercise = function ({exerciseOrderNumber, answer}) {
   const exercise = this.getExercise(exerciseOrderNumber);
   exercise.attempt({answer})
-  if(this.exercisesAttempts.some(exercise => exercise.isPending())) {
-    return
-  }
-  if(this.exercisesAttempts.every(exercise => exercise.isPassed())) {
-    this.status = STATUSES.PASSED
-  } else {
-    this.status = STATUSES.FAILED
-  }
 }
 
 /*

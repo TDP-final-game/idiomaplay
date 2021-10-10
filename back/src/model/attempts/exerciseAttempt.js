@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const errors = require('./errors')
-const STATUSES = require('../../constants/statuses.json');
 const exerciseInfo = require('../exercises/exerciseInfo');
+const Status = require('./status')
 
 /*
  * Schema
@@ -12,42 +12,52 @@ const ExerciseAttempt = new mongoose.Schema({
   optionAnswered: {
     type: String,
     required: false
-  },
-  status: {
-    type: String,
-    enum: Object.keys(STATUSES),
-    required: [true, 'status is required'],
-    default: STATUSES.PENDING
   }
-}, {autoCreate: false});
+}, {autoCreate: false, toObject: {virtuals: true}, toJSON: {virtuals: true}});
 
 /*
  * Instance methods
  */
-ExerciseAttempt.methods.isPending = function () {
-  return this.status === STATUSES.PENDING
-}
+/**
+ * Returns the status of the exercise.
+ */
+ExerciseAttempt.virtual('status').get(function () {
+  if (!this.optionAnswered) return Status.PENDING()
+  if (this.correctAnswer(this.optionAnswered)) return Status.PASSED()
+  return Status.FAILED();
+})
 
-ExerciseAttempt.methods.isPassed = function () {
-  return this.status === STATUSES.PASSED
-}
+Status.AddMethodsToSchema(ExerciseAttempt)
 
+/**
+ * Returns true if the answer is a valid option, false otherwise.
+ * @param {String} answer
+ * @returns {boolean}
+ */
 ExerciseAttempt.methods.validAnswer = function (answer) {
   return this.options.some(option => option.text === answer)
 }
 
+/**
+ * Returns the correct option.
+ * @returns {Option}
+ */
 ExerciseAttempt.methods.correctOption = function () {
   return this.options.find(option => option.correct === true)
 }
 
+/**
+ * Returns true if {answer} is correct, false otherwise.
+ * @param {String} answer
+ * @returns {boolean}
+ */
 ExerciseAttempt.methods.correctAnswer = function (answer) {
-  if(!this.validAnswer(answer)) throw errors.AnswerNotFound({answer})
+  if (!this.validAnswer(answer)) throw errors.AnswerNotFound({answer})
   return answer === this.correctOption().text
 }
 
 ExerciseAttempt.methods.attempt = function ({answer}) {
-  if(!this.isPending()) throw errors.ExerciseNotPending()
-  this.status = this.correctAnswer(answer) ? STATUSES.PASSED : STATUSES.FAILED;
+  if (!this.status.isPending()) throw errors.ExerciseNotPending()
   this.optionAnswered = answer
 }
 
