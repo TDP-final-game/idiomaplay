@@ -23,7 +23,7 @@ jobs:
       - name: Start services
         run: .github/scripts/start_services.sh
       - name: Run tests
-        run: docker-compose exec back bash -c 'yarn install && yarn test'
+        run: docker-compose exec -T back bash -c 'yarn install && yarn test'
 
   package:
     runs-on: ubuntu-20.04
