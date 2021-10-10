@@ -10,4 +10,3 @@ describe('/challenges', function() {
     });
   });
 });
-
