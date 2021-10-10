@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UnitInfo = require('../units/unitInfo');
+const unitInfo = require('../units/unitInfo');
 const {schema: LessonAttempt} = require('./lessonAttempt');
 const {schema: ExamAttempt} = require('./examAttempt');
 const STATUSES = require('../../constants/statuses.json');
@@ -11,10 +11,7 @@ const errors = require('./errors');
  */
 const UnitAttempt = new mongoose.Schema({
   _id: false,
-  unitInfo: {
-    type: UnitInfo,
-    required: [true, 'unitInfo is required']
-  },
+  ...unitInfo,
   status: {
     type: String,
     enum: Object.keys(STATUSES),
@@ -34,7 +31,7 @@ UnitAttempt.methods.isInProgress = function () {
 
 UnitAttempt.methods.attempt = function () {
   const {challenge} = this.ownerDocument()
-  const {lessons, exam} = challenge.getUnit(this.unitInfo.orderNumber)
+  const {lessons, exam} = challenge.getUnit(this.orderNumber)
 
   this.status = STATUSES.IN_PROGRESS
   this.lessonsAttempts = lessons.map(lesson => lesson.newAttempt())
@@ -43,7 +40,7 @@ UnitAttempt.methods.attempt = function () {
 
 // Lessons
 UnitAttempt.methods.getLessonAttempt = function (lessonOrderNumber) {
-  const lesson = this.lessonsAttempts.find(lesson => lesson.lessonInfo.orderNumber === lessonOrderNumber);
+  const lesson = this.lessonsAttempts.find(lesson => lesson.orderNumber === lessonOrderNumber);
   if (!lesson) throw errors.LessonAttemptNotFound({lessonOrderNumber})
   return lesson
 }

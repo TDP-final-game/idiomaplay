@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
-
-const UnitInfo = new mongoose.Schema({
-    _id: false,
+module.exports = {
     orderNumber: {
         type: Number,
         required: [true, 'orderNumber is required']
@@ -14,7 +11,4 @@ const UnitInfo = new mongoose.Schema({
         type: String,
         required: [true, 'description is required']
     },
-});
-
-
-module.exports = UnitInfo;
+}

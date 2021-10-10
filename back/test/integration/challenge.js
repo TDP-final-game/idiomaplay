@@ -4,7 +4,7 @@ const createChallenge = require('../../src/startup/createChallenge')
 const challenge = require('../../src/startup/challenge');
 
 describe('/challenges', function() {
-  describe('GET', function() {
+  describe('GET /', function() {
     it('should return an empty list when there are no challenges', async function() {
       const result = await this.app.get('/api/v1/challenges')
       expect(result).to.have.status(200);

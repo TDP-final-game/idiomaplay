@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const LessonInfo = require('./lessonInfo');
+const lessonInfo = require('./lessonInfo');
 const {schema: Exercise} = require('../exercises/exercise');
 const {model: LessonAttempt} = require('../attempts/lessonAttempt');
 
@@ -9,10 +9,7 @@ const {model: LessonAttempt} = require('../attempts/lessonAttempt');
  */
 const Lesson = new mongoose.Schema({
   _id: false,
-  lessonInfo: {
-    type: LessonInfo,
-    required: [true, 'Lesson Info is required']
-  },
+  ...lessonInfo,
   exercises: [{type: Exercise, required: false}],
 });
 
@@ -21,7 +18,7 @@ const Lesson = new mongoose.Schema({
  */
 Lesson.methods.newAttempt = function () {
   return new LessonAttempt({
-    lessonInfo: this.lessonInfo
+    ...this.toObject()
   })
 }
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UnitInfo = require('./unitInfo');
+const unitInfo = require('./unitInfo');
 const {schema: Lesson} = require('../lessons/lesson');
 const {schema: Exam} = require('../exams/exam');
 const {model: UnitAttempt} = require('../attempts/unitAttempt');
@@ -11,10 +11,7 @@ const errors = require('./errors')
  */
 const Unit = new mongoose.Schema({
   _id: false,
-  unitInfo: {
-    type: UnitInfo,
-    required: [true, 'UnitInfo is required']
-  },
+  ...unitInfo,
   exam: {type: Exam, required: false},
   lessons: [{type: Lesson, required: false}]
 });
@@ -24,12 +21,12 @@ const Unit = new mongoose.Schema({
  */
 Unit.methods.newAttempt = function () {
   return new UnitAttempt({
-    unitInfo: this.unitInfo,
+    ...this.toObject(),
   });
 }
 
 Unit.methods.getLesson = function (lessonOrderNumber) {
-  const lesson = this.lessons.find(lesson => lesson.lessonInfo.orderNumber === lessonOrderNumber);
+  const lesson = this.lessons.find(lesson => lesson.orderNumber === lessonOrderNumber);
   if (!lesson) throw errors.LessonNotFound({lessonOrderNumber})
   return lesson
 }

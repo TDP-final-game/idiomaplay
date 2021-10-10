@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
-
-const ChallengeInfo = new mongoose.Schema({
-    _id: false,
+module.exports = {
     name: {
         type: String,
         required: [true, 'name is required']
@@ -14,7 +11,4 @@ const ChallengeInfo = new mongoose.Schema({
         type: String,
         required: [true, 'description is required']
     },
-});
-
-
-module.exports = ChallengeInfo;
+};

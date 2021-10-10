@@ -1,48 +1,21 @@
 const mongoose = require('mongoose');
 
-const exerciseTypes = require('../../constants/exerciseTypes');
+const exerciseInfo = require('./exerciseInfo');
 const STATUSES = require('../../constants/statuses.json');
 const errors = require('./errors');
+const {model: ExerciseAttempt} = require('../attempts/exerciseAttempt')
 
 /*
  * Schema
  */
-const Exercise = new mongoose.Schema({
-  _id: false,
-  type: {
-    type: String,
-    enum: Object.values(exerciseTypes),
-    required: [true, 'type is required']
-  },
-  statement: {
-    type: String,
-    required: true
-  },
-  options: {
-    type: [{
-      _id: false,
-      text: {
-        type: String,
-        required: true
-      },
-      correct: {
-        type: Boolean,
-        required: true
-      }
-    }],
-    required: [true, 'options is required']
-  }
-});
+const Exercise = new mongoose.Schema(exerciseInfo);
 
 /*
  * Instance methods
  */
 Exercise.methods.newAttempt = function () {
-  // This is to avoid importing the ExerciseAttempt model and therefore
-  // generate a circular dependency. In the future better solutions could be
-  // found.
-  return new (mongoose.model('ExerciseAttempt'))({
-    exercise: this,
+  return new ExerciseAttempt({
+    ...this.toObject(),
     status: STATUSES.PENDING
   })
 }

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const LessonInfo = require('../lessons/lessonInfo');
+const lessonInfo = require('../lessons/lessonInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
 const errors = require('./errors');
 const STATUSES = require('../../constants/statuses.json');
@@ -10,10 +10,7 @@ const STATUSES = require('../../constants/statuses.json');
  */
 const LessonAttempt = new mongoose.Schema({
   _id: false,
-  lessonInfo: {
-    type: LessonInfo,
-    required: [true, 'lessonInfo is required']
-  },
+  ...lessonInfo,
   status: {
     type: String,
     enum: Object.keys(STATUSES),
@@ -32,8 +29,8 @@ LessonAttempt.methods.unitAttempt = function () {
 
 LessonAttempt.methods.attempt = function () {
   const {challenge} = this.ownerDocument()
-  const unit = challenge.getUnit(this.unitAttempt().unitInfo.orderNumber)
-  const lesson = unit.getLesson(this.lessonInfo.orderNumber)
+  const unit = challenge.getUnit(this.unitAttempt().orderNumber)
+  const lesson = unit.getLesson(this.orderNumber)
 
   this.status = STATUSES.IN_PROGRESS
   this.exercisesAttempts = lesson.exercises.map(exercise => exercise.newAttempt())

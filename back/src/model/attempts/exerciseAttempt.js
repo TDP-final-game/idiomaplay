@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
 
-const {schema: Exercise} = require('../exercises/exercise');
 const errors = require('./errors')
 const STATUSES = require('../../constants/statuses.json');
+const exerciseInfo = require('../exercises/exerciseInfo');
 
 /*
  * Schema
  */
 const ExerciseAttempt = new mongoose.Schema({
-  _id: false,
-  exercise: {
-    type: Exercise,
-    required: [true, 'exercise is required']
-  },
+  ...exerciseInfo,
   optionAnswered: {
     type: String,
     required: false

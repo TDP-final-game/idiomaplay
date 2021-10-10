@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ChallengeInfo = require('../challenges/challengeInfo');
+const challengeInfo = require('../challenges/challengeInfo');
 const {schema: UnitAttempt} = require('./unitAttempt');
 const STATUSES = require("../../constants/statuses.json");
 const errors = require("./errors")
@@ -20,10 +20,7 @@ const ChallengeAttempt = new mongoose.Schema({
     required: [true, 'challengeId is required'],
     autopopulate: true
   },
-  challengeInfo: {
-    type: ChallengeInfo,
-    required: [true, 'challengeInfo is required']
-  },
+  ...challengeInfo,
   status: {
     type: String,
     enum: Object.keys(STATUSES),
@@ -51,7 +48,7 @@ ChallengeAttempt.methods.isInProgress = function () {
 
 // Units
 ChallengeAttempt.methods.getUnitAttempt = function (unitOrderNumber) {
-  const unit = this.unitsAttempts.find(unit => unit.unitInfo.orderNumber === unitOrderNumber);
+  const unit = this.unitsAttempts.find(unit => unit.orderNumber === unitOrderNumber);
   if (!unit) throw errors.UnitAttemptNotFound({unitOrderNumber})
   return unit
 }

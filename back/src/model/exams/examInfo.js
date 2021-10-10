@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
-
-const ExamInfo = new mongoose.Schema({
-    _id: false,
+module.exports = {
     name: {
         type: String,
         required: [true, 'name is required']
@@ -14,6 +11,4 @@ const ExamInfo = new mongoose.Schema({
         type: Number,
         required: [true, 'durationInMinutes is required']
     }
-});
-
-module.exports = ExamInfo;
+}

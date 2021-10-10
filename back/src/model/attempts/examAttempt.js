@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ExamInfo = require('../exams/examInfo');
+const examInfo = require('../exams/examInfo');
 const {schema: ExerciseAttempt} = require('./exerciseAttempt');
 const STATUSES = require('../../constants/statuses.json');
 const errors = require('./errors');
@@ -10,10 +10,7 @@ const errors = require('./errors');
  */
 const ExamAttempt = new mongoose.Schema({
     _id: false,
-    examInfo: {
-      type: ExamInfo,
-      required: [true, 'examInfo is required']
-    },
+    ...examInfo,
     exercisesAttempts: [{type: ExerciseAttempt, required: false}],
     status: {
         type: String,
@@ -32,7 +29,7 @@ ExamAttempt.methods.unitAttempt = function () {
 
 ExamAttempt.methods.attempt = function () {
     const {challenge} = this.ownerDocument()
-    const {exam} = challenge.getUnit(this.unitAttempt().unitInfo.orderNumber)
+    const {exam} = challenge.getUnit(this.unitAttempt().orderNumber)
 
     this.status = STATUSES.IN_PROGRESS
     this.exercisesAttempts = exam.exercises.map(exercise => exercise.newAttempt());

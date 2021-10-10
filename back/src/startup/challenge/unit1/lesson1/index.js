@@ -3,11 +3,9 @@ const exercise2 = require('./exercise2');
 const exercise3 = require('./exercise3');
 
 module.exports = {
-  lessonInfo: {
-    name: "Lección 1",
-    orderNumber: 1,
-    description: "Lección 1",
-  },
+  name: "Lección 1",
+  orderNumber: 1,
+  description: "Lección 1",
   exercises: [
     exercise1,
     exercise2,
