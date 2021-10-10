@@ -23,6 +23,10 @@ const LessonAttempt = new mongoose.Schema({
 /*
  * Instance methods
  */
+LessonAttempt.methods.isPassed = function () {
+  return this.status === STATUSES.PASSED
+}
+
 LessonAttempt.methods.unitAttempt = function () {
   return this.parent()
 }
@@ -45,6 +49,14 @@ LessonAttempt.methods.getExercise = function (exerciseOrderNumber) {
 LessonAttempt.methods.attemptExercise = function ({exerciseOrderNumber, answer}) {
   const exercise = this.getExercise(exerciseOrderNumber);
   exercise.attempt({answer})
+  if(this.exercisesAttempts.some(exercise => exercise.isPending())) {
+    return
+  }
+  if(this.exercisesAttempts.every(exercise => exercise.isPassed())) {
+    this.status = STATUSES.PASSED
+  } else {
+    this.status = STATUSES.FAILED
+  }
 }
 
 /*

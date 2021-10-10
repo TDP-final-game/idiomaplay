@@ -28,6 +28,10 @@ ExerciseAttempt.methods.isPending = function () {
   return this.status === STATUSES.PENDING
 }
 
+ExerciseAttempt.methods.isPassed = function () {
+  return this.status === STATUSES.PASSED
+}
+
 ExerciseAttempt.methods.validAnswer = function (answer) {
   return this.options.some(option => option.text === answer)
 }

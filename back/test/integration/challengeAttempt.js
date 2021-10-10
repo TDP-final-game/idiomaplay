@@ -18,34 +18,64 @@ describe('/challengeAttempts', function () {
   let challengeAttemptReq;
   let unitAttemptReq;
   let lessonAttemptReq;
-  let lessonExercisesAttemptReq;
+  let lessonExercisesAttemptReq = [];
   let examAttemptReq;
+  let examExercisesAttemptReq = [];
 
   beforeEach(async function () {
     const challengeExample = new ChallengeExample(this.app)
     const challengeAttemptExample = new ChallengeAttemptExample(this.app)
 
+    // Challenge
     challenge = await challengeExample.create()
     challengeAttemptReq = await challengeAttemptExample.create({challengeId: challenge._id})
+    const challengeId = challenge._id
+    const unitOrderNumber = challenge.units[0].orderNumber
+    const lessonOrderNumber = challenge.units[0].lessons[0].orderNumber
+
+    // Unit
     unitAttemptReq = await challengeAttemptExample.attemptUnit({
-      challengeId: challenge._id,
-      unitOrderNumber: challenge.units[0].orderNumber
-    })
-    lessonAttemptReq = await challengeAttemptExample.attemptLesson({
-      challengeId: challenge._id,
-      unitOrderNumber: challenge.units[0].orderNumber,
-      lessonOrderNumber: challenge.units[0].lessons[0].orderNumber
+      challengeId,
+      unitOrderNumber
     })
 
-    lessonExercisesAttemptReq = await Promise.all(challenge.units[0].lessons[0].exercises.map((exercise, n) =>
-      challengeAttemptExample.attemptLessonExercise({
-        challengeId: challenge._id,
-        unitOrderNumber: challenge.units[0].orderNumber,
-        lessonOrderNumber: challenge.units[0].lessons[0].orderNumber,
-        exerciseOrderNumber: n,
-        answer: correctAnswer(exercise)
-      })
-    ))
+    // Lesson
+    lessonAttemptReq = await challengeAttemptExample.attemptLesson({
+      challengeId,
+      unitOrderNumber,
+      lessonOrderNumber
+    })
+
+    const exercises = challenge.units[0].lessons[0].exercises
+    for (const exercise of exercises) {
+      lessonExercisesAttemptReq.push(
+        await challengeAttemptExample.attemptLessonExercise({
+          challengeId,
+          unitOrderNumber,
+          lessonOrderNumber,
+          exerciseOrderNumber: exercises.indexOf(exercise),
+          answer: correctAnswer(exercise)
+        })
+      )
+    }
+
+    // Exam
+    examAttemptReq = await challengeAttemptExample.attemptExam({
+      challengeId,
+      unitOrderNumber
+    })
+
+    const examExercises = challenge.units[0].exam.exercises
+    for (const exercise of examExercises) {
+      examExercisesAttemptReq.push(
+        await challengeAttemptExample.attemptExamExercise({
+          challengeId,
+          unitOrderNumber,
+          exerciseOrderNumber: examExercises.indexOf(exercise),
+          answer: correctAnswer(exercise)
+        })
+      )
+    }
   })
 
   describe('POST /', function () {
@@ -130,13 +160,54 @@ describe('/challengeAttempts', function () {
     });
   });
 
-  describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', function () {
-    it('should change the lesson exercise attempt to "in progress"', async function () {
+  describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', function () {
+    it('should change the lesson exercise attempt to "passed"', async function () {
       const lessonExerciseAttemptReq = lessonExercisesAttemptReq[0]
       expect(lessonExerciseAttemptReq).to.have.status(200);
 
       const exerciseAttempt = lessonExerciseAttemptReq.body
       const exercise = challenge.units[0].lessons[0].exercises[0];
+      compare({
+        properties: ['type', 'statement', 'options'],
+        obj1: exerciseAttempt,
+        obj2: exercise
+      });
+      expect(exerciseAttempt.status).to.eql(STATUSES.PASSED)
+      expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise))
+    });
+  });
+
+  describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', function () {
+    it('should change the exam attempt to "in progress"', async function () {
+      expect(examAttemptReq).to.have.status(200);
+
+      const examAttempt = examAttemptReq.body;
+      const exam = challenge.units[0].exam;
+      compare({
+        properties: ['name', 'description', 'durationInMinutes'],
+        obj1: examAttempt,
+        obj2: exam
+      });
+      expect(examAttempt.status).to.eql(STATUSES.IN_PROGRESS)
+
+      const exerciseAttempt = examAttempt.exercisesAttempts[0];
+      const exercise = exam.exercises[0];
+      compare({
+        properties: ['type', 'statement', 'options'],
+        obj1: exerciseAttempt,
+        obj2: exercise
+      });
+      expect(exerciseAttempt.status).to.eql(STATUSES.PENDING)
+    });
+  });
+
+  describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', function () {
+    it('should change the exam exercise attempt to "passed"', async function () {
+      const examExerciseAttemptReq = examExercisesAttemptReq[0]
+      expect(examExerciseAttemptReq).to.have.status(200);
+
+      const exerciseAttempt = examExerciseAttemptReq.body
+      const exercise = challenge.units[0].exam.exercises[0];
       compare({
         properties: ['type', 'statement', 'options'],
         obj1: exerciseAttempt,

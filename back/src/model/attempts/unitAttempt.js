@@ -46,7 +46,7 @@ UnitAttempt.methods.getLessonAttempt = function (lessonOrderNumber) {
 }
 
 UnitAttempt.methods.allLessonsArePassed = function () {
-  return this.lessonsAttempts.every(lessonAttempt => lessonAttempt.status === STATUSES.PASSED)
+  return this.lessonsAttempts.every(lessonAttempt => lessonAttempt.isPassed())
 }
 
 UnitAttempt.methods.attemptLesson = function ({lessonOrderNumber}) {
