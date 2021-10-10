@@ -21,8 +21,8 @@
   "scripts": {
     "start": "node .",
     "start:dev": "nodemon -x yarn start",
-    "test": "yarn test:integration && yarn test:unit",
-    "test:integration": "mocha test/integration",
+    "test": "yarn test:unit && yarn test:unit",
+    "test:integration": "mocha test/integration -r test/integration/setup.js",
     "test:unit": "mocha test/unit"
   }
 }

@@ -5,17 +5,19 @@ const appCallback = require('./app');
 const main = async () => {
   const app = await appCallback()
   const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-  });
+  const result = await app.listen(port);
 
-  connectToMongo();
+  await connectToMongo();
 
   if (process.env['CREATE_CHALLENGE']) {
-    createChallenge();
+    await createChallenge();
   }
+
+  return result;
 };
  
 if (require.main === module) {
   main();
 }
+
+module.exports = main;
