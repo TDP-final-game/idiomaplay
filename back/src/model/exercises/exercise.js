@@ -8,6 +8,7 @@ const errors = require('./errors');
  * Schema
  */
 const Exercise = new mongoose.Schema({
+  _id: false,
   type: {
     type: String,
     enum: Object.values(exerciseTypes),
