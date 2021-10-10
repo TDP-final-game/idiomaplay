@@ -28,9 +28,22 @@ ExerciseAttempt.methods.isPending = function () {
   return this.status === STATUSES.PENDING
 }
 
+ExerciseAttempt.methods.validAnswer = function (answer) {
+  return this.options.some(option => option.text === answer)
+}
+
+ExerciseAttempt.methods.correctOption = function () {
+  return this.options.find(option => option.correct === true)
+}
+
+ExerciseAttempt.methods.correctAnswer = function (answer) {
+  if(!this.validAnswer(answer)) throw errors.AnswerNotFound({answer})
+  return answer === this.correctOption().text
+}
+
 ExerciseAttempt.methods.attempt = function ({answer}) {
   if(!this.isPending()) throw errors.ExerciseNotPending()
-  this.status = this.exercise.correctAnswer(answer) ? STATUSES.PASSED : STATUSES.FAILED;
+  this.status = this.correctAnswer(answer) ? STATUSES.PASSED : STATUSES.FAILED;
   this.optionAnswered = answer
 }
 

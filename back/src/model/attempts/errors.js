@@ -8,4 +8,5 @@ module.exports = {
   LessonAttemptNotFound: ({lessonOrderNumber}) => factory('LessonAttemptNotFound')(`Lesson attempt ${lessonOrderNumber} not found`),
   ExerciseAttemptNotFound: ({exerciseOrderNumber}) => factory('ExerciseAttemptNotFound')(`Exercise attempt ${exerciseOrderNumber} not found`),
   ExerciseNotPending: () => factory('ExerciseNotPending')(`Exercise is not pending`),
+  AnswerNotFound: ({answer}) => factory('AnswerNotFound')(`Answer "${answer}" is not an option`),
 }

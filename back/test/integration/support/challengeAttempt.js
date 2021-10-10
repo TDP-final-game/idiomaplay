@@ -14,4 +14,22 @@ ChallengeAttempt.prototype.attemptUnit = function({challengeId, unitOrderNumber}
     .send({unitOrderNumber})
 };
 
+ChallengeAttempt.prototype.attemptLesson = function({challengeId, unitOrderNumber, lessonOrderNumber}) {
+  return this.app
+    .put(`/challengeAttempts/${challengeId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`)
+    .send({lessonOrderNumber})
+};
+
+ChallengeAttempt.prototype.attemptLessonExercise = function({challengeId, unitOrderNumber, lessonOrderNumber, exerciseOrderNumber, answer}) {
+  return this.app
+    .put(`/challengeAttempts/${challengeId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}/exercisesAttempts`)
+    .send({exerciseOrderNumber, answer})
+};
+
+ChallengeAttempt.prototype.attemptExam = function({challengeId, unitOrderNumber}) {
+  return this.app
+    .put(`/challengeAttempts/${challengeId}/unitsAttempts/${unitOrderNumber}/examAttempt`)
+    .send({})
+};
+
 module.exports = ChallengeAttempt;
