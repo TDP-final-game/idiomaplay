@@ -8,10 +8,10 @@ module.exports = () => {
 	// 	useUnifiedTopology: true
 	// });
 
-	const result = mongoose.connect("mongodb+srv://maguimarijuan:chanchoperro22@cluster0.atm46.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
-			useNewUrlParser: true,
-			useUnifiedTopology: true
-		});
+	const result = mongoose.connect('mongodb+srv://maguimarijuan:chanchoperro22@cluster0.atm46.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	});
 
 	const db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'db connection error: '));
