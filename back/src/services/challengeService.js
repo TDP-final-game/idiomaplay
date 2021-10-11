@@ -20,11 +20,11 @@ const deleteChallenges = () => {
 
 const createChallenge = async challengeData => {
 	return challengeModel.create({
-		challengeInfo: {
+		
 			name: challengeData.name,
 			description: challengeData.description,
 			difficulty: challengeData.difficulty
-		}
+		
 	});
 };
 

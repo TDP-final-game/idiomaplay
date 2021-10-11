@@ -7,8 +7,10 @@ const USER_ID = '6161bbb002bf6b116530d717';
 
 const attemptChallenge = async (req, res) => {
 	try {
+		console.log("llega aca")
 		const { challengeId, userId = USER_ID } = req.body;
 		const response = await challengeAttemptService.attemptChallenge(challengeId, userId);
+		console.log(response);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
 		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });

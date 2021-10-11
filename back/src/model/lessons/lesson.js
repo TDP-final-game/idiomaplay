@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const lessonInfo = require('./lessonInfo');
-const {schema: Exercise } = require('../exercises/exercise');
+const { schema: Exercise } = require('../exercises/exercise');
 const { model: LessonAttempt } = require('../attempts/lessonAttempt');
 
 /*
