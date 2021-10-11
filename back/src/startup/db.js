@@ -8,7 +8,7 @@ module.exports = () => {
 	// 	useUnifiedTopology: true
 	// });
 
-	const result = mongoose.connect('mongodb+srv://maguimarijuan:chanchoperro22@cluster0.atm46.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+	const result = mongoose.connect(process.env.DATABASE_URL, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true
 	});

@@ -51,23 +51,23 @@ class Status {
 
 
 	static AddMethodsToSchema(schema) {
-		schema.methods.isPending = () => {
+		schema.methods.isPending = function() {
 			return this.status.isPending();
 		};
 
-		schema.methods.isInProgress = () => {
+		schema.methods.isInProgress = function() {
 			return this.status.isInProgress();
 		};
 
-		schema.methods.isPassed = () => {
+		schema.methods.isPassed = function() {
 			return this.status.isPassed();
 		};
 
-		schema.methods.isFailed = () => {
+		schema.methods.isFailed = function() {
 			return this.status.isFailed();
 		};
 
-		schema.methods.isCompleted = () => {
+		schema.methods.isCompleted = function() {
 			return this.status.isCompleted();
 		};
 	}
