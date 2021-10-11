@@ -11,7 +11,7 @@ services:
       - "./back:/back"
     environment:
       NODE_ENV: development
-      DATABASE_URL: mongodb://root:example@mongo:27017/idiomaplay?authSource=admin
+      DATABASE_URL: mongodb+srv://maguimarijuan:chanchoperro22@cluster0.atm46.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
     depends_on:
       - mongo
 
