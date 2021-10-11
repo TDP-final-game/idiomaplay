@@ -3,10 +3,6 @@
 const mongoose = require('mongoose');
 
 module.exports = () => {
-	// const result = mongoose.connect(process.env.DATABASE_URL, {
-	// 	useNewUrlParser: true,
-	// 	useUnifiedTopology: true
-	// });
 
 	const result = mongoose.connect(process.env.DATABASE_URL, {
 		useNewUrlParser: true,

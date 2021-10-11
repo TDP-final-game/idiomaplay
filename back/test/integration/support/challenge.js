@@ -2,20 +2,23 @@
 
 const createChallenge = require('../../../src/startup/createChallenge');
 
-const Challenge = app => {
-	this.app = app;
-};
+class Challenge {
 
-Challenge.prototype.create = async () => {
-	return JSON.parse(JSON.stringify(await createChallenge()));
-};
+	constructor (app)  {
+		this.app = app;
+	}
 
-Challenge.prototype.get = async ({ challengeId }) => {
-	return this.app.get(`/challenges/${challengeId}`);
-};
+	async create (){
+		return JSON.parse(JSON.stringify(await createChallenge()));
+	};
 
-Challenge.prototype.list = async () => {
-	return this.app.get('/challenges');
-};
+	async get (){
+		return this.app.get(`/challenges/${challengeId}`);
+	}
+
+	async list (){
+		return this.app.get('/challenges');
+	}
+} 
 
 module.exports = Challenge;

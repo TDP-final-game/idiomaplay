@@ -1,24 +1,27 @@
 'use strict';
 
-const App = ({ chaiApp, baseUrl = '' }) => {
-	this.chaiApp = chaiApp;
-	this.baseUrl = baseUrl;
-};
+class App {
 
-App.prototype.get = function(url) {
-	return this.chaiApp.get(`${this.baseUrl}${url}`);
-};
+	cosntructor({ chaiApp, baseUrl = '' }) {
+		this.chaiApp = chaiApp;
+		this.baseUrl = baseUrl;
+	}
 
-App.prototype.post = function(url) {
-	return this.chaiApp.post(`${this.baseUrl}${url}`);
-};
+	get(url) {
+		return this.chaiApp.get(`${this.baseUrl}${url}`);
+	}
 
-App.prototype.put = function(url) {
-	return this.chaiApp.put(`${this.baseUrl}${url}`);
-};
+	post(url) {
+		return this.chaiApp.post(`${this.baseUrl}${url}`);
+	}
 
-App.prototype.delete = function(url) {
-	return this.chaiApp.delete(`${this.baseUrl}${url}`);
-};
+	put(url) {
+		return this.chaiApp.put(`${this.baseUrl}${url}`);
+	}
+
+	delete(url) {
+		return this.chaiApp.delete(`${this.baseUrl}${url}`);
+	}
+}
 
 module.exports = App;
