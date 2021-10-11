@@ -1,5 +1,7 @@
-const factory = require('../../errorFactory')
+'use strict';
+
+const factory = require('../../errorFactory');
 
 module.exports = {
-  LessonNotFound: ({lessonOrderNumber}) => factory('LessonNotFound')(`Lesson with order number ${lessonOrderNumber} not found`),
-}
+	LessonNotFound: ({ lessonOrderNumber }) => factory('LessonNotFound')(`Lesson with order number ${lessonOrderNumber} not found`)
+};
