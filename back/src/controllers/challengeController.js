@@ -58,7 +58,7 @@ const addLesson = async (req, res) => {
 
 	try {
 		const { challengeId, unitOrderNumber } = req.params;
-		const response = await challengeService.addLesson(challengeId, unitOrderNumber, req.body);
+		const response = await challengeService.addLesson(challengeId, Number(unitOrderNumber), req.body);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
@@ -71,7 +71,7 @@ const addExam = async (req, res) => {
 
 	try {
 		const { challengeId, unitOrderNumber } = req.params;
-		const response = await challengeService.addExam(challengeId, unitOrderNumber, req.body);
+		const response = await challengeService.addExam(challengeId, Number(unitOrderNumber), req.body);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
@@ -84,7 +84,7 @@ const getExam = async (req, res) => {
 
 	try {
 		const { challengeId, unitOrderNumber } = req.params;
-		const response = await challengeService.getExam(challengeId, unitOrderNumber);
+		const response = await challengeService.getExam(challengeId, Number(unitOrderNumber));
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
@@ -97,7 +97,7 @@ const addExerciseToLesson = async (req, res) => {
 
 	try {
 		const { challengeId, unitOrderNumber, lessonOrderNumber } = req.params;
-		const response = await challengeService.addExerciseToLesson(challengeId, unitOrderNumber, lessonOrderNumber, req.body);
+		const response = await challengeService.addExerciseToLesson(challengeId, Number(unitOrderNumber), Number(lessonOrderNumber), req.body);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
@@ -110,7 +110,7 @@ const addExerciseToExam = async (req, res) => {
 
 	try {
 		const { challengeId, unitOrderNumber } = req.params;
-		const response = await challengeService.addExerciseToExam(challengeId, unitOrderNumber, req.body);
+		const response = await challengeService.addExerciseToExam(challengeId, Number(unitOrderNumber), req.body);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {

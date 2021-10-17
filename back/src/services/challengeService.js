@@ -43,7 +43,7 @@ const addUnit = async (challengeId, unitData) => {
 
 const addLesson = async (challengeId, unitOrderNumber, lessonData) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber == unitOrderNumber);
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitOrderNumber);
 	unit.lessons.push({
 
 		name: lessonData.name,
@@ -56,7 +56,7 @@ const addLesson = async (challengeId, unitOrderNumber, lessonData) => {
 
 const addExam = async (challengeId, unitOrderNumber, examData) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber == unitOrderNumber);
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitOrderNumber);
 	unit.exam = {
 
 		name: examData.name,
@@ -69,21 +69,21 @@ const addExam = async (challengeId, unitOrderNumber, examData) => {
 
 const getExam = async (challengeId, unitOrderNumber) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(someUnit => someUnit.orderNumber == unitOrderNumber);
+	const unit = challenge.units.find(someUnit => someUnit.orderNumber === unitOrderNumber);
 	return unit.exam;
 };
 
 const addExerciseToLesson = async (challengeId, unitOrderNumber, lessonOrderNumber, exercise) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(someUnit => someUnit.orderNumber == unitOrderNumber);
-	const lesson = unit.lessons.find(someLesson => someLesson.orderNumber == lessonOrderNumber);
+	const unit = challenge.units.find(someUnit => someUnit.orderNumber === unitOrderNumber);
+	const lesson = unit.lessons.find(someLesson => someLesson.orderNumber === lessonOrderNumber);
 	lesson.exercises.push(exercise);
 	return challenge.save();
 };
 
 const addExerciseToExam = async (challengeId, unitOrderNumber, exercise) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
-	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber == unitOrderNumber);
+	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitOrderNumber);
 	unit.exam.exercises.push(exercise);
 	return challenge.save();
 };
