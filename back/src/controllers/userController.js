@@ -26,7 +26,6 @@ const createUser = async (req, res) => {
 	}
 };
 
-
 const logIn = async (req, res) => {
 	try {
 		const response = await userService.logIn(req.body);
@@ -39,6 +38,6 @@ const logIn = async (req, res) => {
 
 module.exports = {
 	listChallengesAttempts,
-	createUser, 
+	createUser,
 	logIn
 };
