@@ -12,7 +12,7 @@ class Challenge {
 		return JSON.parse(JSON.stringify(await createChallenge()));
 	}
 
-	async get(challengeId) {
+	async get({ challengeId }) {
 		return this.app.get(`/challenges/${challengeId}`);
 	}
 
