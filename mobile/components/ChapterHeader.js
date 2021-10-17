@@ -22,6 +22,24 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
   );
 };
 
+export const UnitHeader = ({ returnButtonFunction, unit }) => {
+  return (
+    <View style={styles.headerContainer}>
+      <View style={{ marginLeft: '5%' }}>
+        <TouchableOpacity onPress={returnButtonFunction}>
+          <Ionicons name="arrow-undo" size={45} color={colors.PRIMARY_DARK} />
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text style={styles.chapterText}>Unidad {unit}</Text>
+      </View>
+      <View style={{ marginRight: '5%' }}>
+        <Ionicons name="arrow-undo" size={45} color="transparent" />
+      </View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   headerContainer: {
     flexGrow: 1,
