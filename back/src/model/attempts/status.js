@@ -70,6 +70,10 @@ class Status {
 		schema.methods.isCompleted = function() {
 			return this.status.isCompleted();
 		};
+
+		schema.methods.toJson = function() {
+			return this.status;
+		};
 	}
 
 }

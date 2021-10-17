@@ -2,7 +2,7 @@
 
 class App {
 
-	cosntructor({ chaiApp, baseUrl = '' }) {
+	constructor({ chaiApp, baseUrl = '' }) {
 		this.chaiApp = chaiApp;
 		this.baseUrl = baseUrl;
 	}

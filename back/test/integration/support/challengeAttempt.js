@@ -1,6 +1,6 @@
 'use strict';
 
-class ChallengeAttempt {
+class ChallengeAttempt {
 
 	constructor(app) {
 		this.app = app;
