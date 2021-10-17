@@ -1,22 +1,27 @@
-function App({chaiApp, baseUrl = ''}) {
-  this.chaiApp = chaiApp;
-  this.baseUrl = baseUrl;
+'use strict';
+
+class App {
+
+	constructor({ chaiApp, baseUrl = '' }) {
+		this.chaiApp = chaiApp;
+		this.baseUrl = baseUrl;
+	}
+
+	get(url) {
+		return this.chaiApp.get(`${this.baseUrl}${url}`);
+	}
+
+	post(url) {
+		return this.chaiApp.post(`${this.baseUrl}${url}`);
+	}
+
+	put(url) {
+		return this.chaiApp.put(`${this.baseUrl}${url}`);
+	}
+
+	delete(url) {
+		return this.chaiApp.delete(`${this.baseUrl}${url}`);
+	}
 }
 
-App.prototype.get = function(url) {
-  return this.chaiApp.get(`${this.baseUrl}${url}`);
-};
-
-App.prototype.post = function(url) {
-  return this.chaiApp.post(`${this.baseUrl}${url}`);
-};
-
-App.prototype.put = function(url) {
-  return this.chaiApp.put(`${this.baseUrl}${url}`);
-};
-
-App.prototype.delete = function(url) {
-  return this.chaiApp.delete(`${this.baseUrl}${url}`);
-};
-
-module.exports = App
+module.exports = App;

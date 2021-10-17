@@ -1,15 +1,17 @@
-const {model: userModel} = require('../model/users/user');
-const {model: challengeAttemptModel} = require('../model/attempts/challengeAttempt');
+'use strict';
 
-const createUser = (user) => {
-    return userModel.create(user);
-}
+const { model: userModel } = require('../model/users/user');
+const { model: challengeAttemptModel } = require('../model/attempts/challengeAttempt');
+
+const createUser = user => {
+	return userModel.create(user);
+};
 
 const listChallengeAttempts = userId => {
-    return challengeAttemptModel.find({ userId: userId });
+	return challengeAttemptModel.find({ userId });
 };
 
 module.exports = {
-    listChallengeAttempts,
-    createUser
+	listChallengeAttempts,
+	createUser
 };

@@ -1,77 +1,81 @@
+'use strict';
+
 const STATUSES = require('../../constants/statuses.json');
 
-function Status(status) {
-  this.status = status
-}
 
-Status.prototype.isPending = function() {
-  return this.status === STATUSES.PENDING;
-};
+class Status {
 
-Status.prototype.isInProgress = function() {
-  return this.status === STATUSES.IN_PROGRESS;
-};
+	constructor(status) {
+		this.status = status;
+	}
 
-Status.prototype.isFailed = function() {
-  return this.status === STATUSES.FAILED;
-};
+	isPending() {
+		return this.status === STATUSES.PENDING;
+	}
 
-Status.prototype.isPassed = function() {
-  return this.status === STATUSES.PASSED;
-};
+	isInProgress() {
+		return this.status === STATUSES.IN_PROGRESS;
+	}
 
-Status.prototype.isCompleted = function() {
-  return this.isPassed() || this.isFailed();
-};
 
-Status.prototype.value = function() {
-  return this.status;
-};
+	isFailed() {
+		return this.status === STATUSES.FAILED;
+	}
 
-Status.prototype.toString = function() {
-  return this.value();
-};
+	isPassed() {
+		return this.status === STATUSES.PASSED;
+	}
 
-Status.prototype.toJSON = function() {
-  return this.value();
-};
+	isCompleted() {
+		return this.isPassed() || this.isFailed();
+	}
 
-Status.PENDING = function () {
-  return new Status(STATUSES.PENDING)
-}
 
-Status.IN_PROGRESS = function () {
-  return new Status(STATUSES.IN_PROGRESS)
-}
+	static PENDING() {
+		return new Status(STATUSES.PENDING);
+	}
 
-Status.FAILED = function () {
-  return new Status(STATUSES.FAILED)
-}
 
-Status.PASSED = function () {
-  return new Status(STATUSES.PASSED)
-}
+	static IN_PROGRESS() {
+		return new Status(STATUSES.IN_PROGRESS);
+	}
 
-Status.AddMethodsToSchema = function (schema) {
-  schema.methods.isPending = function () {
-    return this.status.isPending()
-  }
 
-  schema.methods.isInProgress = function () {
-    return this.status.isInProgress()
-  }
+	static FAILED() {
+		return new Status(STATUSES.FAILED);
+	}
 
-  schema.methods.isPassed = function () {
-    return this.status.isPassed()
-  }
+	static PASSED() {
+		return new Status(STATUSES.PASSED);
+	}
 
-  schema.methods.isFailed = function () {
-    return this.status.isFailed()
-  }
 
-  schema.methods.isCompleted = function () {
-    return this.status.isCompleted()
-  }
+	static AddMethodsToSchema(schema) {
+		schema.methods.isPending = function() {
+			return this.status.isPending();
+		};
+
+		schema.methods.isInProgress = function() {
+			return this.status.isInProgress();
+		};
+
+		schema.methods.isPassed = function() {
+			return this.status.isPassed();
+		};
+
+		schema.methods.isFailed = function() {
+			return this.status.isFailed();
+		};
+
+		schema.methods.isCompleted = function() {
+			return this.status.isCompleted();
+		};
+
+		schema.methods.toJson = function() {
+			return this.status;
+		};
+	}
+
 }
 
 module.exports = Status;

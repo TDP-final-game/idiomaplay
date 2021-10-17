@@ -1,19 +1,24 @@
-const createChallenge = require('../../../src/startup/createChallenge')
+'use strict';
 
-function Challenge(app) {
-  this.app = app;
+const createChallenge = require('../../../src/startup/createChallenge');
+
+class Challenge {
+
+	constructor(app) {
+		this.app = app;
+	}
+
+	async create() {
+		return JSON.parse(JSON.stringify(await createChallenge()));
+	}
+
+	async get({ challengeId }) {
+		return this.app.get(`/challenges/${challengeId}`);
+	}
+
+	async list() {
+		return this.app.get('/challenges');
+	}
 }
-
-Challenge.prototype.create = async function() {
-  return JSON.parse(JSON.stringify(await createChallenge()));
-};
-
-Challenge.prototype.get = async function({challengeId}) {
-  return this.app.get(`/challenges/${challengeId}`);
-};
-
-Challenge.prototype.list = async function() {
-  return this.app.get(`/challenges`);
-};
 
 module.exports = Challenge;

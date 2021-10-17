@@ -1,16 +1,19 @@
-const mongoose = require("mongoose");
+'use strict';
 
-module.exports = function connectToMongo() {
-  const result = mongoose.connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+const mongoose = require('mongoose');
 
-  const db = mongoose.connection;
-  db.on("error", console.error.bind(console, "db connection error: "));
-  db.once("open", function () {
-    console.log("db connected successfully");
-  });
+module.exports = () => {
 
-  return result
-}
+	const result = mongoose.connect(process.env.DATABASE_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	});
+
+	const db = mongoose.connection;
+	db.on('error', console.error.bind(console, 'db connection error: '));
+	db.once('open', () => {
+		console.log('db connected successfully');
+	});
+
+	return result;
+};
