@@ -1,9 +1,10 @@
 'use strict';
 
-const factory = require('../errorFactory');
+const ApiError = require('../apiError');
+const STATUS_CODES = require('../../constants/status_codes.json');
 
 module.exports = {
-	ChallengeInProgress: () => factory('ChallengeInProgress')('Challenge already in progress for this user'),
-	ChallengeNotFound: () => factory('ChallengeNotFound')('Challenge not found'),
-	ChallengeAttemptNotFound: () => factory('ChallengeAttemptNotFound')('Challenge attempt not found')
+	ChallengeInProgress: () => new ApiError(STATUS_CODES.BAD_REQUEST, 'Challenge already in progress for this user'),
+	ChallengeNotFound: () => new ApiError(STATUS_CODES.BAD_REQUEST, 'Challenge not found'),
+	ChallengeAttemptNotFound: () => new ApiError(STATUS_CODES.BAD_REQUEST, 'Challenge attempt not found')
 };

@@ -12,27 +12,29 @@ const listChallengesAttempts = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
 const createUser = async (req, res) => {
 	try {
-		const response = await userService.createUser(req.body);
+		const { accessToken } = req.body;
+		const response = await userService.createUser(accessToken);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
 const logIn = async (req, res) => {
 	try {
-		const response = await userService.logIn(req.body);
+		const { accessToken } = req.body;
+		const response = await userService.logIn(accessToken);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 

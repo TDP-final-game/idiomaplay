@@ -11,7 +11,7 @@ const attemptChallenge = async (req, res) => {
 		const response = await challengeAttemptService.attemptChallenge(challengeId, userId);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -22,7 +22,7 @@ const attemptUnit = async (req, res) => {
 		const response = await challengeAttemptService.attemptUnit(challengeAttemptId, parseInt(unitOrderNumber, 10));
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -32,7 +32,7 @@ const attemptExam = async (req, res) => {
 		const response = await challengeAttemptService.attemptExam(challengeAttemptId, parseInt(unitOrderNumber, 10));
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -44,7 +44,7 @@ const attemptLesson = async (req, res) => {
 			.attemptLesson(challengeAttemptId, parseInt(unitOrderNumber, 10), parseInt(lessonOrderNumber, 10));
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -56,7 +56,7 @@ const attemptExamExercise = async (req, res) => {
 			.attemptExamExercise(challengeAttemptId, parseInt(unitOrderNumber, 10), parseInt(exerciseOrderNumber, 10), answer);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -68,7 +68,7 @@ const attemptLessonExercise = async (req, res) => {
 			parseInt(unitOrderNumber, 10), parseInt(lessonOrderNumber, 10), parseInt(exerciseOrderNumber, 10), answer);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 

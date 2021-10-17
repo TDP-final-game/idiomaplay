@@ -12,7 +12,7 @@ const findChallenge = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -24,7 +24,7 @@ const createChallenge = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -36,7 +36,7 @@ const listChallenges = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -49,7 +49,7 @@ const addUnit = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -62,7 +62,7 @@ const addLesson = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -75,7 +75,7 @@ const addExam = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -88,7 +88,7 @@ const getExam = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -101,7 +101,7 @@ const addExerciseToLesson = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -114,7 +114,7 @@ const addExerciseToExam = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
@@ -127,7 +127,7 @@ const listChallengeAttempts = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+		return res.status(error.getStatus()).send(error.getMessage());
 	}
 };
 
