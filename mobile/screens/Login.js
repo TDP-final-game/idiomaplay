@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { GoogleButton } from '../components/GoogleButton';
 
+
 const Login = ({ navigation, route }) => {
   const iconSize = 200;
 

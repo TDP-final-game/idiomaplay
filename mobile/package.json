@@ -1,27 +1,36 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "echo 'we are missing some tests!'"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^12.9.2",
+    "@react-native-firebase/auth": "^12.9.2",
+    "@react-native-firebase/crashlytics": "^12.9.2",
+    "@react-native-firebase/perf": "^12.9.2",
+    "@react-native-google-signin/google-signin": "^7.0.1",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@reduxjs/toolkit": "^1.6.1",
     "apisauce": "^2.1.1",
     "cerealizr": "^1.0.1-alpha",
     "expo": "~42.0.1",
-    "expo-speech": "^9.2.1",
+    "expo-speech": "~9.2.0",
+    "expo-splash-screen": "~0.11.2",
     "expo-status-bar": "~1.0.4",
-    "react": "^17.0.0",
+    "expo-updates": "~0.8.1",
+    "react": "16.13.1",
     "react-dom": "^17.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native": "~0.63.4",
+    "react-native-gesture-handler": "~1.10.2",
+    "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
+    "react-native-unimodules": "0.14.10",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.5",
     "redux": "^4.1.1"
@@ -31,5 +40,7 @@
     "@expo/ngrok": "^2.5.0",
     "expo-cli": "^4.11.0"
   },
-  "private": true
+  "private": true,
+  "name": "mobile",
+  "version": "1.0.0"
 }
