@@ -8,12 +8,6 @@ RUN yarn install
 COPY src ./src
 
 # --------------------
-#       test
-# --------------------
-FROM build as test
-RUN yarn test
-
-# --------------------
 #       prod
 # --------------------
 FROM build as prod
