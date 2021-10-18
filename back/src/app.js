@@ -4,7 +4,6 @@ const express = require('express');
 
 const routers = require('./routers/index');
 const generateOpenapi = require('./openapi/generate');
-const errorHandler = require('./controllers/middlewares/errorHandler');
 
 module.exports = async () => {
 	const app = express();
@@ -26,11 +25,6 @@ module.exports = async () => {
      * Openapi
      */
 	app.use('/api-docs', await generateOpenapi());
-
-	/*
-     * Error handler
-     */
-	app.use(errorHandler);
 
 	return app;
 };

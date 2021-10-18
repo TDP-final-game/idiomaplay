@@ -21,7 +21,6 @@ module.exports = () => {
 		return admin.initializeApp({
 			credential: admin.credential.cert(JSONConfig()),
 			databaseURL: process.env.FIREBASE_DB_URL
-		}
-		);
+		});
 	} catch(e) { console.log(e); }
 };

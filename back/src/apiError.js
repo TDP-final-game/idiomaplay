@@ -1,20 +1,15 @@
 'use strict';
 
-class ApiError {
-	constructor(status, description, error) {
-		this.status = status;
-		this.description = description;
-		this.error = error;
+class ApiError extends Error {
+	constructor(status, message) {
+		super(message);
+		this.message = message;
+		this.statusCode = status;
 	}
 
-	get status() {
-		return this.status;
+	get description() {
+		return { statusCode: this.statusCode, message: this.message };
 	}
-
-	get messsage() {
-		return { statusCode: this.status, description: this.description, causedBy: this.error };
-	}
-
 
 }
 

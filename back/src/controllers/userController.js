@@ -12,7 +12,7 @@ const listChallengesAttempts = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(error.getStatus()).send(error.getMessage());
+		return res.status(error.statusCode).send(error.description);
 	}
 };
 
@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(error.getStatus()).send(error.getMessage());
+		return res.status(error.statusCode).send(error.description);
 	}
 };
 
@@ -34,7 +34,7 @@ const logIn = async (req, res) => {
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
-		return res.status(error.getStatus()).send(error.getMessage());
+		return res.status(error.statusCode).send(error.description);
 	}
 };
 
