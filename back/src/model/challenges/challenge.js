@@ -22,7 +22,7 @@ const Challenge = new mongoose.Schema({
 Challenge.methods.newAttempt = function() {
 	return new ChallengeAttempt({
 		...this.toObject(),
-		challenge: this._id,
+		challenge: this,
 		unitsAttempts: this.units.map(unit => unit.newAttempt())
 	});
 };

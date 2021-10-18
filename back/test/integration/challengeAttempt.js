@@ -90,7 +90,7 @@ describe('/challengeAttempts', () => {
 				obj1: challengeAttempt,
 				obj2: challenge
 			});
-			expect(challengeAttempt.status.status).to.eql(STATUSES.IN_PROGRESS);
+			expect(challengeAttempt.status).to.eql(STATUSES.IN_PROGRESS);
 
 			const unit = challenge.units[0];
 			const unitAttempt = challengeAttempt.unitsAttempts[0];
@@ -99,7 +99,7 @@ describe('/challengeAttempts', () => {
 				obj1: unitAttempt,
 				obj2: unit
 			});
-			expect(unitAttempt.status.status).to.eql(STATUSES.PENDING);
+			expect(unitAttempt.status).to.eql(STATUSES.PENDING);
 			expect(unitAttempt.lessonsAttempts).to.eql([]);
 		});
 	});
@@ -115,7 +115,7 @@ describe('/challengeAttempts', () => {
 				obj1: unitAttempt,
 				obj2: unit
 			});
-			expect(unitAttempt.status.status).to.eql(STATUSES.IN_PROGRESS);
+			expect(unitAttempt.status).to.eql(STATUSES.IN_PROGRESS);
 
 			const lessonAttempt = unitAttempt.lessonsAttempts[0];
 			const lesson = unit.lessons[0];
@@ -124,7 +124,7 @@ describe('/challengeAttempts', () => {
 				obj1: lessonAttempt,
 				obj2: lesson
 			});
-			expect(lessonAttempt.status.status).to.eql(STATUSES.PENDING);
+			expect(lessonAttempt.status).to.eql(STATUSES.PENDING);
 			expect(lessonAttempt.exercisesAttempts).to.eql([]);
 
 			const { examAttempt } = unitAttempt;
@@ -134,7 +134,7 @@ describe('/challengeAttempts', () => {
 				obj1: examAttempt,
 				obj2: exam
 			});
-			expect(examAttempt.status.status).to.eql(STATUSES.PENDING);
+			expect(examAttempt.status).to.eql(STATUSES.PENDING);
 		});
 	});
 
@@ -149,7 +149,7 @@ describe('/challengeAttempts', () => {
 				obj1: lessonAttempt,
 				obj2: lesson
 			});
-			expect(lessonAttempt.status.status).to.eql(STATUSES.IN_PROGRESS);
+			expect(lessonAttempt.status).to.eql(STATUSES.IN_PROGRESS);
 
 			const exerciseAttempt = lessonAttempt.exercisesAttempts[0];
 			const exercise = lesson.exercises[0];
@@ -158,7 +158,7 @@ describe('/challengeAttempts', () => {
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
-			expect(exerciseAttempt.status.status).to.eql(STATUSES.PENDING);
+			expect(exerciseAttempt.status).to.eql(STATUSES.PENDING);
 		});
 	});
 
@@ -174,7 +174,7 @@ describe('/challengeAttempts', () => {
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
-			expect(exerciseAttempt.status.status).to.eql(STATUSES.PASSED);
+			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
 		});
 	});
@@ -190,7 +190,7 @@ describe('/challengeAttempts', () => {
 				obj1: examAttempt,
 				obj2: exam
 			});
-			expect(examAttempt.status.status).to.eql(STATUSES.IN_PROGRESS);
+			expect(examAttempt.status).to.eql(STATUSES.IN_PROGRESS);
 
 			const exerciseAttempt = examAttempt.exercisesAttempts[0];
 			const exercise = exam.exercises[0];
@@ -199,7 +199,7 @@ describe('/challengeAttempts', () => {
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
-			expect(exerciseAttempt.status.status).to.eql(STATUSES.PENDING);
+			expect(exerciseAttempt.status).to.eql(STATUSES.PENDING);
 		});
 	});
 
@@ -215,7 +215,7 @@ describe('/challengeAttempts', () => {
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
-			expect(exerciseAttempt.status.status).to.eql(STATUSES.PASSED);
+			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
 		});
 	});
