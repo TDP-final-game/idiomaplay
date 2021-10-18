@@ -7,12 +7,12 @@ module.exports = {
 	statement: 'Hoy es un buen día para salvar vidas',
 	options: [
 		{
-			text: 'Today It\'s a great day to save lives',
-			correct: true
-		},
-		{
 			text: 'Tomorrow is a great day to save lifes',
 			correct: false
+		},
+		{
+			text: 'Today It\'s a great day to save lives',
+			correct: true
 		},
 		{
 			text: 'Next year I will move to Lisboa',

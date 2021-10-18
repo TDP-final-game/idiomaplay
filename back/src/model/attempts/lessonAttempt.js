@@ -22,7 +22,7 @@ const LessonAttempt = new mongoose.Schema({
 LessonAttempt.virtual('status').get(function() {
 	if(!this.exercisesAttempts || this.exercisesAttempts.length === 0)
 		return Status.PENDING();
-	if(this.exercisesAttempts.every(exercise => exercise.isPassed()))
+	if(this.isLessonPassed())
 		return Status.PASSED();
 	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()))
 		return Status.FAILED();
@@ -53,6 +53,15 @@ LessonAttempt.methods.getExercise = function(exerciseOrderNumber) {
 LessonAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {
 	const exercise = this.getExercise(exerciseOrderNumber);
 	exercise.attempt({ answer });
+};
+
+LessonAttempt.methods.numberOfPassedExercises = function() {
+	return this.exercisesAttempts.filter(exercise => exercise.isPassed()).length;
+};
+
+LessonAttempt.methods.isLessonPassed = function() {
+	return this.exercisesAttempts.every(exercise => exercise.isCompleted())
+			&& this.numberOfPassedExercises() / this.exercisesAttempts.length >= 0.8;
 };
 
 /*
