@@ -4,8 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
 import { UnitHeader } from '../components/ChapterHeader';
-
-const LESSONS = 50;
+import UnitService from '../services/unitService';
 
 const lessonArray = [
   { number: 1, state: 'inprogress' },
@@ -20,11 +19,17 @@ const lessonArray = [
 ];
 
 const LessonsList = ({ navigation }) => {
+  const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+      UnitService.getLessons(1);
+  }, []);
+
   const handleReturn = () => {
     return navigation.navigate('Home');
   };
 
-  const handlePress = (lessonNumer) => {
+  const handlePress = (lessonNumber) => {
     return navigation.navigate('Excercise');
   };
 
