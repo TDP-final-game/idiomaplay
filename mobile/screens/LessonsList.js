@@ -4,8 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
 import { UnitHeader } from '../components/ChapterHeader';
-
-const LESSONS = 50;
+import UnitService from '../services/unitService';
 
 const lessonArray = [
   { number: 1, state: 'inprogress' },
@@ -19,12 +18,30 @@ const lessonArray = [
   { number: 9, state: 'completed' },
 ];
 
+// Array [
+//     Object {
+//   "exercisesAttempts": Array [],
+//       "lessonInfo": Object {
+//     "description": "Leccion segunda",
+//         "name": "Leccion 1",
+//         "orderNumber": 1,
+//   },
+//   "status": "PENDING",
+// },
+// ]
+
 const LessonsList = ({ navigation }) => {
+  const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+    UnitService.getLessons(1).then(setLessons)
+  }, []);
+
   const handleReturn = () => {
     return navigation.navigate('Home');
   };
 
-  const handlePress = (lessonNumer) => {
+  const handlePress = (lessonNumber) => {
     return navigation.navigate('Excercise');
   };
 
@@ -36,14 +53,14 @@ const LessonsList = ({ navigation }) => {
 
       <View style={{ flex: 0.88 }}>
         <FlatList
-          data={lessonArray}
-          keyExtractor={(item) => item.number.toString()}
+          data={lessons}
+          keyExtractor={(item) => item.lessonInfo.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>
               <LessonCard
-                text={`Lesson ${item.number}`}
-                state={item.state}
-                onPress={() => handlePress(item.number)}
+                text={item.lessonInfo.name}
+                state={item.status}
+                onPress={() => handlePress(item.lessonInfo.orderNumber)}
               />
             </View>
           )}
