@@ -22,5 +22,5 @@ module.exports = () => {
 			credential: admin.credential.cert(JSONConfig()),
 			databaseURL: process.env.FIREBASE_DB_URL
 		});
-	} catch(e) { console.log("llega aca", e); }
+	} catch(e) { console.log('llega aca', e); }
 };
