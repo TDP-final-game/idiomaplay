@@ -4,14 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet, View } from 'react-native';
+import {states} from '../config/states';
 import { Badge } from './Badge';
 
 export const LessonCard = ({ text, state, onPress }) => {
   const badgeInfo = {
-    inprogress: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
-    completed: { color: 'lightgreen', text: 'Completa' },
-    pending: { color: 'lightblue', text: 'Pendiente' },
-    failed: { color: 'tomato', text: 'Fallida' },
+    [states.inProgress]: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
+    [states.passed]: { color: 'lightgreen', text: 'Completa' },
+    [states.pending]: { color: 'lightblue', text: 'Pendiente' },
+    [states.failed]: { color: 'tomato', text: 'Fallida' },
   };
 
   return (
