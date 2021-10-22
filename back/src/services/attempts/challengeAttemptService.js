@@ -1,9 +1,9 @@
 'use strict';
 
-const { model: challengeModel } = require('../model/challenges/challenge');
-const { model: challengeAttemptModel } = require('../model/attempts/challengeAttempt');
+const { model: challengeModel } = require('../../model/challenges/challenge');
+const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 
-const errors = require('./challengeErrors');
+const errors = require('./challengeAttemptErrors');
 
 const attemptChallenge = async (challengeId, userId) => {
 	if(await challengeAttemptModel.anyInProgress({ challengeId, userId }))

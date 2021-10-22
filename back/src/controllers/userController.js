@@ -1,6 +1,6 @@
 'use strict';
 
-const userService = require('../services/userService');
+const userService = require('../services/users/userService');
 const STATUS_CODES = require('../constants/status_codes.json');
 
 const listChallengesAttempts = async (req, res) => {

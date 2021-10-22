@@ -1,6 +1,6 @@
 'use strict';
 
-const challengeService = require('../services/challengeService');
+const challengeService = require('../services/challenges/challengeService');
 const STATUS_CODES = require('../constants/status_codes.json');
 
 const findChallenge = async (req, res) => {

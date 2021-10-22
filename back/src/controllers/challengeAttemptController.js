@@ -1,6 +1,6 @@
 'use strict';
 
-const challengeAttemptService = require('../services/challengeAttemptService');
+const challengeAttemptService = require('../services/attempts/challengeAttemptService');
 const STATUS_CODES = require('../constants/status_codes.json');
 
 const USER_ID = '6161bbb002bf6b116530d717';

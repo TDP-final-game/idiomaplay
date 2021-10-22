@@ -1,6 +1,6 @@
 'use strict';
 
-const challengesServices = require('../services/challengeService');
+const challengesServices = require('../services/challenges/challengeService');
 const { model: challengeModel } = require('../model/challenges/challenge');
 const challenge = require('./challenge');
 
