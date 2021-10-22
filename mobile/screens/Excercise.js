@@ -11,10 +11,12 @@ import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import { answerExercise, nextExercise } from '../redux/challenge';
 
-const Excercise = ({ navigation }) => {
+const Excercise = ({ navigation, route }) => {
+  const {lessonOrderNumber, exercisesAttempts} = route.params;
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -31,20 +33,24 @@ const Excercise = ({ navigation }) => {
     handleContinue();
   }, []);
 
-  const handleContinue = async () => {
-    if (results.filter((x) => x == null).length == 0) return navigation.navigate('ExamEntry');
-
-    const { payload } = await dispatch(nextExercise());
-    setCurrentExercise(payload);
+  const handleContinue = () => {
+    console.log(exercisesAttempts);
+    if (currentExerciseIndex >= exercisesAttempts.length) return navigation.navigate('ExamEntry');
+    setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
     setIncorrectAnswer(null);
   };
 
-  const handleAnswerSelected = async (option) => {
-    const { payload } = await dispatch(answerExercise([option, currentExercise.id]));
-    setCorrectAnswer(payload.correctAnswer);
-    if (payload.correctAnswer !== option) {
-      setIncorrectAnswer(option);
+  const handleAnswerSelected = async (selectedOption) => {
+    // const { payload } = await dispatch(answerExercise([option, currentExercise.id]));
+    // setCorrectAnswer(payload.correctAnswer);
+    // if (payload.correctAnswer !== option) {
+    //   setIncorrectAnswer(option);
+    // }
+    const correctOption = currentExercise.options.find(option => option.correct).text;
+    setCorrectAnswer(correctOption);
+    if (correctOption !== selectedOption) {
+      setIncorrectAnswer(selectedOption);
     }
   };
 
@@ -52,8 +58,8 @@ const Excercise = ({ navigation }) => {
     currentExercise.options.map((option, i) => (
       <View style={styles.buttonContainer} key={i}>
         <AnswerButton
-          answer={option}
-          onPress={() => handleAnswerSelected(option)}
+          answer={option.text}
+          onPress={() => handleAnswerSelected(option.text)}
           correctAnswer={correctAnswer}
           incorrectAnswer={incorrectAnswer}
         />
@@ -71,8 +77,8 @@ const Excercise = ({ navigation }) => {
           <View style={{ flex: 0.12 }}>
             <ChapterHeader
               returnButtonFunction={handleReturn}
-              unit={currentExercise.unit}
-              lesson={currentExercise.lesson}
+              unit={1}
+              lesson={1}
             />
           </View>
 
@@ -98,7 +104,10 @@ const Excercise = ({ navigation }) => {
           {renderButtons()}
 
           <View style={{ flex: 0.12 }}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} />
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={() => {
+              setCurrentExerciseIndex(currentExerciseIndex + 1);
+              handleContinue();
+            }} />
           </View>
         </>
       )}
