@@ -22,7 +22,7 @@ const LessonsList = ({ navigation }) => {
   const [lessons, setLessons] = useState([]);
 
   useEffect(() => {
-      UnitService.getLessons(1);
+    UnitService.getLessons(1).then((a) => console.log(a));
   }, []);
 
   const handleReturn = () => {
