@@ -43,6 +43,21 @@ class ChallengeAttempt {
 			.put(`/challengeAttempts/${challengeId}/unitsAttempts/${unitOrderNumber}/examAttempt/exercisesAttempts`)
 			.send({ exerciseOrderNumber, answer });
 	}
+
+	getChallengeAttempt({ challengeId }) {
+		return this.app
+			.get(`/challengeAttempts/${challengeId}`);
+	}
+
+	getUnitAttempt({ challengeId, unitOrderNumber }) {
+		return this.app
+			.get(`/challengeAttempts/${challengeId}/unitsAttempts/${unitOrderNumber}`);
+	}
+
+	getLessonAttempt({ challengeId, unitOrderNumber, lessonOrderNumber }) {
+		return this.app
+			.get(`/challengeAttempts/${challengeId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`);
+	}
 }
 
 module.exports = ChallengeAttempt;

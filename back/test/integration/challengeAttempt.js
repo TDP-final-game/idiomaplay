@@ -16,6 +16,9 @@ const compare = ({ properties, obj1, obj2 }) => {
 const correctAnswer = exercise => exercise.options.find(option => option.correct).text;
 
 describe('/challengeAttempts', () => {
+	let challengeExample;
+	let challengeAttemptExample;
+
 	let challenge;
 	let challengeAttemptReq;
 	let unitAttemptReq;
@@ -25,8 +28,8 @@ describe('/challengeAttempts', () => {
 	const examExercisesAttemptReq = [];
 
 	beforeEach(async function() {
-		const challengeExample = new ChallengeExample(this.app);
-		const challengeAttemptExample = new ChallengeAttemptExample(this.app);
+		challengeExample = new ChallengeExample(this.app);
+		challengeAttemptExample = new ChallengeAttemptExample(this.app);
 
 		// Challenge
 		challenge = await challengeExample.create();
@@ -217,6 +220,57 @@ describe('/challengeAttempts', () => {
 			});
 			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
+		});
+	});
+
+	let challengeId;
+	let unitOrderNumber;
+	let lessonOrderNumber;
+
+	beforeEach(() => {
+		challengeId = challengeAttemptReq.body.id;
+		unitOrderNumber = unitAttemptReq.body.orderNumber;
+		lessonOrderNumber = lessonAttemptReq.body.orderNumber;
+	});
+
+	describe('GET /:challengeAttemptId', () => {
+		it('should return the challenge attempt', async () => {
+			const getChallengeAttemptReq = await challengeAttemptExample.getChallengeAttempt({ challengeId });
+			expect(getChallengeAttemptReq).to.have.status(200);
+
+			compare({
+				properties: ['name', 'difficulty', 'description'],
+				obj1: getChallengeAttemptReq.body,
+				obj2: challenge
+			});
+		});
+	});
+
+	describe('GET /:challengeAttemptId/unitsAttempts/:unitOrderNumber', () => {
+		it('should return the unit attempt', async () => {
+			const getUnitAttemptReq = await challengeAttemptExample.getUnitAttempt({ challengeId, unitOrderNumber });
+
+			expect(getUnitAttemptReq).to.have.status(200);
+
+			compare({
+				properties: ['name', 'orderNumber', 'description'],
+				obj1: getUnitAttemptReq.body,
+				obj2: challenge.units[0]
+			});
+		});
+	});
+
+	describe('GET /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber', () => {
+		it('should return the lesson attempt', async () => {
+			const getLessonAttemptReq = await challengeAttemptExample.getLessonAttempt({ challengeId, unitOrderNumber, lessonOrderNumber });
+
+			expect(getLessonAttemptReq).to.have.status(200);
+
+			compare({
+				properties: ['name', 'orderNumber', 'description'],
+				obj1: getLessonAttemptReq.body,
+				obj2: challenge.units[0].lessons[0]
+			});
 		});
 	});
 });
