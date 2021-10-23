@@ -19,7 +19,7 @@ const LessonsList = ({ navigation }) => {
   };
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber, '6171f4ace77f0aeb8e6d6be1');
+    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber, '6174569bd026c7177f9fe5aa');
     return navigation.navigate('Excercise', {lessonOrderNumber, exercisesAttempts});
   };
 
@@ -32,13 +32,13 @@ const LessonsList = ({ navigation }) => {
       <View style={{ flex: 0.88 }}>
         <FlatList
           data={lessons}
-          keyExtractor={(item) => item.lessonInfo.orderNumber.toString()}
+          keyExtractor={(item) => item.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>
               <LessonCard
-                text={item.lessonInfo.name}
+                text={item.name}
                 state={item.status}
-                onPress={() => handlePress(item.lessonInfo.orderNumber)}
+                onPress={() => handlePress(item.orderNumber)}
               />
             </View>
           )}

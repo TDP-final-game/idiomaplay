@@ -11,7 +11,7 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   const bounceValue = new Animated.Value(initialHeight);
 
   const [footerHeight, setFooterHeight] = useState(initialHeight);
-  const results = useSelector((state) => state.challenge.exerciseResults);
+  const results = useSelector((state) => state.lesson.exerciseResults);
 
   // This will animate the transalteY of the subview
   // between 0 & 100 depending on its current state
@@ -42,6 +42,7 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
 
   const printCurrentResults = () => {
     const res = [...results];
+    console.log(res);
     res[res.indexOf(null)] = 'current';
     return res.map((result, i) => resultIcon[result](i));
   };

@@ -1,23 +1,24 @@
 import api from './api';
 
-async function getLessons(unitOrderNumber, challengeId = '6171ef7fe77f0aeb8e6d6bc5') {
-  const response = await api.get('/users/6171f429e77f0aeb8e6d6bdd/challengeAttempts');
-  return response.data[0].unitsAttempts.find(
-    (unitAttempt) => unitAttempt.unitInfo.orderNumber === unitOrderNumber
-  ).lessonsAttempts;
+Array.prototype.findUnitAttempt = function(unitOrderNumber) {
+  return this.find((unitAttempt) => unitAttempt.orderNumber === unitOrderNumber);
+}
+
+Array.prototype.findLessonAttempt = function(lessonOrderNumber) {
+  return this.find((lessonAttempt) => lessonAttempt.orderNumber === lessonOrderNumber);
+}
+
+async function getLessons(unitOrderNumber, challengeId) {
+  const response = await api.get('/users/6161bbb002bf6b116530d717/challengeAttempts');
+  return response.data[response.data.length - 1].unitsAttempts.findUnitAttempt(unitOrderNumber).lessonsAttempts;
+}
+
+async function attemptLesson(unitOrderNumber, lessonOrderNumber, challengeAttemptId) {
+  const response = await api.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`, {lessonOrderNumber});
+  return response.data.exercisesAttempts;
 }
 
 export default {
   getLessons: getLessons,
+  attemptLesson: attemptLesson
 };
-
-// "lessons": Array [
-//     Object {
-//     "exercises": Array [],
-//         "lessonInfo": Object {
-//         "description": "Leccion segunda",
-//             "name": "Leccion 1",
-//             "orderNumber": 1,
-//     },
-// },
-// ],

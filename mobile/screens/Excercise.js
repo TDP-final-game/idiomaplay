@@ -9,7 +9,8 @@ import { AnswerButton } from '../components/AnswerButton';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
-import { answerExercise, nextExercise } from '../redux/challenge';
+import LessonService from '../services/lessonService';
+import { answer } from '../redux/lesson';
 
 const Excercise = ({ navigation, route }) => {
   const {lessonOrderNumber, exercisesAttempts} = route.params;
@@ -29,12 +30,13 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.LISTEN_AUDIO]: 'Escucha el siguiente audio',
   };
 
+  const lessonService = LessonService.create('6174569bd026c7177f9fe5aa', 1, lessonOrderNumber);
+
   useEffect(() => {
     handleContinue();
   }, []);
 
   const handleContinue = () => {
-    console.log(exercisesAttempts);
     if (currentExerciseIndex >= exercisesAttempts.length) return navigation.navigate('ExamEntry');
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
@@ -42,12 +44,13 @@ const Excercise = ({ navigation, route }) => {
   };
 
   const handleAnswerSelected = async (selectedOption) => {
-    // const { payload } = await dispatch(answerExercise([option, currentExercise.id]));
-    // setCorrectAnswer(payload.correctAnswer);
-    // if (payload.correctAnswer !== option) {
-    //   setIncorrectAnswer(option);
-    // }
     const correctOption = currentExercise.options.find(option => option.correct).text;
+
+    const _ = await lessonService.answerExercise(selectedOption, currentExerciseIndex); //todo: retry if error
+    dispatch(answer(selectedOption===correctOption));
+
+    setCurrentExerciseIndex(currentExerciseIndex + 1);
+
     setCorrectAnswer(correctOption);
     if (correctOption !== selectedOption) {
       setIncorrectAnswer(selectedOption);
@@ -104,10 +107,7 @@ const Excercise = ({ navigation, route }) => {
           {renderButtons()}
 
           <View style={{ flex: 0.12 }}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={() => {
-              setCurrentExerciseIndex(currentExerciseIndex + 1);
-              handleContinue();
-            }} />
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue}/>
           </View>
         </>
       )}
