@@ -11,6 +11,10 @@ import Excercise from './screens/Excercise';
 import ExamEntry from './screens/ExamEntry';
 import LessonsList from './screens/LessonsList';
 import SignupConfirmation from './screens/SignupConfirmation';
+import firebase from 'firebase';
+import { firebaseConfig } from './config';
+firebase.initializeApp(firebaseConfig);
+
 
 const Stack = createNativeStackNavigator();
 
