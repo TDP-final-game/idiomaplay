@@ -9,12 +9,15 @@ import { AnswerButton } from '../components/AnswerButton';
 import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
-import { answerExercise, nextExercise } from '../redux/challenge';
+import LessonService from '../services/lessonService';
+import { answer } from '../redux/lesson';
 
-const Excercise = ({ navigation }) => {
+const Excercise = ({ navigation, route }) => {
+  const {lessonOrderNumber, exercisesAttempts} = route.params;
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -27,24 +30,30 @@ const Excercise = ({ navigation }) => {
     [exerciseTypes.LISTEN_AUDIO]: 'Escucha el siguiente audio',
   };
 
+  const lessonService = LessonService.create('6174569bd026c7177f9fe5aa', 1, lessonOrderNumber);
+
   useEffect(() => {
     handleContinue();
   }, []);
 
-  const handleContinue = async () => {
-    if (results.filter((x) => x == null).length == 0) return navigation.navigate('ExamEntry');
-
-    const { payload } = await dispatch(nextExercise());
-    setCurrentExercise(payload);
+  const handleContinue = () => {
+    if (currentExerciseIndex >= exercisesAttempts.length) return navigation.navigate('ExamEntry');
+    setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
     setIncorrectAnswer(null);
   };
 
-  const handleAnswerSelected = async (option) => {
-    const { payload } = await dispatch(answerExercise([option, currentExercise.id]));
-    setCorrectAnswer(payload.correctAnswer);
-    if (payload.correctAnswer !== option) {
-      setIncorrectAnswer(option);
+  const handleAnswerSelected = async (selectedOption) => {
+    const correctOption = currentExercise.options.find(option => option.correct).text;
+
+    const _ = await lessonService.answerExercise(selectedOption, currentExerciseIndex); //todo: retry if error
+    dispatch(answer(selectedOption===correctOption));
+
+    setCurrentExerciseIndex(currentExerciseIndex + 1);
+
+    setCorrectAnswer(correctOption);
+    if (correctOption !== selectedOption) {
+      setIncorrectAnswer(selectedOption);
     }
   };
 
@@ -52,8 +61,8 @@ const Excercise = ({ navigation }) => {
     currentExercise.options.map((option, i) => (
       <View style={styles.buttonContainer} key={i}>
         <AnswerButton
-          answer={option}
-          onPress={() => handleAnswerSelected(option)}
+          answer={option.text}
+          onPress={() => handleAnswerSelected(option.text)}
           correctAnswer={correctAnswer}
           incorrectAnswer={incorrectAnswer}
         />
@@ -71,8 +80,8 @@ const Excercise = ({ navigation }) => {
           <View style={{ flex: 0.12 }}>
             <ChapterHeader
               returnButtonFunction={handleReturn}
-              unit={currentExercise.unit}
-              lesson={currentExercise.lesson}
+              unit={1}
+              lesson={1}
             />
           </View>
 
@@ -98,7 +107,7 @@ const Excercise = ({ navigation }) => {
           {renderButtons()}
 
           <View style={{ flex: 0.12 }}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} />
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue}/>
           </View>
         </>
       )}
