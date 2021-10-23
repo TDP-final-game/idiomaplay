@@ -3,9 +3,11 @@ on:
   pull_request:
     paths:
       - "back/**"
+      - ".github/workflows/back.yaml"
   push:
     paths:
       - "back/**"
+      - ".github/workflows/back.yaml"
 env:
   SERVICE: back
   REGISTRY_URL: ghcr.io
@@ -20,10 +22,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Start services
-        run: .github/scripts/start_services.sh
       - name: Run tests
-        run: docker-compose exec -T back bash -c 'yarn install --check-files --cache-folder .ycache && rm -rf .ycache && yarn test'
+        run: docker-compose run ${{ env.SERVICE }} sh -c "yarn install && yarn test"
 
   package:
     runs-on: ubuntu-20.04

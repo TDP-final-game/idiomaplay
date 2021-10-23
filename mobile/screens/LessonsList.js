@@ -6,7 +6,6 @@ import { LessonCard } from '../components/LessonCard';
 import { UnitHeader } from '../components/ChapterHeader';
 import UnitService from '../services/unitService';
 
-
 const LessonsList = ({ navigation }) => {
   const [lessons, setLessons] = useState([]);
 
