@@ -3,9 +3,11 @@ on:
   pull_request:
     paths:
       - "back/**"
+      - ".github/workflows/back.yaml"
   push:
     paths:
       - "back/**"
+      - ".github/workflows/back.yaml"
 env:
   SERVICE: back
   REGISTRY_URL: ghcr.io
