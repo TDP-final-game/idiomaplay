@@ -7,6 +7,7 @@ const admin = require('../../startup/firebase')();
 const getUserInformation = async token => {
 	try {
 		const userInformation = await admin.auth().verifyIdToken(token);
+		console.log(userInformation);
 		return userInformation;
 	} catch(error) {
 		// TODO: REFACTOR THIS

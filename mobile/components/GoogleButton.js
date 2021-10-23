@@ -4,7 +4,6 @@ import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import auth from '@react-native-firebase/auth';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 
@@ -15,32 +14,6 @@ import firebase from 'firebase';
 export const GoogleButton = ({ text, onPress }) => {
 
 
-
-
-  const signInWithGoogle = async () => {
-    // setLoading(true);
-    try {
-      const { type, idToken, accessToken } = await Google.logInAsync({
-        androidClientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.com',
-        behavior: 'web',
-        scopes: ['profile', 'email']
-      });
-      if (type  === 'success') {
-        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        const userData = await firebase.auth().signInWithCredential(credential);
-        dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
-        const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
-        dispatch(actionsCreator.setFirebaseToken(firebaseToken));
-        // setLoading(false);
-        // navigation.navigate(BASE_ROUTES.FIREBASE_LOADING.name);
-      }
-    } catch ({ message }) {
-      // setLoading(false);
-      console.log('GoogleError:' + message);
-    }
-    // setLoading(false);
-  };
 
   async function onGoogleButtonPress() {
     try {
@@ -54,8 +27,10 @@ export const GoogleButton = ({ text, onPress }) => {
         const credential = firebase.auth.GoogleAuthProvider.credential(signInData.idToken, signInData.accessToken);
         console.log(credential)
         const userData = await firebase.auth().signInWithCredential(credential);
-        console.log(signInData.user)
-        firebase.auth().createUserWithEmailAndPassword(email, password);
+        const token = await firebase.auth().currentUser.getIdToken(true)
+        // dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
+        // const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
+        console.log('Token to use:', token)        // firebase.auth().createUserWithEmailAndPassword(email, password);
         // // dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
         // const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
         // console.log(firebaseToken)
