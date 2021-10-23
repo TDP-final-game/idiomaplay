@@ -42,7 +42,6 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
 
   const printCurrentResults = () => {
     const res = [...results];
-    console.log(res);
     res[res.indexOf(null)] = 'current';
     return res.map((result, i) => resultIcon[result](i));
   };
@@ -50,7 +49,6 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   const updateHeight = (layout) => {
     const { height } = layout;
     setFooterHeight(height);
-    console.log('H setted to ', height);
   };
 
   return (
