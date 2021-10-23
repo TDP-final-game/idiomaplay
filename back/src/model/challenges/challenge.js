@@ -20,11 +20,13 @@ const Challenge = new mongoose.Schema({
  * Instance methods
  */
 Challenge.methods.newAttempt = function() {
-	return new ChallengeAttempt({
+	const attempt = new ChallengeAttempt({
 		...this.toObject(),
 		challenge: this,
 		unitsAttempts: this.units.map(unit => unit.newAttempt())
 	});
+	attempt._id = undefined;
+	return attempt;
 };
 
 Challenge.methods.getUnit = function(unitOrderNumber) {

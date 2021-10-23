@@ -31,7 +31,7 @@ describe('/challengeAttempts', () => {
 		// Challenge
 		challenge = await challengeExample.create();
 		challengeAttemptReq = await challengeAttemptExample.create({ challengeId: challenge._id });
-		const challengeId = challenge._id;
+		const challengeId = challengeAttemptReq.body._id;
 		const unitOrderNumber = challenge.units[0].orderNumber;
 		const lessonOrderNumber = challenge.units[0].lessons[0].orderNumber;
 
