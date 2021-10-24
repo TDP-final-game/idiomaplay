@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
 		throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
 
 	const { firstName, lastName } = req.body;
-	res.status(STATUS_CODES.OK).send(await userService.createUser({
+	res.status(STATUS_CODES.CREATED).send(await userService.createUser({
 		email: user.email,
 		firstName,
 		lastName
