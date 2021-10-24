@@ -38,7 +38,7 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
         <View style={{ width: '15%' }}>
           <AntDesign name="google" size={30} color={colors.PRIMARY_DARK} />
         </View>
-        <View style={{ width: '70%' }}>
+        <View style={{ width: '75%' }}>
           <Text style={styles.text}>{text}</Text>
         </View>
       </View>
