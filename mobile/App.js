@@ -11,6 +11,7 @@ import Excercise from './screens/Excercise';
 import ExamEntry from './screens/ExamEntry';
 import LessonsList from './screens/LessonsList';
 import SignupConfirmation from './screens/SignupConfirmation';
+import {useSelector} from "react-redux";
 import firebase from 'firebase';
 import { firebaseConfig } from './config';
 firebase.initializeApp(firebaseConfig);
@@ -18,25 +19,40 @@ firebase.initializeApp(firebaseConfig);
 
 const Stack = createNativeStackNavigator();
 
-function App() {
+const RootComponent = () => {
+  const isLogged = useSelector(state => state.user.logged);
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={() => ({
-              headerShown: false,
-            })}
-          >
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Login" component={Login} />
+    <NavigationContainer>
+      <Stack.Navigator
+          initialRouteName={isLogged ? "Home": "Login"}
+          screenOptions={() => ({
+            headerShown: false,
+          })}
+      >
+        { isLogged ? (
+          <>
+            <Stack.Screen name="Home" component={Home}/>
             <Stack.Screen name="ExamEntry" component={ExamEntry} />
             <Stack.Screen name="Excercise" component={Excercise} />
             <Stack.Screen name="LessonsList" component={LessonsList} />
             <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
-          </Stack.Navigator>
-        </NavigationContainer>
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Login" component={Login} />
+          </>
+        )
+        }
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+function App() {
+  return (
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <RootComponent></RootComponent>
       </SafeAreaProvider>
     </Provider>
   );

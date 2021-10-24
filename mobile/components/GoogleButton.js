@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { colors } from '../config/colors';
 import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
@@ -8,36 +8,28 @@ import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 
 
+export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
 
+  const logInText = "Inicia sesion con Google";
+  const signUpText = "Registrate con Google";
+  const text = logInMode ? logInText : signUpText;
 
-
-export const GoogleButton = ({ text, onPress }) => {
-
-
+  const [signInData, setSignInData] = useState(null);
 
   async function onGoogleButtonPress() {
     try {
-      const signInData = await Google.logInAsync({
+      const {type, accessToken, user} = await Google.logInAsync({
         clientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.com',
         behavior: 'web',
         scopes: ['profile', 'email']
       });
-      console.log('signInData', signInData)
-      if (signInData.type  === 'success') {
-        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        // const credential = firebase.auth.GoogleAuthProvider.credential(signInData.idToken, signInData.accessToken);
-        // console.log('credential', credential)
-        const token = await firebase.auth().currentUser.getIdToken(true)
-        console.log('Token to use :', token)        // firebase.auth().createUserWithEmailAndPassword(email, password);
-        // const userData = await firebase.auth().signInWithCredential(credential);
-        // console.log('userData', userData)
-        // dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
-        // const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
-        // // dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
-        // const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
-        // console.log(firebaseToken)
-        // dispatch(actionsCreator.setFirebaseToken(firebaseToken));
-        // navigation.navigate(BASE_ROUTES.FIREBASE_LOADING.name);
+      if (type  === 'success') {
+        onSuccessCallback(user, accessToken);
+        // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        // console.log(await firebase.auth());
+        // const currentUser = await firebase.auth().currentUser;
+        // console.log(currentUser);
+        // const token = currentUser.getIdToken(true)
       }
     } catch (e) {
       console.log('GoogleError:', e);
@@ -53,7 +45,7 @@ export const GoogleButton = ({ text, onPress }) => {
           <AntDesign name="google" size={30} color={colors.PRIMARY_DARK} />
         </View>
         <View style={{ width: '70%' }}>
-          <Text style={styles.text}>{'registrarse con Google'}</Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
       </View>
     </TouchableOpacity>

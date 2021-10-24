@@ -3,12 +3,36 @@ import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
-import { PrimaryButton } from '../components/PrimaryButton';
+import {useDispatch} from "react-redux";
+import {logIn} from '../redux/user';
 import { GoogleButton } from '../components/GoogleButton';
 
 
 const Login = ({ navigation, route }) => {
   const iconSize = 200;
+
+  const logInText = "¿Ya tienes cuenta? Inicia sesión.";
+  const signUpText = "¿No tienes cuenta? Registrate.";
+
+  const [logInMode, setLogInMode] = useState(false);
+  const [text, setText] = useState(logInText);
+
+  const dispatch = useDispatch();
+
+  const changeLogInMode = () => {
+    const nextMode = !logInMode;
+    setLogInMode(nextMode);
+    setText(nextMode ? signUpText : logInText);
+  };
+
+  const onSuccessCallback = (user, accessToken) => {
+    dispatch(logIn(accessToken));
+    if (!logInMode) {
+      return navigation.navigate('SignupConfirmation', {user});
+    } else {
+      return navigation.navigate('Home');
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -21,11 +45,13 @@ const Login = ({ navigation, route }) => {
 
         <View style={{ flex: 0.15, justifyContent: 'space-between' }}>
           <View style={styles.buttonContainer}>
-            <GoogleButton text={'Registrarse con Google'} />
+            <GoogleButton onSuccessCallback={onSuccessCallback} logInMode={logInMode} />
           </View>
 
           <View style={styles.textContainer}>
-            <Text style={styles.loginText}>¿Ya tienes cuenta? Inicia sesión.</Text>
+            <Text style={styles.loginText} onPress={changeLogInMode}>
+              {text}
+            </Text>
           </View>
         </View>
       </View>
