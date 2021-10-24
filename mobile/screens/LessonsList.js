@@ -4,28 +4,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
 import { UnitHeader } from '../components/ChapterHeader';
-
-const LESSONS = 50;
-
-const lessonArray = [
-  { number: 1, state: 'inprogress' },
-  { number: 2, state: 'pending' },
-  { number: 3, state: 'completed' },
-  { number: 4, state: 'failed' },
-  { number: 5, state: 'pending' },
-  { number: 6, state: 'completed' },
-  { number: 7, state: 'completed' },
-  { number: 8, state: 'completed' },
-  { number: 9, state: 'completed' },
-];
+import UnitService from '../services/unitService';
 
 const LessonsList = ({ navigation }) => {
+  const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+    UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then(setLessons) // todo: spinner while loading
+  }, []);
+
   const handleReturn = () => {
     return navigation.navigate('Home');
   };
 
-  const handlePress = (lessonNumer) => {
-    return navigation.navigate('Excercise');
+  const handlePress = async (lessonOrderNumber) => {
+    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber, '6174569bd026c7177f9fe5aa');
+    return navigation.navigate('Excercise', {lessonOrderNumber, exercisesAttempts});
   };
 
   return (
@@ -36,14 +30,14 @@ const LessonsList = ({ navigation }) => {
 
       <View style={{ flex: 0.88 }}>
         <FlatList
-          data={lessonArray}
-          keyExtractor={(item) => item.number.toString()}
+          data={lessons}
+          keyExtractor={(item) => item.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>
               <LessonCard
-                text={`Lesson ${item.number}`}
-                state={item.state}
-                onPress={() => handlePress(item.number)}
+                text={item.name}
+                state={item.status}
+                onPress={() => handlePress(item.orderNumber)}
               />
             </View>
           )}

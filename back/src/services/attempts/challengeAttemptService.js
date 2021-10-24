@@ -65,11 +65,19 @@ const attemptLessonExercise = async (challengeAttemptId, unitOrderNumber, lesson
 		.getExercise(exerciseOrderNumber);
 };
 
+const getChallenge = async challengeAttemptId => {
+	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
+	if(!challengeAttempt)
+		throw errors.ChallengeAttemptNotFound();
+	return challengeAttempt;
+};
+
 module.exports = {
 	attemptChallenge,
 	attemptUnit,
 	attemptExam,
 	attemptLesson,
 	attemptExamExercise,
-	attemptLessonExercise
+	attemptLessonExercise,
+	getChallenge
 };

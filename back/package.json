@@ -30,9 +30,9 @@
   "scripts": {
     "start": "node .",
     "start:dev": "nodemon -x yarn start",
-    "test": "yarn test:unit && yarn test:integration",
+    "test": "yarn lint && yarn test:unit && yarn test:integration",
     "test:integration": "mocha test/integration -r test/integration/setup.js",
-    "test:unit": "mocha test/unit && eslint --fix ./src ./test ",
+    "test:unit": "mocha test/unit",
     "lint": "eslint --fix ./src ./test"
   }
 }

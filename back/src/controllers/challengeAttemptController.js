@@ -72,11 +72,56 @@ const attemptLessonExercise = async (req, res) => {
 	}
 };
 
+const getChallenge = async (req, res) => {
+	try {
+		const { challengeAttemptId } = req.params;
+		const response = await challengeAttemptService.getChallenge(challengeAttemptId);
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+	}
+};
+
+const getUnit = async (req, res) => {
+	try {
+		const { challengeAttemptId, unitOrderNumber } = req.params;
+		const response = (await challengeAttemptService.getChallenge(challengeAttemptId)).getUnitAttempt(parseInt(unitOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+	}
+};
+
+const getLesson = async (req, res) => {
+	try {
+		const { challengeAttemptId, unitOrderNumber, lessonOrderNumber } = req.params;
+		const response = (await challengeAttemptService.getChallenge(challengeAttemptId)).getUnitAttempt(parseInt(unitOrderNumber, 10))
+			.getLessonAttempt(parseInt(lessonOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+	}
+};
+
+const getExam = async (req, res) => {
+	try {
+		const { challengeAttemptId, unitOrderNumber } = req.params;
+		const response = (await challengeAttemptService.getChallenge(challengeAttemptId)).getUnitAttempt(parseInt(unitOrderNumber, 10)).examAttempt;
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({ message: error.message });
+	}
+};
+
 module.exports = {
 	attemptChallenge,
 	attemptUnit,
 	attemptExam,
 	attemptLesson,
 	attemptExamExercise,
-	attemptLessonExercise
+	attemptLessonExercise,
+	getChallenge,
+	getUnit,
+	getLesson,
+	getExam
 };
