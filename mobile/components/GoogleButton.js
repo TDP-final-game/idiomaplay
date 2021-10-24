@@ -18,27 +18,29 @@ export const GoogleButton = ({ text, onPress }) => {
   async function onGoogleButtonPress() {
     try {
       const signInData = await Google.logInAsync({
-        androidClientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.comrrr',
+        clientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.com',
         behavior: 'web',
         scopes: ['profile', 'email']
       });
+      console.log('signInData', signInData)
       if (signInData.type  === 'success') {
         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        const credential = firebase.auth.GoogleAuthProvider.credential(signInData.idToken, signInData.accessToken);
-        console.log(credential)
-        const userData = await firebase.auth().signInWithCredential(credential);
+        // const credential = firebase.auth.GoogleAuthProvider.credential(signInData.idToken, signInData.accessToken);
+        // console.log('credential', credential)
         const token = await firebase.auth().currentUser.getIdToken(true)
+        console.log('Token to use :', token)        // firebase.auth().createUserWithEmailAndPassword(email, password);
+        // const userData = await firebase.auth().signInWithCredential(credential);
+        // console.log('userData', userData)
         // dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
         // const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
-        console.log('Token to use:', token)        // firebase.auth().createUserWithEmailAndPassword(email, password);
         // // dispatch(actionsCreator.setUser(parseFirebaseResponse(userData)));
         // const firebaseToken = await firebase.auth().currentUser.getIdToken(true);
         // console.log(firebaseToken)
         // dispatch(actionsCreator.setFirebaseToken(firebaseToken));
         // navigation.navigate(BASE_ROUTES.FIREBASE_LOADING.name);
       }
-    } catch ({ message }) {
-      console.log('GoogleError:' + message);
+    } catch (e) {
+      console.log('GoogleError:', e);
     }
   }
 

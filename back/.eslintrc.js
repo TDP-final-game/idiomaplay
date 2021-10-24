@@ -9,6 +9,8 @@ module.exports = {
 		mocha: true
 	},
 
+	parser: 'babel-eslint',
+
 	parserOptions: {
 		sourceType: 'script'
 	},
@@ -17,7 +19,7 @@ module.exports = {
 		'import/core-modules': ['aws-sdk', 'lodash', 'yamljs', 'openapi-schema-validator']
 	},
 
-	plugins: [ 'prefer-arrow' ],
+	plugins: ['prefer-arrow'],
 
 	rules: {
 		'operator-linebreak': 0,
@@ -61,19 +63,19 @@ module.exports = {
 		'prefer-arrow/prefer-arrow-functions': [
 			'error',
 			{
-			  'disallowPrototype': true,
-			  'singleReturnOnly': false,
-			  'classPropertiesAllowed': false
+				disallowPrototype: true,
+				singleReturnOnly: false,
+				classPropertiesAllowed: false
 			}
 		  ],
 		  'prefer-arrow-callback': [
 			'error',
-			{ 'allowNamedFunctions': true }
+			{ allowNamedFunctions: true }
 		  ],
 		  'func-style': [
 			'error',
 			'expression',
-			{ 'allowArrowFunctions': true }
+			{ allowArrowFunctions: true }
 		  ],
 
 		indent: ['error', 'tab', {
