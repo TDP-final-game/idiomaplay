@@ -4,11 +4,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {SecondaryButton} from "../components/SecondaryButton";
+import {resetAnswers} from "../redux/lesson";
+import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
   const unit = 1;
-  const lesson = 1;
+  const {lessonOrderNumber} = route.params;
+  const lessonState = {
+    RETRY: "RETRY",
+    RETURN_TO_UNIT: "RETURN_TO_UNIT",
+    GO_TO_EXAM: "GO_TO_EXAM"
+  };
+
+  const dispatch = useDispatch();
 
   const animatedIconSize = 100;
   const anim = new Animated.Value(2);
@@ -23,6 +33,17 @@ const ExamEntry = ({ navigation, route }) => {
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [iconName, setIconName] = useState("");
+  const [currentLessonState, setCurrentLessonState] = useState(null);
+
+  const goToUnit = () => {
+    return navigation.navigate('LessonsList');
+  };
+
+  const retryLesson = async () => {
+    dispatch(resetAnswers());
+    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber, '6174569bd026c7177f9fe5aa');
+    return navigation.navigate('Excercise', {lessonOrderNumber, exercisesAttempts});
+  };
 
   useEffect(() => {
     const minimumCorrectResponses = Math.ceil(exerciseResults.length * minimumPercentage);
@@ -31,20 +52,15 @@ const ExamEntry = ({ navigation, route }) => {
       setSubtitle("¡No bajes los brazos!");
       setDescription("¡Debes completar al menos un 80% de los ejercicios correctamente para completar la lección!");
       setIconName("arm-flex");
+      setCurrentLessonState(lessonState.RETRY);
     } else {
       setTitle("¡Felicidades!");
-      setSubtitle(`¡Lección ${lesson} finalizada con éxito!`);
+      setSubtitle(`¡Lección ${lessonOrderNumber} finalizada con éxito!`);
       setDescription("");
       setIconName("party-popper");
+      setCurrentLessonState(lessonState.GO_TO_EXAM);
     }
   }, [])
-
-  const text = (
-    <>
-      {'Ir al examen '}
-      <Ionicons name="ios-newspaper" size={20} color={colors.SECONDARY_LIGHT} />
-    </>
-  );
 
   Animated.loop(
     Animated.sequence([
@@ -86,9 +102,33 @@ const ExamEntry = ({ navigation, route }) => {
             <Text style={styles.description}>{description}</Text>
           </View>)
         }
-        <View style={styles.buttonContainer}>
-          <PrimaryButton text={text}></PrimaryButton>
-        </View>
+        { currentLessonState === lessonState.RETURN_TO_UNIT &&
+          (<View style={{...styles.buttonContainer, flex: 0.07}}>
+            <PrimaryButton text={"Ir a unidad"} onPress={goToUnit}></PrimaryButton>
+          </View>)
+        }
+        { currentLessonState === lessonState.GO_TO_EXAM &&
+        (<View style={{...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between'}}>
+          <View style={{flexGrow: 0.45}}>
+            <PrimaryButton text={"Realizar examen"}></PrimaryButton>
+          </View>
+
+          <View style={{flexGrow: 0.45, width: '75%',  alignSelf: "center"}}>
+            <SecondaryButton text={"Ir a Unidad"} onPress={goToUnit}></SecondaryButton>
+          </View>
+        </View>)
+        }
+        { currentLessonState === lessonState.RETRY &&
+          (<View style={{...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between'}}>
+            <View style={{flexGrow: 0.45}}>
+            <PrimaryButton text={"Reintentar leccion"} onPress={retryLesson}></PrimaryButton>
+            </View>
+
+            <View style={{flexGrow: 0.45, width: '75%',  alignSelf: "center"}}>
+            <SecondaryButton text={"Ir a Unidad"} onPress={goToUnit}></SecondaryButton>
+            </View>
+          </View>)
+        }
       </View>
     </SafeAreaView>
   );
@@ -117,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   descriptionContainer: {
-    flex: 0.30,
+    flex: 0.25,
     marginBottom: '3%',
     marginHorizontal: '5%',
     alignItems: 'center',
@@ -145,14 +185,13 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    fontSize: 30,
+    fontSize: 27,
     textAlign: 'center',
     fontWeight: 'bold',
     color: 'white',
   },
 
   buttonContainer: {
-    flex: 0.07,
     marginBottom: '3%',
     marginHorizontal: '10%',
     justifyContent: 'center',
