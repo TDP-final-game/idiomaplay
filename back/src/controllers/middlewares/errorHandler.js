@@ -1,12 +1,12 @@
 'use strict';
 
-const STATUS_CODES = require('../../constants/status_codes.json');
+// eslint-disable-next-line no-unused-vars
+const errorHandler = async (err, req, res, next) => {
+	err.statusCode = err.statusCode || 500;
 
-module.exports = (err, _, res) => {
-	console.error(err.stack);
-	const resp = { message: err.message };
-	if(process.env.NODE_ENV === 'development')
-		resp.trace = err.stack;
-
-	res.status(err.status || STATUS_CODES.INTERNAL_SERVER_ERROR).send(resp);
+	res.status(err.statusCode).json({
+		message: err.message
+	});
 };
+
+module.exports = errorHandler;

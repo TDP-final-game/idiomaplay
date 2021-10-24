@@ -5,17 +5,17 @@ import { colors } from '../config/colors';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useSelector, useDispatch } from 'react-redux';
-import {SecondaryButton} from "../components/SecondaryButton";
-import {resetAnswers} from "../redux/lesson";
+import { SecondaryButton } from '../components/SecondaryButton';
+import { resetAnswers } from '../redux/lesson';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
   const unit = 1;
-  const {lessonOrderNumber} = route.params;
+  const { lessonOrderNumber } = route.params;
   const lessonState = {
-    RETRY: "RETRY",
-    RETURN_TO_UNIT: "RETURN_TO_UNIT",
-    GO_TO_EXAM: "GO_TO_EXAM"
+    RETRY: 'RETRY',
+    RETURN_TO_UNIT: 'RETURN_TO_UNIT',
+    GO_TO_EXAM: 'GO_TO_EXAM',
   };
 
   const dispatch = useDispatch();
@@ -26,13 +26,13 @@ const ExamEntry = ({ navigation, route }) => {
   const minimumPercentage = 0.8;
   const exerciseResults = useSelector((state) => state.lesson.exerciseResults);
   const countCorrectExercises = (results) => {
-    return results.filter(item => item===true).length;
-  }
+    return results.filter((item) => item === true).length;
+  };
 
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [iconName, setIconName] = useState("");
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [iconName, setIconName] = useState('');
   const [currentLessonState, setCurrentLessonState] = useState(null);
 
   const goToUnit = () => {
@@ -41,26 +41,32 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetAnswers());
-    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber, '6174569bd026c7177f9fe5aa');
-    return navigation.navigate('Excercise', {lessonOrderNumber, exercisesAttempts});
+    const exercisesAttempts = await UnitService.attemptLesson(
+      1,
+      lessonOrderNumber,
+      '6174569bd026c7177f9fe5aa'
+    );
+    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
   };
 
   useEffect(() => {
     const minimumCorrectResponses = Math.ceil(exerciseResults.length * minimumPercentage);
     if (countCorrectExercises(exerciseResults) < minimumCorrectResponses) {
-      setTitle("¡Estuviste cerca!");
-      setSubtitle("¡No bajes los brazos!");
-      setDescription("¡Debes completar al menos un 80% de los ejercicios correctamente para completar la lección!");
-      setIconName("arm-flex");
+      setTitle('¡Estuviste cerca!');
+      setSubtitle('¡No bajes los brazos!');
+      setDescription(
+        '¡Debes completar al menos un 80% de los ejercicios correctamente para completar la lección!'
+      );
+      setIconName('arm-flex');
       setCurrentLessonState(lessonState.RETRY);
     } else {
-      setTitle("¡Felicidades!");
+      setTitle('¡Felicidades!');
       setSubtitle(`¡Lección ${lessonOrderNumber} finalizada con éxito!`);
-      setDescription("");
-      setIconName("party-popper");
+      setDescription('');
+      setIconName('party-popper');
       setCurrentLessonState(lessonState.GO_TO_EXAM);
     }
-  }, [])
+  }, []);
 
   Animated.loop(
     Animated.sequence([
@@ -97,38 +103,38 @@ const ExamEntry = ({ navigation, route }) => {
             />
           </Animated.View>
         </View>
-        { description !== "" &&
-          (<View style={styles.descriptionContainer}>
+        {description !== '' && (
+          <View style={styles.descriptionContainer}>
             <Text style={styles.description}>{description}</Text>
-          </View>)
-        }
-        { currentLessonState === lessonState.RETURN_TO_UNIT &&
-          (<View style={{...styles.buttonContainer, flex: 0.07}}>
-            <PrimaryButton text={"Ir a unidad"} onPress={goToUnit}></PrimaryButton>
-          </View>)
-        }
-        { currentLessonState === lessonState.GO_TO_EXAM &&
-        (<View style={{...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between'}}>
-          <View style={{flexGrow: 0.45}}>
-            <PrimaryButton text={"Realizar examen"}></PrimaryButton>
           </View>
-
-          <View style={{flexGrow: 0.45, width: '75%',  alignSelf: "center"}}>
-            <SecondaryButton text={"Ir a Unidad"} onPress={goToUnit}></SecondaryButton>
+        )}
+        {currentLessonState === lessonState.RETURN_TO_UNIT && (
+          <View style={{ ...styles.buttonContainer, flex: 0.07 }}>
+            <PrimaryButton text={'Ir a unidad'} onPress={goToUnit}></PrimaryButton>
           </View>
-        </View>)
-        }
-        { currentLessonState === lessonState.RETRY &&
-          (<View style={{...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between'}}>
-            <View style={{flexGrow: 0.45}}>
-            <PrimaryButton text={"Reintentar leccion"} onPress={retryLesson}></PrimaryButton>
+        )}
+        {currentLessonState === lessonState.GO_TO_EXAM && (
+          <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
+            <View style={{ flexGrow: 0.45 }}>
+              <PrimaryButton text={'Realizar examen'}></PrimaryButton>
             </View>
 
-            <View style={{flexGrow: 0.45, width: '75%',  alignSelf: "center"}}>
-            <SecondaryButton text={"Ir a Unidad"} onPress={goToUnit}></SecondaryButton>
+            <View style={{ flexGrow: 0.45, width: '75%', alignSelf: 'center' }}>
+              <SecondaryButton text={'Ir a Unidad'} onPress={goToUnit}></SecondaryButton>
             </View>
-          </View>)
-        }
+          </View>
+        )}
+        {currentLessonState === lessonState.RETRY && (
+          <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
+            <View style={{ flexGrow: 0.45 }}>
+              <PrimaryButton text={'Reintentar leccion'} onPress={retryLesson}></PrimaryButton>
+            </View>
+
+            <View style={{ flexGrow: 0.45, width: '75%', alignSelf: 'center' }}>
+              <SecondaryButton text={'Ir a Unidad'} onPress={goToUnit}></SecondaryButton>
+            </View>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
   },
 
   messageContainer: {
-    flex: 0.30,
+    flex: 0.3,
     marginHorizontal: '5%',
     alignItems: 'center',
     justifyContent: 'center',

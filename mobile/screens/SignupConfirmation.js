@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
@@ -7,7 +7,14 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { commonStyles } from '../config/styles';
 
 const SignupConfirmation = ({ navigation, route }) => {
-  const iconSize = 200;
+  const { user } = route.params;
+
+  const [givenName, setGivenName] = useState(user.givenName);
+  const [familyName, setFamilyName] = useState(user.familyName);
+
+  const confirmUser = () => {
+    navigation.navigate('Home'); // todo: post a server
+  };
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -43,20 +50,20 @@ const SignupConfirmation = ({ navigation, route }) => {
         <View style={{ height: '40%' }}>
           <Text style={styles.inputLabel}>Nombre</Text>
           <View style={[{ ...styles.input, height: '65%' }, commonStyles.shadow]}>
-            <TextInput placeholder={'Nombre'} />
+            <TextInput placeholder={'Nombre'} value={givenName} onChangeText={setGivenName} />
           </View>
         </View>
 
         <View style={{ height: '40%' }}>
           <Text style={styles.inputLabel}>Apellido</Text>
           <View style={[{ ...styles.input, height: '65%' }, commonStyles.shadow]}>
-            <TextInput placeholder={'Apellido'} />
+            <TextInput placeholder={'Apellido'} value={familyName} onChangeText={setFamilyName} />
           </View>
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
-        <PrimaryButton text={'Comenzar'} />
+        <PrimaryButton text={'Comenzar'} onPress={confirmUser} />
       </View>
     </SafeAreaView>
   );

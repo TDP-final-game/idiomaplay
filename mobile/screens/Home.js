@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { colors } from '../config/colors';
-import { View, StyleSheet, Button, Text, TouchableHighlight, Animated } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = ({ navigation }) => {
@@ -8,14 +8,6 @@ const Home = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
         <Button title={'Lesson list'} onPress={() => navigation.navigate('LessonsList')} />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title={'Login'} onPress={() => navigation.navigate('Login')} />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title={'Confirmation'} onPress={() => navigation.navigate('SignupConfirmation')} />
       </View>
     </SafeAreaView>
   );

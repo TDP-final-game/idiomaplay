@@ -1,9 +1,11 @@
 'use strict';
 
 const express = require('express');
+require('express-async-errors');
 
 const routers = require('./routers/index');
 const generateOpenapi = require('./openapi/generate');
+const middlewares = require('./controllers/middlewares');
 const errorHandler = require('./controllers/middlewares/errorHandler');
 
 module.exports = async () => {
@@ -11,25 +13,30 @@ module.exports = async () => {
 	app.use(express.json());
 
 	/*
-     * Api
-     */
+	 * Middlewares
+	 */
+	app.use(middlewares);
+
+	/*
+	 * Api
+	 */
 	app.use('/api/v1', routers);
 
 	/*
-     * Health
-     */
+	 * Health
+	 */
 	app.get('/healthz', (req, res) => {
 		res.send('hi!');
 	});
 
 	/*
-     * Openapi
-     */
+	 * Openapi
+	 */
 	app.use('/api-docs', await generateOpenapi());
 
 	/*
-     * Error handler
-     */
+	 * Error handler
+	 */
 	app.use(errorHandler);
 
 	return app;

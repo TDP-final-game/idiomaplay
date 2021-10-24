@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "609841862106",
+    "project_id": "idiomaplay-tdp2",
+    "storage_bucket": "idiomaplay-tdp2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609841862106:android:8f9b4205ab4a29cbfd9ce3",
+        "android_client_info": {
+          "package_name": "com.idiomaplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609841862106-cq46nsquv42gpdg6sg3901beo26j32fc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBftcpFIkVwhs9KMO9-2lrQ_CRJ7T1Vt0w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609841862106-cq46nsquv42gpdg6sg3901beo26j32fc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

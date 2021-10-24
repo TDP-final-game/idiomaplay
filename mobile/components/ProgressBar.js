@@ -14,8 +14,8 @@ export const ProgressBar = () => {
     timeDiff /= 1000;
 
     var seconds = Math.round(timeDiff);
-    const percentage = Math.min(100, seconds * 100 / MAX_TIME);
-    
+    const percentage = Math.min(100, (seconds * 100) / MAX_TIME);
+
     return String(percentage) + '%';
   }
 

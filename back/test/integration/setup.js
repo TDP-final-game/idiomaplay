@@ -1,5 +1,11 @@
 'use strict';
 
+
+const path = require('path');
+
+const file = path.join(__dirname, '.env.test');
+require('dotenv').config({ path: file });
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../../src/app');

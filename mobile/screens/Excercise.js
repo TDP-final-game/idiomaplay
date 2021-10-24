@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors } from '../config/colors';
@@ -11,10 +11,10 @@ import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import LessonService from '../services/lessonService';
 import { answer } from '../redux/lesson';
-import {useIsFocused} from "@react-navigation/native";
+import { useIsFocused } from '@react-navigation/native';
 
 const Excercise = ({ navigation, route }) => {
-  const {lessonOrderNumber, exercisesAttempts} = route.params;
+  const { lessonOrderNumber, exercisesAttempts } = route.params;
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
@@ -39,7 +39,7 @@ const Excercise = ({ navigation, route }) => {
   const handleContinue = () => {
     if (currentExerciseIndex >= exercisesAttempts.length) {
       setCurrentExerciseIndex(0);
-      return navigation.navigate('ExamEntry', {lessonOrderNumber});
+      return navigation.navigate('ExamEntry', { lessonOrderNumber });
     }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
@@ -47,10 +47,10 @@ const Excercise = ({ navigation, route }) => {
   };
 
   const handleAnswerSelected = async (selectedOption) => {
-    const correctOption = currentExercise.options.find(option => option.correct).text;
+    const correctOption = currentExercise.options.find((option) => option.correct).text;
 
     const _ = await lessonService.answerExercise(selectedOption, currentExerciseIndex); //todo: retry if error
-    dispatch(answer(selectedOption===correctOption));
+    dispatch(answer(selectedOption === correctOption));
 
     setCurrentExerciseIndex(currentExerciseIndex + 1);
 
@@ -81,11 +81,7 @@ const Excercise = ({ navigation, route }) => {
       {currentExercise && (
         <>
           <View style={{ flex: 0.12 }}>
-            <ChapterHeader
-              returnButtonFunction={handleReturn}
-              unit={1}
-              lesson={1}
-            />
+            <ChapterHeader returnButtonFunction={handleReturn} unit={1} lesson={1} />
           </View>
 
           <View style={{ marginLeft: '2%' }}>
@@ -110,7 +106,7 @@ const Excercise = ({ navigation, route }) => {
           {renderButtons()}
 
           <View style={{ flex: 0.12 }}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue}/>
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} />
           </View>
         </>
       )}

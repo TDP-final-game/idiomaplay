@@ -1,9 +1,9 @@
 'use strict';
 
-const { model: challengeModel } = require('../model/challenges/challenge');
-const { model: challengeAttemptModel } = require('../model/attempts/challengeAttempt');
+const { model: challengeModel } = require('../../model/challenges/challenge');
+const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 
-const { pageSize } = require('../constants/pagination_default.json');
+const { pageSize } = require('../../constants/pagination_default.json');
 
 const findChallenge = challengeId => {
 	return challengeModel.findOne({ _id: challengeId });
