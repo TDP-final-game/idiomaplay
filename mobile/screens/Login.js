@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
-import {useDispatch} from "react-redux";
-import {logIn} from '../redux/user';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../redux/user';
 import { GoogleButton } from '../components/GoogleButton';
-
 
 const Login = ({ navigation, route }) => {
   const iconSize = 200;
 
-  const logInText = "¿Ya tienes cuenta? Inicia sesión.";
-  const signUpText = "¿No tienes cuenta? Registrate.";
+  const logInText = '¿Ya tienes cuenta? Inicia sesión.';
+  const signUpText = '¿No tienes cuenta? Registrate.';
 
   const [logInMode, setLogInMode] = useState(false);
   const [text, setText] = useState(logInText);
@@ -28,11 +27,11 @@ const Login = ({ navigation, route }) => {
   const onSuccessCallback = (user, accessToken) => {
     dispatch(logIn(accessToken));
     if (!logInMode) {
-      return navigation.navigate('SignupConfirmation', {user});
+      return navigation.navigate('SignupConfirmation', { user });
     } else {
       return navigation.navigate('Home');
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.safeContainer}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
@@ -7,8 +7,6 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { commonStyles } from '../config/styles';
 
 const SignupConfirmation = ({ navigation, route }) => {
-  const iconSize = 200;
-
   const { user } = route.params;
 
   const [givenName, setGivenName] = useState(user.givenName);
@@ -16,7 +14,7 @@ const SignupConfirmation = ({ navigation, route }) => {
 
   const confirmUser = () => {
     navigation.navigate('Home'); // todo: post a server
-  }
+  };
 
   return (
     <SafeAreaView style={styles.safeContainer}>

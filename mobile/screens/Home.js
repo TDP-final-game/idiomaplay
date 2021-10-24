@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { colors } from '../config/colors';
-import { View, StyleSheet, Button, Text, TouchableHighlight, Animated } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = ({ navigation }) => {

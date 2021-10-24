@@ -10,7 +10,7 @@ const LessonsList = ({ navigation }) => {
   const [lessons, setLessons] = useState([]);
 
   useEffect(() => {
-    UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then(setLessons) // todo: spinner while loading
+    UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then(setLessons); // todo: spinner while loading
   }, []);
 
   const handleReturn = () => {
@@ -18,8 +18,12 @@ const LessonsList = ({ navigation }) => {
   };
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber, '6174569bd026c7177f9fe5aa');
-    return navigation.navigate('Excercise', {lessonOrderNumber, exercisesAttempts});
+    const exercisesAttempts = await UnitService.attemptLesson(
+      1,
+      lessonOrderNumber,
+      '6174569bd026c7177f9fe5aa'
+    );
+    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
   };
 
   return (

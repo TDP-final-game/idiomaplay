@@ -1,5 +1,4 @@
-import { createAsyncThunk, createAction, createSlice } from '@reduxjs/toolkit';
-import ChallengeService from '../services/challenge';
+import { createSlice } from '@reduxjs/toolkit';
 
 const challengeSlice = createSlice({
   name: 'challenge',

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet, View } from 'react-native';
-import {states} from '../config/states';
+import { states } from '../config/states';
 import { Badge } from './Badge';
 
 export const LessonCard = ({ text, state, onPress }) => {

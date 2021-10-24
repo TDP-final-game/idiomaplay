@@ -5,7 +5,7 @@ import user from './user';
 const reducer = {
   challenge,
   lesson,
-  user
+  user,
 };
 
 export default reducer;

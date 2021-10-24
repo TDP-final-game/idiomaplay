@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { colors } from '../config/colors';
 import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
@@ -7,23 +7,19 @@ import { AntDesign } from '@expo/vector-icons';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 
-
 export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
-
-  const logInText = "Inicia sesion con Google";
-  const signUpText = "Registrate con Google";
+  const logInText = 'Inicia sesion con Google';
+  const signUpText = 'Registrate con Google';
   const text = logInMode ? logInText : signUpText;
-
-  const [signInData, setSignInData] = useState(null);
 
   async function onGoogleButtonPress() {
     try {
-      const {type, accessToken, user} = await Google.logInAsync({
+      const { type, accessToken, user } = await Google.logInAsync({
         clientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.com',
         behavior: 'web',
-        scopes: ['profile', 'email']
+        scopes: ['profile', 'email'],
       });
-      if (type  === 'success') {
+      if (type === 'success') {
         onSuccessCallback(user, accessToken);
         // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         // console.log(await firebase.auth());
@@ -35,8 +31,6 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
       console.log('GoogleError:', e);
     }
   }
-
-
 
   return (
     <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onGoogleButtonPress}>
