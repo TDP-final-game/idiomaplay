@@ -12,25 +12,28 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
   const signUpText = 'Registrate con Google';
   const text = logInMode ? logInText : signUpText;
 
+
+
   async function onGoogleButtonPress() {
     try {
-      const { type, accessToken, user } = await Google.logInAsync({
-        clientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.com',
+      const { type, accessToken, user, idToken }  = await Google.logInAsync({
+        androidClientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.comrrr',
         behavior: 'web',
-        scopes: ['profile', 'email'],
+        scopes: ['profile', 'email']
       });
-      if (type === 'success') {
+      if (type  === 'success') {
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        console.log(credential)
+        const token = await firebase.auth().currentUser.getIdToken(true)
+        console.log('Token to use:', token)        // firebase.auth().createUserWithEmailAndPassword(email, password);
         onSuccessCallback(user, accessToken);
-        // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        // console.log(await firebase.auth());
-        // const currentUser = await firebase.auth().currentUser;
-        // console.log(currentUser);
-        // const token = currentUser.getIdToken(true)
       }
-    } catch (e) {
-      console.log('GoogleError:', e);
+    } catch ({ message }) {
+      console.log('GoogleError:' + message);
     }
   }
+
 
   return (
     <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onGoogleButtonPress}>
