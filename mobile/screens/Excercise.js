@@ -11,6 +11,7 @@ import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import LessonService from '../services/lessonService';
 import { answer } from '../redux/lesson';
+import {useIsFocused} from "@react-navigation/native";
 
 const Excercise = ({ navigation, route }) => {
   const {lessonOrderNumber, exercisesAttempts} = route.params;
@@ -19,9 +20,8 @@ const Excercise = ({ navigation, route }) => {
   const [currentExercise, setCurrentExercise] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
-
-  const results = useSelector((state) => state.challenge.exerciseResults);
 
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
@@ -34,10 +34,13 @@ const Excercise = ({ navigation, route }) => {
 
   useEffect(() => {
     handleContinue();
-  }, []);
+  }, [isFocused]);
 
   const handleContinue = () => {
-    if (currentExerciseIndex >= exercisesAttempts.length) return navigation.navigate('ExamEntry');
+    if (currentExerciseIndex >= exercisesAttempts.length) {
+      setCurrentExerciseIndex(0);
+      return navigation.navigate('ExamEntry', {lessonOrderNumber});
+    }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
     setIncorrectAnswer(null);
