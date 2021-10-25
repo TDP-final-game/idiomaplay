@@ -15,10 +15,13 @@ import { useIsFocused } from '@react-navigation/native';
 
 const Excercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts } = route.params;
+
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
-  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(
+    exercisesAttempts.indexOf(exercisesAttempts.find((attemp) => attemp.status === 'PENDING'))
+  );
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
