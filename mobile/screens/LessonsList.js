@@ -4,14 +4,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
 import { UnitHeader } from '../components/ChapterHeader';
+import { useDispatch } from 'react-redux';
 import UnitService from '../services/unitService';
+import { initResults } from '../redux/lesson';
+import { useIsFocused } from '@react-navigation/core';
 
 const LessonsList = ({ navigation }) => {
   const [lessons, setLessons] = useState([]);
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then(setLessons); // todo: spinner while loading
-  }, []);
+  }, [isFocused]);
+
+  const dispatch = useDispatch();
 
   const handleReturn = () => {
     return navigation.navigate('Home');
@@ -23,6 +30,7 @@ const LessonsList = ({ navigation }) => {
       lessonOrderNumber,
       '6174569bd026c7177f9fe5aa'
     );
+    dispatch(initResults(exercisesAttempts));
     return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
   };
 

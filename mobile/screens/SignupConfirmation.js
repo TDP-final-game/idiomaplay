@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, TextInput, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { commonStyles } from '../config/styles';
 
 const SignupConfirmation = ({ navigation, route }) => {
   const { user } = route.params;
+  console.log(user);
 
   const [givenName, setGivenName] = useState(user.givenName);
   const [familyName, setFamilyName] = useState(user.familyName);
@@ -19,7 +20,7 @@ const SignupConfirmation = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.imageContainer}>
-        <View
+        <Image
           style={[
             {
               borderRadius:
@@ -34,9 +35,10 @@ const SignupConfirmation = ({ navigation, route }) => {
             },
             commonStyles.shadow,
           ]}
+          source={{ uri: user.photoUrl }}
         >
-          <AntDesign name="google" size={40} color={colors.DARK_GRAY} />
-        </View>
+          {/* <AntDesign name="google" size={40} color={colors.DARK_GRAY} /> */}
+        </Image>
 
         <View style={{ marginTop: '5%' }}>
           <Text style={{ color: colors.PRIMARY_DARK, fontWeight: 'bold', fontSize: 18 }}>

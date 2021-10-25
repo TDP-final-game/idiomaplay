@@ -9,11 +9,16 @@ const lessonSlice = createSlice({
     answer: (state, action) => {
       state.exerciseResults[state.exerciseResults.indexOf(null)] = action.payload;
     },
-    resetAnswers: (state) => {
+    resetResults: (state) => {
       state.exerciseResults = new Array(8).fill(null);
+    },
+    initResults: (state, action) => {
+      const statusConverter = { PENDING: null, FAILED: false, PASSED: true };
+      const results = action.payload.map((attempt) => attempt.status);
+      state.exerciseResults = results.map((status) => statusConverter[status]);
     },
   },
 });
 
-export const { answer, resetAnswers } = lessonSlice.actions;
+export const { initResults, answer, resetResults } = lessonSlice.actions;
 export default lessonSlice.reducer;
