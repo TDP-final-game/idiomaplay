@@ -36,7 +36,6 @@ const Excercise = ({ navigation, route }) => {
   const lessonService = LessonService.create('6174569bd026c7177f9fe5aa', 1, lessonOrderNumber);
 
   useEffect(() => {
-    console.log(exercisesAttempts);
     handleContinue();
   }, [isFocused]);
 

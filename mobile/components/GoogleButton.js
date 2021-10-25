@@ -21,11 +21,11 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
       });
       if (type === 'success') {
         onSuccessCallback(user, accessToken);
-        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        console.log(await firebase.auth());
-        const currentUser = await firebase.auth().currentUser;
-        console.log(currentUser);
-        const token = currentUser.getIdToken(true);
+        //await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        //console.log(await firebase.auth());
+        //const currentUser = await firebase.auth().currentUser;
+        //console.log(currentUser);
+        //const token = currentUser.getIdToken(true);
       }
     } catch (e) {
       console.log('GoogleError:', e);

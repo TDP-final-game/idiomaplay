@@ -8,7 +8,6 @@ import { commonStyles } from '../config/styles';
 
 const SignupConfirmation = ({ navigation, route }) => {
   const { user } = route.params;
-  console.log(user);
 
   const [givenName, setGivenName] = useState(user.givenName);
   const [familyName, setFamilyName] = useState(user.familyName);
