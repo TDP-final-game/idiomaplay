@@ -6,11 +6,10 @@ import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { SecondaryButton } from '../components/SecondaryButton';
-import { resetAnswers } from '../redux/lesson';
+import { resetResults } from '../redux/lesson';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
-  const unit = 1;
   const { lessonOrderNumber } = route.params;
   const lessonState = {
     RETRY: 'RETRY',
@@ -36,15 +35,17 @@ const ExamEntry = ({ navigation, route }) => {
   const [currentLessonState, setCurrentLessonState] = useState(null);
 
   const goToUnit = () => {
+    dispatch(resetResults());
     return navigation.navigate('LessonsList');
   };
 
   const retryLesson = async () => {
-    dispatch(resetAnswers());
+    dispatch(resetResults());
     const exercisesAttempts = await UnitService.attemptLesson(
       1,
       lessonOrderNumber,
       '6174569bd026c7177f9fe5aa'
+      //TODO -> force tretry para evitar otra request del get
     );
     return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
   };
@@ -103,16 +104,19 @@ const ExamEntry = ({ navigation, route }) => {
             />
           </Animated.View>
         </View>
+
         {description !== '' && (
           <View style={styles.descriptionContainer}>
             <Text style={styles.description}>{description}</Text>
           </View>
         )}
+
         {currentLessonState === lessonState.RETURN_TO_UNIT && (
           <View style={{ ...styles.buttonContainer, flex: 0.07 }}>
             <PrimaryButton text={'Ir a unidad'} onPress={goToUnit}></PrimaryButton>
           </View>
         )}
+
         {currentLessonState === lessonState.GO_TO_EXAM && (
           <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
             <View style={{ flexGrow: 0.45 }}>
@@ -124,6 +128,7 @@ const ExamEntry = ({ navigation, route }) => {
             </View>
           </View>
         )}
+
         {currentLessonState === lessonState.RETRY && (
           <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
             <View style={{ flexGrow: 0.45 }}>
