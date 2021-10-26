@@ -33,7 +33,7 @@ const createUser = async (req, res) => {
 		firstName,
 		lastName
 	});
-	res.status(STATUS_CODES.CREATED).send({ id: response._id, ...props });
+	res.status(STATUS_CODES.CREATED).send({ id: _id, ...props });
 };
 
 const logIn = async (req, res) => {
@@ -41,7 +41,7 @@ const logIn = async (req, res) => {
 
 	const { user } = req;
 	const { _id, ...props } = await userService.logIn({ email: user.email });
-	res.status(STATUS_CODES.OK).send({ id: response._id, ...props });
+	res.status(STATUS_CODES.OK).send({ id: _id, ...props });
 };
 
 module.exports = {
