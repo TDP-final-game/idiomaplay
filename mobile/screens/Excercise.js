@@ -84,7 +84,7 @@ const Excercise = ({ navigation, route }) => {
       {currentExercise && (
         <>
           <View style={{ flex: 0.12 }}>
-            <ChapterHeader returnButtonFunction={handleReturn} unit={1} lesson={1} />
+            <ChapterHeader returnButtonFunction={handleReturn} unit={1} lesson={lessonOrderNumber} />
           </View>
 
           <View style={{ marginLeft: '2%' }}>
