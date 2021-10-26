@@ -28,11 +28,12 @@ const createUser = async (req, res) => {
 		throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
 
 	const { firstName, lastName } = req.body;
-	res.status(STATUS_CODES.CREATED).send(await userService.createUser({
+	const userCreated = await userService.createUser({
 		email: user.email,
 		firstName,
 		lastName
-	}));
+	});
+	res.status(STATUS_CODES.CREATED).send({ id: userCreated._id });
 };
 
 const logIn = async (req, res) => {
@@ -40,7 +41,7 @@ const logIn = async (req, res) => {
 
 	const { user } = req;
 	const response = await userService.logIn({ email: user.email });
-	res.status(STATUS_CODES.OK).send(response);
+	res.status(STATUS_CODES.OK).send({ id: response._id });
 };
 
 module.exports = {
