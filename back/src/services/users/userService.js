@@ -20,7 +20,7 @@ const logIn = async ({ email }) => {
 };
 
 const listChallengeAttempts = userId => {
-	return challengeAttemptModel.find({ userId });
+	return challengeAttemptModel.findBy({ userId });
 };
 
 module.exports = {
