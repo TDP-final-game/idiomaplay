@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/user';
 import { GoogleButton } from '../components/GoogleButton';
+import UserService from '../services/userService';
 
 const Login = ({ navigation, route }) => {
   const iconSize = 200;
@@ -25,11 +26,13 @@ const Login = ({ navigation, route }) => {
   };
 
   const onSuccessCallback = (user, accessToken) => {
-    dispatch(logIn(accessToken));
     if (!logInMode) {
       return navigation.navigate('SignupConfirmation', { user });
     } else {
-      return navigation.navigate('Home');
+      UserService.logIn(user.email /*va el access token*/).then((userId) => {
+        dispatch(logIn({ email: user.email, userId }));
+        return navigation.navigate('Home');
+      });
     }
   };
 

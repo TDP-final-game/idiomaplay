@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput, Image } from 'react-native';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { AntDesign } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { commonStyles } from '../config/styles';
 import UserService from '../services/userService';
+import { View, Text, StyleSheet, Dimensions, TextInput, Image } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../redux/user';
 
 const SignupConfirmation = ({ navigation, route }) => {
   const { user } = route.params;
-  console.log(user);
 
   const [firstName, setFirstName] = useState(user.givenName);
   const [secondName, setSecondName] = useState(user.familyName);
 
+  const dispatch = useDispatch();
+
   const confirmUser = () => {
-    UserService.createUser(firstName, secondName, user.email).then(() =>
-      navigation.navigate('Home')
-    );
+    UserService.createUser(firstName, secondName, user.email).then((userId) => {
+      dispatch(logIn({ email: user.email, userId }));
+      return navigation.navigate('Home');
+    });
   };
 
   return (
@@ -39,9 +43,7 @@ const SignupConfirmation = ({ navigation, route }) => {
             commonStyles.shadow,
           ]}
           source={{ uri: user.photoUrl }}
-        >
-          {/* <AntDesign name="google" size={40} color={colors.DARK_GRAY} /> */}
-        </Image>
+        ></Image>
 
         <View style={{ marginTop: '5%' }}>
           <Text style={{ color: colors.PRIMARY_DARK, fontWeight: 'bold', fontSize: 18 }}>
