@@ -19,7 +19,10 @@ const LessonsList = ({ navigation }) => {
 
   useEffect(() => {
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(userId, /*unit orden numer*/ 1).then(setLessonsAttempts);
+    UnitService.getLessonsAttempts(userId, /*unit orden numer*/ 1).then((data) => {
+      console.log('DATA ', data);
+      setLessonsAttempts(data);
+    });
   }, [isFocused]);
 
   const dispatch = useDispatch();

@@ -12,26 +12,24 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
   const signUpText = 'Registrate con Google';
   const text = logInMode ? logInText : signUpText;
 
-
-
   async function onGoogleButtonPress() {
     try {
-      const { type, accessToken, user, idToken }  = await Google.logInAsync({
-        androidClientId: '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.comrrr',
+      const { type, accessToken, user, idToken } = await Google.logInAsync({
+        androidClientId:
+          '587070144029-00cat8gv3r8u2s1kjq1c725svfnqh5pk.apps.googleusercontent.comrrr',
         behavior: 'web',
-        scopes: ['profile', 'email']
+        scopes: ['profile', 'email'],
       });
-      if (type  === 'success') {
-        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        const token = await firebase.auth().currentUser.getIdToken(true)
+      if (type === 'success') {
+        // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        // const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        // const token = await firebase.auth().currentUser.getIdToken(true)
         onSuccessCallback(user, accessToken);
       }
     } catch ({ message }) {
       console.log('GoogleError:' + message);
     }
   }
-
 
   return (
     <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onGoogleButtonPress}>
