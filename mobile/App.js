@@ -13,11 +13,13 @@ import ExamEntry from './screens/ExamEntry';
 import LessonsList from './screens/LessonsList';
 import SignupConfirmation from './screens/SignupConfirmation';
 import { useSelector } from 'react-redux';
+import { firebaseConfig } from './config';
 
 const Stack = createNativeStackNavigator();
 
+
 if (!firebase.apps.length) {
-  firebase.initializeApp({});
+  firebase.initializeApp(firebaseConfig);
 } else {
   firebase.app(); // if already initialized, use that one
 }
