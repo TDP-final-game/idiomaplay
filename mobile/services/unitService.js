@@ -15,7 +15,7 @@ async function getLessonsAttempts(userId, unitOrderNumber) {
 
   if (response.data.length === 0) {
     response = await api.post(`/challengeAttempts/${userId}`, {
-      challengeId: '61775f5094c205d9edd5c5b8',
+      challengeId: '61778ec34bb09bb4fee3d5df',
     });
 
     console.log('HOLA_2 ', response.data);

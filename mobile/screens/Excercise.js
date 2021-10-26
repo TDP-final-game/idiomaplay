@@ -30,7 +30,7 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_FOREIGN]: 'Traduzca la siguiente frase',
-    [exerciseTypes.LISTEN_AUDIO]: 'Escucha el siguiente audio',
+    [exerciseTypes.LISTENING]: 'Escucha el siguiente audio',
   };
 
   const lessonService = LessonService.create(challengeAttemptId, 1, lessonOrderNumber);
@@ -92,7 +92,7 @@ const Excercise = ({ navigation, route }) => {
           </View>
 
           <View style={styles.questionContainer}>
-            {currentExercise.type === 'listen_audio' ? (
+            {currentExercise.type === exerciseTypes.LISTENING ? (
               <AudioExercise
                 style={styles.questionText}
                 sentence={currentExercise.statement}
