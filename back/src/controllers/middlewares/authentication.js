@@ -1,11 +1,11 @@
 'use strict';
 
-const firebase = require('../../startup/firebase');
-const ApiError = require('../../apiError');
+// const firebase = require('../../startup/firebase');
+// const ApiError = require('../../apiError');
 
 const authentication = async (req, res, next) => {
 	const { authorization } = req.headers;
-	
+
 	// TODO: to be implemented
 	// if(authorization) {
 	// 	const token = authorization.substring(7, authorization.length);
