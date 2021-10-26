@@ -8,14 +8,21 @@ Array.prototype.findLessonAttempt = function (lessonOrderNumber) {
   return this.find((lessonAttempt) => lessonAttempt.orderNumber === lessonOrderNumber);
 };
 
-async function getLessons(unitOrderNumber, challengeId) {
-  const response = await api.get('/users/6161bbb002bf6b116530d717/challengeAttempts');
+async function getLessonsAttempts(userId, unitOrderNumber) {
+  const response = await api.get(`/users/${userId}/challengeAttempts`);
+
+  if (response.data.length === 0) return [];
+
   return response.data[response.data.length - 1].unitsAttempts.findUnitAttempt(unitOrderNumber)
     .lessonsAttempts;
 }
 
-async function attemptLesson(unitOrderNumber, lessonOrderNumber, challengeAttemptId) {
-  let response = await api.get(
+async function attemptLesson(userId, unitOrderNumber, lessonOrderNumber, challengeAttemptId) {
+  let response = await api.get(`/users/${userId}/challengeAttempts`);
+
+  console.log(response.data[response.data.length - 1]);
+
+  response = await api.get(
     `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
   );
 
@@ -31,6 +38,6 @@ async function attemptLesson(unitOrderNumber, lessonOrderNumber, challengeAttemp
 }
 
 export default {
-  getLessons: getLessons,
+  getLessonsAttempts: getLessonsAttempts,
   attemptLesson: attemptLesson,
 };

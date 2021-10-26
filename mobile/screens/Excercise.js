@@ -33,7 +33,7 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.LISTEN_AUDIO]: 'Escucha el siguiente audio',
   };
 
-  const lessonService = LessonService.create('6174569bd026c7177f9fe5aa', 1, lessonOrderNumber);
+  const lessonService = LessonService.create('617740f48d69dde4307a5281', 1, lessonOrderNumber);
 
   useEffect(() => {
     handleContinue();

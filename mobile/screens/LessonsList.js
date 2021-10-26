@@ -4,18 +4,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
 import { UnitHeader } from '../components/ChapterHeader';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/core';
 
 const LessonsList = ({ navigation }) => {
-  const [lessons, setLessons] = useState([]);
+  const [lessonsAttempts, setLessonsAttempts] = useState([]);
+
+  const userId = useSelector((state) => state.user.userId);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then(setLessons); // todo: spinner while loading
+    // todo: spinner while loading
+    UnitService.getLessonsAttempts(userId, /*unit orden numer*/ 1).then(setLessonsAttempts);
   }, [isFocused]);
 
   const dispatch = useDispatch();
@@ -26,9 +29,10 @@ const LessonsList = ({ navigation }) => {
 
   const handlePress = async (lessonOrderNumber) => {
     const exercisesAttempts = await UnitService.attemptLesson(
+      userId,
       1,
       lessonOrderNumber,
-      '6174569bd026c7177f9fe5aa'
+      '617740f48d69dde4307a5281'
     );
     dispatch(initResults(exercisesAttempts));
     return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
@@ -42,7 +46,7 @@ const LessonsList = ({ navigation }) => {
 
       <View style={{ flex: 0.88 }}>
         <FlatList
-          data={lessons}
+          data={lessonsAttempts}
           keyExtractor={(item) => item.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>

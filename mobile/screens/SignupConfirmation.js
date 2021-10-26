@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput, Image } from 'react-native';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { AntDesign } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { commonStyles } from '../config/styles';
+import UserService from '../services/userService';
+import { View, Text, StyleSheet, Dimensions, TextInput, Image } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../redux/user';
 
 const SignupConfirmation = ({ navigation, route }) => {
   const { user } = route.params;
 
-  const [givenName, setGivenName] = useState(user.givenName);
-  const [familyName, setFamilyName] = useState(user.familyName);
+  const [firstName, setFirstName] = useState(user.givenName);
+  const [secondName, setSecondName] = useState(user.familyName);
+
+  const dispatch = useDispatch();
 
   const confirmUser = () => {
-    navigation.navigate('Home'); // todo: post a server
+    UserService.createUser(firstName, secondName, user.email).then((userId) => {
+      dispatch(logIn({ email: user.email, userId }));
+      return navigation.navigate('Home');
+    });
   };
 
   return (
@@ -35,9 +43,7 @@ const SignupConfirmation = ({ navigation, route }) => {
             commonStyles.shadow,
           ]}
           source={{ uri: user.photoUrl }}
-        >
-          {/* <AntDesign name="google" size={40} color={colors.DARK_GRAY} /> */}
-        </Image>
+        ></Image>
 
         <View style={{ marginTop: '5%' }}>
           <Text style={{ color: colors.PRIMARY_DARK, fontWeight: 'bold', fontSize: 18 }}>
@@ -51,14 +57,14 @@ const SignupConfirmation = ({ navigation, route }) => {
         <View style={{ height: '40%' }}>
           <Text style={styles.inputLabel}>Nombre</Text>
           <View style={[{ ...styles.input, height: '65%' }, commonStyles.shadow]}>
-            <TextInput placeholder={'Nombre'} value={givenName} onChangeText={setGivenName} />
+            <TextInput placeholder={'Nombre'} value={firstName} onChangeText={setFirstName} />
           </View>
         </View>
 
         <View style={{ height: '40%' }}>
           <Text style={styles.inputLabel}>Apellido</Text>
           <View style={[{ ...styles.input, height: '65%' }, commonStyles.shadow]}>
-            <TextInput placeholder={'Apellido'} value={familyName} onChangeText={setFamilyName} />
+            <TextInput placeholder={'Apellido'} value={secondName} onChangeText={setSecondName} />
           </View>
         </View>
       </View>

@@ -45,6 +45,7 @@ const RootComponent = () => {
         ) : (
           <>
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
           </>
         )}
       </Stack.Navigator>
