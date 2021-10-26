@@ -16,11 +16,12 @@ const logIn = async ({ email }) => {
 	const user = await User.findOne({ email });
 	if(!user)
 		throw errors.UserNotRegistered();
-	return { message: 'ok' };
+	return user;
 };
 
-const listChallengeAttempts = userId => {
-	return challengeAttemptModel.find({ userId });
+const listChallengeAttempts = user => {
+	console.log(user);
+	return challengeAttemptModel.find({ user });
 };
 
 module.exports = {
