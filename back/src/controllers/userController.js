@@ -40,9 +40,7 @@ const logIn = async (req, res) => {
 	// #swagger.tags = ['User']
 
 	const { user } = req;
-	console.log(user)
 	const response = await userService.logIn({ email: user.email });
-	console.log(response)
 	res.status(STATUS_CODES.OK).send({ id: response._id });
 };
 
