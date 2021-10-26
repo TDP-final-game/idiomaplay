@@ -40,7 +40,10 @@ LessonAttempt.methods.attempt = function() {
 	const unit = challenge.getUnit(this.unitAttempt().orderNumber);
 	const lesson = unit.getLesson(this.orderNumber);
 
-	this.exercisesAttempts = lesson.exercises.map(exercise => exercise.newAttempt());
+	const shuffledExercises = lesson.exercises.sort(() => 0.5 - Math.random());
+	let selected = shuffledExercises.slice(0, 8);
+
+	this.exercisesAttempts = selected.map(exercise => exercise.newAttempt());
 };
 
 LessonAttempt.methods.getExercise = function(exerciseOrderNumber) {
