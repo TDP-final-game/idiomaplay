@@ -16,7 +16,6 @@ const main = async () => {
 	if(process.env.CREATE_CHALLENGE) {
 		try {
 			result = await createChallenge();
-			console.log(`Challenge created with id ${result._id}!`);
 		} catch(e) {
 			console.error('Challenge not created!', e);
 		}

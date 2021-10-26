@@ -24,9 +24,7 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
       if (type  === 'success') {
         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        console.log(credential)
         const token = await firebase.auth().currentUser.getIdToken(true)
-        console.log('Token to use:', token)        // firebase.auth().createUserWithEmailAndPassword(email, password);
         onSuccessCallback(user, accessToken);
       }
     } catch ({ message }) {
