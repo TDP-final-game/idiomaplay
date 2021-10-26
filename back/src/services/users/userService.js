@@ -19,8 +19,9 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
-const listChallengeAttempts = userId => {
-	return challengeAttemptModel.findBy({ userId });
+const listChallengeAttempts = user => {
+	console.log(user)
+	return challengeAttemptModel.find({ user });
 };
 
 module.exports = {

@@ -4,7 +4,8 @@
 const errorHandler = async (err, req, res, next) => {
 	err.statusCode = err.statusCode || 500;
 
-	res.status(err.statusCode).json({
+	console.log(err.message)
+	res.status(err.statusCode).send({
 		message: err.message
 	});
 };
