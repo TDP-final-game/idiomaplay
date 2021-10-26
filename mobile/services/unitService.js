@@ -15,7 +15,15 @@ async function getLessons(unitOrderNumber, challengeId) {
 }
 
 async function attemptLesson(unitOrderNumber, lessonOrderNumber, challengeAttemptId) {
-  const response = await api.put(
+  let response = await api.get(
+    `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
+  );
+
+  if (response.status === 200 && response.data.status === 'IN_PROGRESS') {
+    return response.data.exercisesAttempts;
+  }
+
+  response = await api.put(
     `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`,
     { lessonOrderNumber }
   );
