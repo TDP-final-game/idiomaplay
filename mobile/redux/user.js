@@ -5,13 +5,17 @@ const userSlice = createSlice({
   initialState: {
     userId: '',
     email: '',
+    imageUrl: '',
+    name: '',
     logged: false,
   },
   reducers: {
     logIn: (state, action) => {
-      const { email, userId } = action.payload;
+      const { email, userId, imageUrl, name } = action.payload;
       state.userId = userId;
       state.email = email;
+      state.imageUrl = imageUrl;
+      state.name = name;
       state.logged = true;
     },
   },

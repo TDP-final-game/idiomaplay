@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
@@ -7,6 +7,7 @@ import { UnitHeader } from '../components/ChapterHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
+import api from '../services/api';
 import { useIsFocused } from '@react-navigation/core';
 
 const LessonsList = ({ navigation }) => {
@@ -28,14 +29,18 @@ const LessonsList = ({ navigation }) => {
   };
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(
-      userId,
-      1,
-      lessonOrderNumber,
-      '617740f48d69dde4307a5281'
-    );
+    const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
+
+    let response = await api.get(`/users/${userId}/challengeAttempts`);
+    const challengeAttemptId = response.data[response.data.length - 1].id;
+
     dispatch(initResults(exercisesAttempts));
-    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
+
+    return navigation.navigate('Excercise', {
+      lessonOrderNumber,
+      exercisesAttempts,
+      challengeAttemptId,
+    });
   };
 
   return (

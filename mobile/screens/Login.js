@@ -29,8 +29,15 @@ const Login = ({ navigation, route }) => {
     if (!logInMode) {
       return navigation.navigate('SignupConfirmation', { user });
     } else {
-      UserService.logIn(user.email /*va el access token*/).then((userId) => {
-        dispatch(logIn({ email: user.email, userId }));
+      UserService.logIn(user.email /*va el access token*/).then((data) => {
+        dispatch(
+          logIn({
+            email: user.email,
+            userId: data.id,
+            imageUrl: user.photoUrl,
+            name: data._doc.firstName + ' ' + data._doc.lastName,
+          })
+        );
         return navigation.navigate('Home');
       });
     }

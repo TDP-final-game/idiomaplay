@@ -14,7 +14,7 @@ import { answer } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/native';
 
 const Excercise = ({ navigation, route }) => {
-  const { lessonOrderNumber, exercisesAttempts } = route.params;
+  const { lessonOrderNumber, exercisesAttempts, challengeAttemptId } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
@@ -33,7 +33,7 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.LISTEN_AUDIO]: 'Escucha el siguiente audio',
   };
 
-  const lessonService = LessonService.create('617740f48d69dde4307a5281', 1, lessonOrderNumber);
+  const lessonService = LessonService.create(challengeAttemptId, 1, lessonOrderNumber);
 
   useEffect(() => {
     handleContinue();

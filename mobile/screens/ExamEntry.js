@@ -23,6 +23,7 @@ const ExamEntry = ({ navigation, route }) => {
   const anim = new Animated.Value(2);
 
   const minimumPercentage = 0.8;
+  const userId = useSelector((state) => state.user.userId);
   const exerciseResults = useSelector((state) => state.lesson.exerciseResults);
   const countCorrectExercises = (results) => {
     return results.filter((item) => item === true).length;
@@ -41,12 +42,7 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetResults());
-    const exercisesAttempts = await UnitService.attemptLesson(
-      1,
-      lessonOrderNumber,
-      '617740f48d69dde4307a5281'
-      //TODO -> force tretry para evitar otra request del get
-    );
+    const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
     return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
   };
 
