@@ -16,7 +16,7 @@ const logIn = async ({ email }) => {
 	const user = await User.findOne({ email });
 	if(!user)
 		throw errors.UserNotRegistered();
-	return { message: 'ok' };
+	return user;
 };
 
 const listChallengeAttempts = userId => {
