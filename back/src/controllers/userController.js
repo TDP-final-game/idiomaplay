@@ -28,20 +28,20 @@ const createUser = async (req, res) => {
 		throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
 
 	const { firstName, lastName } = req.body;
-	const userCreated = await userService.createUser({
+	const { _id, ...props } = await userService.createUser({
 		email: user.email,
 		firstName,
 		lastName
 	});
-	res.status(STATUS_CODES.CREATED).send({ id: userCreated._id });
+	res.status(STATUS_CODES.CREATED).send({ id: response._id, ...props });
 };
 
 const logIn = async (req, res) => {
 	// #swagger.tags = ['User']
 
 	const { user } = req;
-	const response = await userService.logIn({ email: user.email });
-	res.status(STATUS_CODES.OK).send({ id: response._id });
+	const { _id, ...props } = await userService.logIn({ email: user.email });
+	res.status(STATUS_CODES.OK).send({ id: response._id, ...props });
 };
 
 module.exports = {
