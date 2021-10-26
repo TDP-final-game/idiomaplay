@@ -3,11 +3,10 @@
 const challengeAttemptService = require('../services/attempts/challengeAttemptService');
 const STATUS_CODES = require('../constants/status_codes.json');
 
-const USER_ID = '6161bbb002bf6b116530d717';
-
 const attemptChallenge = async (req, res) => {
 	try {
-		const { challengeId, userId = USER_ID } = req.body;
+		const { userId } = req.params;
+		const { challengeId } = req.body;
 		const response = await challengeAttemptService.attemptChallenge(challengeId, userId);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {

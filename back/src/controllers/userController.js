@@ -9,7 +9,9 @@ const listChallengesAttempts = async (req, res) => {
 
 	try {
 		const { userId } = req.params;
+		
 		const response = await userService.listChallengeAttempts(userId);
+
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
@@ -21,6 +23,7 @@ const createUser = async (req, res) => {
 	// #swagger.tags = ['User']
 
 	const { user } = req;
+	
 	if(!user)
 		throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
 
