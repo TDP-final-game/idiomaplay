@@ -44,7 +44,7 @@ const ExamEntry = ({ navigation, route }) => {
     const exercisesAttempts = await UnitService.attemptLesson(
       1,
       lessonOrderNumber,
-      '6174569bd026c7177f9fe5aa'
+      '617740f48d69dde4307a5281'
       //TODO -> force tretry para evitar otra request del get
     );
     return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });

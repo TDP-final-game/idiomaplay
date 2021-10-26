@@ -15,7 +15,10 @@ const LessonsList = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then(setLessons); // todo: spinner while loading
+    UnitService.getLessons(1, '6171ef7fe77f0aeb8e6d6bc5').then((data) => {
+      console.log(data);
+      setLessons(data);
+    }); // todo: spinner while loading
   }, [isFocused]);
 
   const dispatch = useDispatch();
@@ -28,7 +31,7 @@ const LessonsList = ({ navigation }) => {
     const exercisesAttempts = await UnitService.attemptLesson(
       1,
       lessonOrderNumber,
-      '6174569bd026c7177f9fe5aa'
+      '617740f48d69dde4307a5281'
     );
     dispatch(initResults(exercisesAttempts));
     return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });

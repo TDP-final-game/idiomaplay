@@ -5,15 +5,19 @@ import { colors } from '../config/colors';
 import { AntDesign } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { commonStyles } from '../config/styles';
+import UserService from '../services/userService';
 
 const SignupConfirmation = ({ navigation, route }) => {
   const { user } = route.params;
+  console.log(user);
 
-  const [givenName, setGivenName] = useState(user.givenName);
-  const [familyName, setFamilyName] = useState(user.familyName);
+  const [firstName, setFirstName] = useState(user.givenName);
+  const [secondName, setSecondName] = useState(user.familyName);
 
   const confirmUser = () => {
-    navigation.navigate('Home'); // todo: post a server
+    UserService.createUser(firstName, secondName, user.email).then(() =>
+      navigation.navigate('Home')
+    );
   };
 
   return (
@@ -51,14 +55,14 @@ const SignupConfirmation = ({ navigation, route }) => {
         <View style={{ height: '40%' }}>
           <Text style={styles.inputLabel}>Nombre</Text>
           <View style={[{ ...styles.input, height: '65%' }, commonStyles.shadow]}>
-            <TextInput placeholder={'Nombre'} value={givenName} onChangeText={setGivenName} />
+            <TextInput placeholder={'Nombre'} value={firstName} onChangeText={setFirstName} />
           </View>
         </View>
 
         <View style={{ height: '40%' }}>
           <Text style={styles.inputLabel}>Apellido</Text>
           <View style={[{ ...styles.input, height: '65%' }, commonStyles.shadow]}>
-            <TextInput placeholder={'Apellido'} value={familyName} onChangeText={setFamilyName} />
+            <TextInput placeholder={'Apellido'} value={secondName} onChangeText={setSecondName} />
           </View>
         </View>
       </View>
