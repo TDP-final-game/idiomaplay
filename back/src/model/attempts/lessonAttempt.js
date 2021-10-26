@@ -41,7 +41,7 @@ LessonAttempt.methods.attempt = function() {
 	const lesson = unit.getLesson(this.orderNumber);
 
 	const shuffledExercises = lesson.exercises.sort(() => 0.5 - Math.random());
-	let selected = shuffledExercises.slice(0, 8);
+	const selected = shuffledExercises.slice(0, 8);
 
 	this.exercisesAttempts = selected.map(exercise => exercise.newAttempt());
 };

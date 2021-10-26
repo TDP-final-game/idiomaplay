@@ -20,7 +20,7 @@ const logIn = async ({ email }) => {
 };
 
 const listChallengeAttempts = user => {
-	console.log(user)
+	console.log(user);
 	return challengeAttemptModel.find({ user });
 };
 
