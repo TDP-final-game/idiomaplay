@@ -18,8 +18,15 @@ const SignupConfirmation = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const confirmUser = () => {
-    UserService.createUser(firstName, secondName, user.email).then((userId) => {
-      dispatch(logIn({ email: user.email, userId }));
+    UserService.createUser(firstName, secondName, user.email).then((data) => {
+      dispatch(
+        logIn({
+          email: user.email,
+          userId: data.id,
+          imageUrl: user.photoUrl,
+          name: data._doc.firstName + ' ' + data._doc.lastName,
+        })
+      );
       return navigation.navigate('Home');
     });
   };

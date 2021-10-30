@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,10 +27,32 @@ const Login = ({ navigation, route }) => {
 
   const onSuccessCallback = (user, accessToken) => {
     if (!logInMode) {
-      return navigation.navigate('SignupConfirmation', { user });
+      UserService.logIn(user.email /*va el access token*/).then((data) => {
+
+        if(data.id){
+          Alert.alert('Usuario ya registrado!', 'Utilice otra cuenta de google!', [
+            { text: 'OK'},
+          ]);
+        } else {
+          return navigation.navigate('SignupConfirmation', { user });
+        }
+      });
     } else {
-      UserService.logIn(user.email /*va el access token*/).then((userId) => {
-        dispatch(logIn({ email: user.email, userId }));
+      UserService.logIn(user.email /*va el access token*/).then((data) => {
+
+        if(!data.id){
+          Alert.alert('Usuario no esta registrado!', 'Registrese para poder acceder a IdiomaPlay!', [
+            { text: 'OK'},
+          ]);
+        }
+        dispatch(
+          logIn({
+            email: user.email,
+            userId: data.id,
+            imageUrl: user.photoUrl,
+            name: data._doc.firstName + ' ' + data._doc.lastName,
+          })
+        );
         return navigation.navigate('Home');
       });
     }

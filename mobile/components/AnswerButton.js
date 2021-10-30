@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
   button: {
     flexGrow: 1,
     borderRadius: 8,
-    alignItems: 'center',
+    // alignItems: 'center',
+    textAlign: 'center',
+    paddingLeft: '3%',
     marginHorizontal: '5%',
     justifyContent: 'center',
   },
