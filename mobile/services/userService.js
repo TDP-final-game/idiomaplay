@@ -1,17 +1,15 @@
 import api from './api';
 
-async function createUser(firstname, lastname, email) {
+async function createUser(firstName, lastName, email) {
   const response = await api.post(
     '/users',
-    { firstname, lastname },
+    { firstName, lastName },
     {
-      header: email,
+      headers: { authorization: email },
     }
   );
 
-  console.log('HOLA ', response.data);
-
-  return response.data.id;
+  return response.data;
 }
 
 async function logIn(email) {
@@ -19,13 +17,11 @@ async function logIn(email) {
     '/users/session',
     {},
     {
-      header: email,
+      headers: { authorization: email },
     }
   );
 
-  console.log(response.data);
-
-  return response.data.id;
+  return response.data;
 }
 
 export default {
