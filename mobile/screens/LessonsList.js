@@ -9,27 +9,30 @@ import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
 import api from '../services/api';
 import { useIsFocused } from '@react-navigation/core';
+import { screens } from '../config/screens';
 
 const LessonsList = ({ navigation }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
 
   const userId = useSelector((state) => state.user.userId);
+  const unitOrderNumber = 1;
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    navigation.setOptions({
+      unit: unitOrderNumber,
+      returnButtonFunction: () => navigation.goBack(),
+    });
+
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(userId, /*unit orden numer*/ 1).then((data) => {
+    UnitService.getLessonsAttempts(userId, unitOrderNumber).then((data) => {
       console.log('DATA ', data);
       setLessonsAttempts(data);
     });
   }, [isFocused]);
 
   const dispatch = useDispatch();
-
-  const handleReturn = () => {
-    return navigation.navigate('Home');
-  };
 
   const handlePress = async (lessonOrderNumber) => {
     const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
@@ -39,7 +42,7 @@ const LessonsList = ({ navigation }) => {
 
     dispatch(initResults(exercisesAttempts));
 
-    return navigation.navigate('Excercise', {
+    return navigation.navigate(screens.EXERCISE, {
       lessonOrderNumber,
       exercisesAttempts,
       challengeAttemptId,
@@ -48,10 +51,6 @@ const LessonsList = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 0.12 }}>
-        <UnitHeader returnButtonFunction={handleReturn} unit={1} />
-      </View>
-
       <View style={{ flex: 0.88 }}>
         <FlatList
           data={lessonsAttempts}

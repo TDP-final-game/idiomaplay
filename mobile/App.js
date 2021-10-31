@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -14,9 +15,11 @@ import LessonsList from './screens/LessonsList';
 import SignupConfirmation from './screens/SignupConfirmation';
 import { useSelector } from 'react-redux';
 import { firebaseConfig } from './config';
+import { TopBar } from './components/TopBar';
+import { screens } from './config/screens';
+import { ChapterHeader, UnitHeader } from './components/ChapterHeader';
 
 const Stack = createNativeStackNavigator();
-
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -26,20 +29,36 @@ if (!firebase.apps.length) {
 
 const RootComponent = () => {
   const isLogged = useSelector((state) => state.user.logged);
+
+  const header = {
+    [screens.HOME]: () => <TopBar />,
+    [screens.LESSON_LIST]: ({ unit, returnButtonFunction }) => (
+      <UnitHeader unit={unit} returnButtonFunction={returnButtonFunction} />
+    ),
+    [screens.EXERCISE]: ({ returnButtonFunction, unit, lesson }) => (
+      <ChapterHeader unit={unit} lesson={lesson} returnButtonFunction={returnButtonFunction} />
+    ),
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={isLogged ? 'Home' : 'Login'}
         screenOptions={() => ({
-          headerShown: false,
+          header: (props) =>
+            isLogged && (
+              <SafeAreaView style={{ flex: 0.15, marginTop: '7%' }}>
+                {header[props.route.name](props.options)}
+              </SafeAreaView>
+            ),
         })}
       >
         {isLogged ? (
           <>
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name={screens.HOME} component={Home} />
             <Stack.Screen name="ExamEntry" component={ExamEntry} />
-            <Stack.Screen name="Excercise" component={Excercise} />
-            <Stack.Screen name="LessonsList" component={LessonsList} />
+            <Stack.Screen name={screens.EXERCISE} component={Excercise} />
+            <Stack.Screen name={screens.LESSON_LIST} component={LessonsList} />
             <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
           </>
         ) : (
@@ -57,7 +76,7 @@ function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <RootComponent></RootComponent>
+        <RootComponent />
       </SafeAreaProvider>
     </Provider>
   );

@@ -26,6 +26,8 @@ const Excercise = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
+  const unitOrderNumber = 1;
+
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
@@ -33,9 +35,19 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.LISTENING]: 'Escucha el siguiente audio',
   };
 
-  const lessonService = LessonService.create(challengeAttemptId, 1, lessonOrderNumber);
+  const lessonService = LessonService.create(
+    challengeAttemptId,
+    unitOrderNumber,
+    lessonOrderNumber
+  );
 
   useEffect(() => {
+    navigation.setOptions({
+      unit: unitOrderNumber,
+      lesson: lessonOrderNumber,
+      returnButtonFunction: () => navigation.goBack(),
+    });
+
     handleContinue();
   }, [isFocused]);
 
@@ -83,10 +95,6 @@ const Excercise = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       {currentExercise && (
         <>
-          <View style={{ flex: 0.12 }}>
-            <ChapterHeader returnButtonFunction={handleReturn} unit={1} lesson={lessonOrderNumber} />
-          </View>
-
           <View style={{ marginLeft: '2%' }}>
             <Text>{explanationByType[currentExercise.type]}</Text>
           </View>
