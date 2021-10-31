@@ -1,18 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { colors } from '../config/colors';
-import { View, StyleSheet, Button, Image, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { commonStyles } from '../config/styles';
-import { useSelector } from 'react-redux';
+import { screens } from '../config/screens';
 
 const Home = ({ navigation }) => {
-  const photoUrl = useSelector((state) => state.user.imageUrl);
-  const name = useSelector((state) => state.user.name);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button title={'Lesson list'} onPress={() => navigation.navigate('LessonsList')} />
+        <Button title={'Unidad 1'} onPress={() => navigation.navigate(screens.LESSON_LIST)} />
       </View>
     </SafeAreaView>
   );

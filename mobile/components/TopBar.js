@@ -2,42 +2,17 @@ import * as React from 'react';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { LifeAndCoins } from './LifeAndCoins';
 import { commonStyles } from '../config/styles';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 
-export const TopBar = ({ homeScreenMode, returnButtonFunction }) => {
+export const TopBar = () => {
   const imageScale = 0.17;
-  const lifeAndCoinsSize = 25;
 
   const user = useSelector((state) => state.user);
 
-  homeScreenMode = true;
-
   const borderRadius = () => {
     return Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2;
-  };
-
-  const LifeAndCoins = () => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingTop: '3%',
-          justifyContent: 'space-around',
-        }}
-      >
-        <View flexDirection="row">
-          <MaterialIcons name="stars" size={lifeAndCoinsSize} color="yellow" />
-          <Text style={{ fontSize: 18 }}> {user.lifes}</Text>
-        </View>
-
-        <View flexDirection="row">
-          <Ionicons name="heart" size={lifeAndCoinsSize} color={colors.INCORRECT_COLOR} />
-          <Text style={{ fontSize: 18 }}> {user.coins}</Text>
-        </View>
-      </View>
-    );
   };
 
   const ProfileImage = () => {
@@ -63,26 +38,17 @@ export const TopBar = ({ homeScreenMode, returnButtonFunction }) => {
 
   return (
     <View style={styles.headerContainer}>
-      {homeScreenMode && (
-        <View style={{ marginLeft: '3%' }}>
-          <ProfileImage />
-        </View>
-      )}
+      <View style={{ marginLeft: '3%' }}>
+        <ProfileImage />
+      </View>
 
-      {homeScreenMode ? (
-        <View>
-          <Text style={styles.primaryText}>IdiomaPlay</Text>
-          <LifeAndCoins />
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.primaryText}>Unidad {1}</Text>
-          <Text style={styles.secondaryText}>Leccion {2}</Text>
-        </View>
-      )}
+      <View>
+        <Text style={styles.primaryText}>IdiomaPlay</Text>
+        <LifeAndCoins user={user} />
+      </View>
 
       <View style={{ marginRight: '3%' }}>
-        <TouchableOpacity onPress={returnButtonFunction}>
+        <TouchableOpacity onPress={() => console.log('cart')}>
           <Ionicons name="cart" size={50} color={colors.PRIMARY_DARK} />
         </TouchableOpacity>
       </View>
