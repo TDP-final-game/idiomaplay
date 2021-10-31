@@ -1,7 +1,7 @@
 import { create } from 'apisauce';
 
 const api = create({
-  baseURL: 'https://idiomaplay.herokuapp.com/api/v1',
+  baseURL: 'http://192.168.36.9:3000/api/v1',
 });
 
 export const authenticate = userId => {

@@ -13,13 +13,11 @@ import { useIsFocused } from '@react-navigation/core';
 const LessonsList = ({ navigation }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
 
-  const userId = useSelector((state) => state.user.userId);
-
   const isFocused = useIsFocused();
 
   useEffect(() => {
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(userId, /*unit orden numer*/ 1).then((data) => {
+    UnitService.getLessonsAttempts(/*unit orden numer*/ 1).then((data) => {
       console.log('DATA ', data);
       setLessonsAttempts(data);
     });
@@ -32,10 +30,10 @@ const LessonsList = ({ navigation }) => {
   };
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
+    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber);
 
-    let response = await api.get(`/users/${userId}/challengeAttempts`);
-    const challengeAttemptId = response.data[response.data.length - 1].id;
+    let response = await api.get(`/users/me/challengeAttempts`);
+    const challengeAttemptId = response.data.at(-1).id;
 
     dispatch(initResults(exercisesAttempts));
 
