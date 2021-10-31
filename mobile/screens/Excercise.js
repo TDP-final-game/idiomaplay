@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
-import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import LessonService from '../services/lessonService';
@@ -26,6 +25,8 @@ const Exercise = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
+  const unitOrderNumber = 1;
+
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
     [exerciseTypes.TRANSLATE_TO_NATIVE]: 'Traduzca la siguiente frase',
@@ -34,6 +35,12 @@ const Exercise = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    navigation.setOptions({
+      unit: unitOrderNumber,
+      lesson: lessonOrderNumber,
+      returnButtonFunction: () => navigation.goBack(),
+    });
+
     handleContinue();
   }, [isFocused]);
 
@@ -50,7 +57,7 @@ const Exercise = ({ navigation, route }) => {
   const handleAnswerSelected = async (selectedOption) => {
     const correctOption = currentExercise.options.find((option) => option.correct).text;
 
-    const _ = await LessonService.answerExercise(challengeAttemptId, 1, lessonOrderNumber, currentExerciseIndex, selectedOption); //todo: retry if error
+    const _ = await LessonService.answerExercise(challengeAttemptId, unitOrderNumber, lessonOrderNumber, currentExerciseIndex, selectedOption); //todo: retry if error
     dispatch(answer(selectedOption === correctOption));
 
     setCurrentExerciseIndex(currentExerciseIndex + 1);
@@ -81,10 +88,6 @@ const Exercise = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       {currentExercise && (
         <>
-          <View style={{ flex: 0.12 }}>
-            <ChapterHeader returnButtonFunction={handleReturn} unit={1} lesson={lessonOrderNumber} />
-          </View>
-
           <View style={{ marginLeft: '2%' }}>
             <Text>{explanationByType[currentExercise.type]}</Text>
           </View>

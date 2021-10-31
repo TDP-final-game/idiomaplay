@@ -7,6 +7,8 @@ const userSlice = createSlice({
     email: '',
     imageUrl: '',
     name: '',
+    coins: 80,
+    lifes: 5,
     logged: false,
   },
   reducers: {
