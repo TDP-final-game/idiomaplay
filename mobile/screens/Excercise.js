@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
+import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import LessonService from '../services/lessonService';
