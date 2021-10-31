@@ -19,11 +19,11 @@ Exercise.methods.newAttempt = function() {
 	const incorrectAnswersShuffled = this.options.filter(option => option.correct === false).sort(() => 0.5 - Math.random());
 
 	let wrongOptionsAmount;
-	if (this.type === exerciseTypes.COMPLETE_SENTENCE) {
+	if(this.type === exerciseTypes.COMPLETE_SENTENCE)
 		wrongOptionsAmount = 3;
-	} else {
+	else
 		wrongOptionsAmount = 5;
-	}
+
 
 	const selected = incorrectAnswersShuffled.slice(0, wrongOptionsAmount);
 	const correctAnswer = this.options.filter(option => option.correct === true);
