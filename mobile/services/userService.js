@@ -1,4 +1,4 @@
-import api from './api';
+import api, {authenticate} from './api';
 
 async function createUser(firstName, lastName, email) {
   const response = await api.post(
@@ -9,6 +9,7 @@ async function createUser(firstName, lastName, email) {
     }
   );
 
+  authenticate(response.data.id)
   return response.data;
 }
 
@@ -21,10 +22,11 @@ async function logIn(email) {
     }
   );
 
+  authenticate(response.data.id)
   return response.data;
 }
 
 export default {
-  logIn: logIn,
-  createUser: createUser,
+  logIn,
+  createUser,
 };

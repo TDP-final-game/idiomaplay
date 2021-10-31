@@ -6,6 +6,7 @@ const { expect } = chai;
 const ChallengeExample = require('./support/challenge');
 const ChallengeAttemptExample = require('./support/challengeAttempt');
 const STATUSES = require('../../src/constants/statuses.json');
+const UserExample = require('./support/user');
 
 const compare = ({ properties, obj1, obj2 }) => {
 	properties.forEach(property => {
@@ -15,7 +16,7 @@ const compare = ({ properties, obj1, obj2 }) => {
 
 const correctAnswer = exercise => exercise.options.find(option => option.correct).text;
 
-describe.skip('/challengeAttempts', () => {
+describe('/challengeAttempts', () => {
 	let challengeExample;
 	let challengeAttemptExample;
 
@@ -26,6 +27,15 @@ describe.skip('/challengeAttempts', () => {
 	const lessonExercisesAttemptReq = [];
 	let examAttemptReq;
 	const examExercisesAttemptReq = [];
+
+	beforeEach(async function() {
+		const userExample = new UserExample(this.app);
+		await userExample.create({
+			email: 'test@test.com',
+			firstName: 'Test firstName',
+			lastName: 'Test lastName'
+		});
+	});
 
 	beforeEach(async function() {
 		challengeExample = new ChallengeExample(this.app);
@@ -51,14 +61,14 @@ describe.skip('/challengeAttempts', () => {
 			lessonOrderNumber
 		});
 
-		const { exercises } = challenge.units[0].lessons[0];
-		for(const exercise of exercises) {
+		const { exercisesAttempts } = lessonAttemptReq.body;
+		for(const exercise of exercisesAttempts) {
 			lessonExercisesAttemptReq.push(
 				await challengeAttemptExample.attemptLessonExercise({
 					challengeId,
 					unitOrderNumber,
 					lessonOrderNumber,
-					exerciseOrderNumber: exercises.indexOf(exercise),
+					exerciseOrderNumber: exercisesAttempts.indexOf(exercise),
 					answer: correctAnswer(exercise)
 				})
 			);
@@ -70,7 +80,7 @@ describe.skip('/challengeAttempts', () => {
 			unitOrderNumber
 		});
 
-		const examExercises = challenge.units[0].exam.exercises;
+		const examExercises = examAttemptReq.body.exercisesAttempts;
 		for(const exercise of examExercises) {
 			examExercisesAttemptReq.push(
 				await challengeAttemptExample.attemptExamExercise({

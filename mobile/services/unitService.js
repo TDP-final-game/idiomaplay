@@ -60,6 +60,6 @@ async function attemptLesson(userId, unitOrderNumber, lessonOrderNumber) {
 }
 
 export default {
-  getLessonsAttempts: getLessonsAttempts,
+  getLessonsAttempts,
   attemptLesson: attemptLesson,
 };

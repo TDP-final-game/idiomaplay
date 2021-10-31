@@ -34,7 +34,7 @@ describe('/users', () => {
 			expect(result.body).to.include(user);
 		});
 
-		it.only('should fail if user doesn\'t exist', async () => {
+		it('should fail if user doesn\'t exist', async () => {
 			const result = await userExample.login({ email: user.email });
 			expect(result).to.have.status(401);
 			expect(result.body.message).to.include('User not registered');

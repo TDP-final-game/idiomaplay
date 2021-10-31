@@ -7,15 +7,19 @@ class User {
 	}
 
 	async create({ email, firstName, lastName }) {
-		return this.app.post('/users')
+		const result = await this.app.post('/users')
 			.set('Authorization', email)
 			.send({ firstName, lastName });
+		this.app.authenticate(result.body.id);
+		return result;
 	}
 
 	async login({ email }) {
-		return this.app.post('/users/session')
+		const result = await this.app.post('/users/session')
 			.set('Authorization', email)
 			.send({});
+		this.app.authenticate(result.body.id);
+		return result;
 	}
 }
 
