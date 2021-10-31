@@ -18,7 +18,6 @@ const LessonsList = ({ navigation }) => {
   useEffect(() => {
     // todo: spinner while loading
     UnitService.getLessonsAttempts(/*unit orden numer*/ 1).then((data) => {
-      console.log('DATA ', data);
       setLessonsAttempts(data);
     });
   }, [isFocused]);

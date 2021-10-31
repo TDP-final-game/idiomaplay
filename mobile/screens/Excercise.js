@@ -50,7 +50,7 @@ const Exercise = ({ navigation, route }) => {
   const handleAnswerSelected = async (selectedOption) => {
     const correctOption = currentExercise.options.find((option) => option.correct).text;
 
-    const _ = await LessonService.answerExercise(challengeAttemptId, 1, lessonOrderNumber, selectedOption, currentExerciseIndex); //todo: retry if error
+    const _ = await LessonService.answerExercise(challengeAttemptId, 1, lessonOrderNumber, currentExerciseIndex, selectedOption); //todo: retry if error
     dispatch(answer(selectedOption === correctOption));
 
     setCurrentExerciseIndex(currentExerciseIndex + 1);
