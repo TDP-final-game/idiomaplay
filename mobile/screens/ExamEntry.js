@@ -7,6 +7,7 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { SecondaryButton } from '../components/SecondaryButton';
 import { resetResults } from '../redux/lesson';
+import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
@@ -104,6 +105,12 @@ const ExamEntry = ({ navigation, route }) => {
         {description !== '' && (
           <View style={styles.descriptionContainer}>
             <Text style={styles.description}>{description}</Text>
+          </View>
+        )}
+
+        {currentLessonState !== lessonState.RETRY && (
+          <View style={{ marginHorizontal: '5%' }}>
+            <LifeAndCoins coins={10} lifes={1} earned={true} iconSize={50} fontSize={35} />
           </View>
         )}
 
