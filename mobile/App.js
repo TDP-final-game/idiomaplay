@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -14,9 +15,9 @@ import LessonsList from './screens/LessonsList';
 import SignupConfirmation from './screens/SignupConfirmation';
 import { useSelector } from 'react-redux';
 import { firebaseConfig } from './config';
+import { TopBar } from './components/TopBar';
 
 const Stack = createNativeStackNavigator();
-
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -26,12 +27,18 @@ if (!firebase.apps.length) {
 
 const RootComponent = () => {
   const isLogged = useSelector((state) => state.user.logged);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={isLogged ? 'Home' : 'Login'}
         screenOptions={() => ({
-          headerShown: false,
+          header: () =>
+            isLogged && (
+              <SafeAreaView style={{ flex: 0.15, marginTop: '7%' }}>
+                <TopBar />
+              </SafeAreaView>
+            ),
         })}
       >
         {isLogged ? (

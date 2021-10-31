@@ -11,32 +11,6 @@ const Home = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={[
-            {
-              borderRadius:
-                Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-              backgroundColor: colors.LIGHT_GRAY,
-              borderColor: colors.DARK_GRAY,
-              borderWidth: 3,
-              width: Dimensions.get('window').width * 0.3,
-              height: Dimensions.get('window').width * 0.3,
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-            commonStyles.shadow,
-          ]}
-          source={{ uri: photoUrl }}
-        ></Image>
-
-        <View style={{ marginTop: '5%' }}>
-          <Text style={{ color: colors.PRIMARY_DARK, fontWeight: 'bold', fontSize: 18 }}>
-            {name}
-          </Text>
-        </View>
-      </View>
-
       <View style={styles.buttonContainer}>
         <Button title={'Lesson list'} onPress={() => navigation.navigate('LessonsList')} />
       </View>
@@ -57,14 +31,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  imageContainer: {
-    flex: 0.3,
-    borderTopWidth: 3,
-    borderBottomWidth: 3,
-    backgroundColor: colors.PRIMARY,
-    borderColor: colors.PRIMARY_DARK,
-    justifyContent: 'center',
-    alignItems: 'center',
+  tobparContainer: {
+    flex: 0.15,
+    backgroundColor: 'red',
   },
 });
 
