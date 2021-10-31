@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.post('/', userController.createUser);
 router.post('/session', userController.logIn);
-router.get('/:userId/challengeAttempts', userController.listChallengesAttempts);
+router.get('/me/challengeAttempts', userController.listChallengesAttempts);
 
 module.exports = router;

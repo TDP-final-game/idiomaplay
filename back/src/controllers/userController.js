@@ -8,9 +8,9 @@ const listChallengesAttempts = async (req, res) => {
 	// #swagger.tags = ['User']
 
 	try {
-		const { userId } = req.params;
+		const { user } = req;
 
-		const response = await userService.listChallengeAttempts(userId);
+		const response = await userService.listChallengeAttempts(user.id);
 
 		res.status(STATUS_CODES.OK)
 			.send(response);
