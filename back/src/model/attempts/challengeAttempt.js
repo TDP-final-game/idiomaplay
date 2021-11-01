@@ -14,7 +14,8 @@ const ChallengeAttempt = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
-		required: [true, 'userId is required']
+		required: [true, 'userId is required'],
+		autopopulate: true
 	},
 	challenge: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -89,6 +90,13 @@ ChallengeAttempt.methods.attemptExamExercise = async function({ unitOrderNumber,
 		throw errors.ChallengeAttemptNotInProgress();
 	await this.getUnitAttempt(unitOrderNumber).attemptExamExercise({ exerciseOrderNumber, answer });
 };
+
+/*
+ * Hooks
+ */
+ChallengeAttempt.pre('save', async function() {
+	await this.user.save();
+});
 
 /*
  * Exports

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const lessonInfo = require('../lessons/lessonInfo');
 const { schema: ExerciseAttempt } = require('./exerciseAttempt');
+const Reward = require('./reward');
 const errors = require('./errors');
 const Status = require('./status');
 const randomGenerator = require('../randomGenerator');
@@ -14,7 +15,12 @@ const randomGenerator = require('../randomGenerator');
 const LessonAttempt = new mongoose.Schema({
 	_id: false,
 	...lessonInfo,
-	exercisesAttempts: [{ type: ExerciseAttempt, required: false }]
+	exercisesAttempts: [{ type: ExerciseAttempt, required: false }],
+	firstAttempt: {
+		type: Boolean,
+		required: true,
+		default: true
+	}
 }, { autoCreate: false, toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 /*
@@ -44,6 +50,7 @@ LessonAttempt.methods.attempt = function() {
 	const shuffledExercises = lesson.exercises.sort(() => 0.5 - randomGenerator.new());
 	const selected = shuffledExercises.slice(0, 8);
 
+	this.firstAttempt = !this.isCompleted();
 	this.exercisesAttempts = selected.map(exercise => exercise.newAttempt());
 };
 
@@ -57,6 +64,10 @@ LessonAttempt.methods.getExercise = function(exerciseOrderNumber) {
 LessonAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {
 	const exercise = this.getExercise(exerciseOrderNumber);
 	exercise.attempt({ answer });
+	if(this.isPassed()) {
+		const { user } = this.ownerDocument();
+		user.addReward(this.reward);
+	}
 };
 
 LessonAttempt.methods.numberOfPassedExercises = function() {
@@ -67,6 +78,16 @@ LessonAttempt.methods.isLessonPassed = function() {
 	return this.exercisesAttempts.every(exercise => exercise.isCompleted())
 			&& this.numberOfPassedExercises() / this.exercisesAttempts.length >= 0.8;
 };
+
+LessonAttempt.virtual('reward').get(function() {
+	if(!this.isPassed())
+		return new Reward({ coins: 0, lives: 0 });
+
+	if(this.firstAttempt)
+		return new Reward({ coins: 10, lives: 0 });
+
+	return new Reward({ coins: 5, lives: 0 });
+});
 
 /*
  * Exports

@@ -2,6 +2,7 @@
 
 const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
+const { model: userModel } = require('../../model/users/user');
 
 const errors = require('./challengeAttemptErrors');
 
@@ -14,7 +15,7 @@ const attemptChallenge = async (challengeId, userId) => {
 		throw errors.ChallengeNotFound();
 
 	const attempt = challenge.newAttempt();
-	attempt.user = userId;
+	attempt.user = await userModel.findOne({ _id: userId });
 
 	return attempt.save();
 };

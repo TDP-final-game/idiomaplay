@@ -28,8 +28,13 @@ describe('/challengeAttempts', () => {
 	let examAttemptReq;
 	const examExercisesAttemptReq = [];
 
+	let challengeId;
+	let unitOrderNumber;
+	let lessonOrderNumber;
+	let userExample;
+
 	beforeEach(async function() {
-		const userExample = new UserExample(this.app);
+		userExample = new UserExample(this.app);
 		await userExample.create({
 			email: 'test@test.com',
 			firstName: 'Test firstName',
@@ -44,9 +49,9 @@ describe('/challengeAttempts', () => {
 		// Challenge
 		challenge = await challengeExample.create();
 		challengeAttemptReq = await challengeAttemptExample.create({ challengeId: challenge._id });
-		const challengeId = challengeAttemptReq.body._id;
-		const unitOrderNumber = challenge.units[0].orderNumber;
-		const lessonOrderNumber = challenge.units[0].lessons[0].orderNumber;
+		challengeId = challengeAttemptReq.body._id;
+		unitOrderNumber = challenge.units[0].orderNumber;
+		lessonOrderNumber = challenge.units[0].lessons[0].orderNumber;
 
 		// Unit
 		unitAttemptReq = await challengeAttemptExample.attemptUnit({
@@ -190,6 +195,18 @@ describe('/challengeAttempts', () => {
 			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
 		});
+
+		it('should reward with 10 coins when passed in the first attempt', async () => {
+			const getLessonAttemptReq = await challengeAttemptExample.getLessonAttempt({ challengeId, unitOrderNumber, lessonOrderNumber });
+			expect(getLessonAttemptReq).to.have.status(200);
+			expect(getLessonAttemptReq.body.reward.coins).to.eql(10);
+		});
+
+		it('should add 10 coins to the user when passed in the first attempt', async () => {
+			const statsReq = await userExample.stats();
+			expect(statsReq).to.have.status(200);
+			expect(statsReq.body.coins).to.eql(90);
+		});
 	});
 
 	describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', () => {
@@ -231,16 +248,6 @@ describe('/challengeAttempts', () => {
 			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
 		});
-	});
-
-	let challengeId;
-	let unitOrderNumber;
-	let lessonOrderNumber;
-
-	beforeEach(() => {
-		challengeId = challengeAttemptReq.body.id;
-		unitOrderNumber = unitAttemptReq.body.orderNumber;
-		lessonOrderNumber = lessonAttemptReq.body.orderNumber;
 	});
 
 	describe('GET /:challengeAttemptId', () => {

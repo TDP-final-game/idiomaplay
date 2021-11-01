@@ -16,6 +16,14 @@ const Stats = new mongoose.Schema({
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
+/*
+ * Instance methods
+ */
+Stats.methods.addReward = function(reward) {
+	this.coins += reward.coins;
+	this.lives += reward.lives;
+};
+
 module.exports = {
 	schema: Stats
 };
