@@ -17,20 +17,27 @@ const compare = ({ properties, obj1, obj2 }) => {
 const correctAnswer = exercise => exercise.options.find(option => option.correct).text;
 
 describe('/challengeAttempts', () => {
+	// Example classes
 	let challengeExample;
 	let challengeAttemptExample;
 
-	let challenge;
-	let challengeAttemptReq;
-	let unitAttemptReq;
-	let lessonAttemptReq;
-	const lessonExercisesAttemptReq = [];
-	let examAttemptReq;
-	const examExercisesAttemptReq = [];
+	beforeEach(async function() {
+		challengeExample = new ChallengeExample(this.app);
+		challengeAttemptExample = new ChallengeAttemptExample(this.app);
+	});
 
-	let challengeId;
+	// Challenge
+	let challenge;
 	let unitOrderNumber;
 	let lessonOrderNumber;
+
+	beforeEach(async () => {
+		challenge = await challengeExample.create();
+		unitOrderNumber = challenge.units[0].orderNumber;
+		lessonOrderNumber = challenge.units[0].lessons[0].orderNumber;
+	});
+
+	// User
 	let userExample;
 
 	beforeEach(async function() {
@@ -42,26 +49,32 @@ describe('/challengeAttempts', () => {
 		});
 	});
 
-	beforeEach(async function() {
-		challengeExample = new ChallengeExample(this.app);
-		challengeAttemptExample = new ChallengeAttemptExample(this.app);
+	// Challenge attempt
+	let challengeAttemptId;
+	let challengeAttemptReq;
 
-		// Challenge
-		challenge = await challengeExample.create();
-		challengeAttemptReq = await challengeAttemptExample.create({ challengeId: challenge._id });
-		challengeId = challengeAttemptReq.body._id;
-		unitOrderNumber = challenge.units[0].orderNumber;
-		lessonOrderNumber = challenge.units[0].lessons[0].orderNumber;
+	beforeEach(async () => {
+		challengeAttemptReq = await challengeAttemptExample.create({ challengeId: challenge.id });
+		challengeAttemptId = challengeAttemptReq.body.id;
+	});
 
-		// Unit
+	// Unit attempt
+	let unitAttemptReq;
+
+	beforeEach(async () => {
 		unitAttemptReq = await challengeAttemptExample.attemptUnit({
-			challengeId,
+			challengeAttemptId,
 			unitOrderNumber
 		});
+	});
 
-		// Lesson
+	// Lesson attempt
+	let lessonAttemptReq;
+	const lessonExercisesAttemptReq = [];
+
+	beforeEach(async () => {
 		lessonAttemptReq = await challengeAttemptExample.attemptLesson({
-			challengeId,
+			challengeAttemptId,
 			unitOrderNumber,
 			lessonOrderNumber
 		});
@@ -70,7 +83,7 @@ describe('/challengeAttempts', () => {
 		for(const exercise of exercisesAttempts) {
 			lessonExercisesAttemptReq.push(
 				await challengeAttemptExample.attemptLessonExercise({
-					challengeId,
+					challengeAttemptId,
 					unitOrderNumber,
 					lessonOrderNumber,
 					exerciseOrderNumber: exercisesAttempts.indexOf(exercise),
@@ -78,10 +91,15 @@ describe('/challengeAttempts', () => {
 				})
 			);
 		}
+	});
 
-		// Exam
+	// Exam attempt
+	let examAttemptReq;
+	const examExercisesAttemptReq = [];
+
+	beforeEach(async () => {
 		examAttemptReq = await challengeAttemptExample.attemptExam({
-			challengeId,
+			challengeAttemptId,
 			unitOrderNumber
 		});
 
@@ -89,7 +107,7 @@ describe('/challengeAttempts', () => {
 		for(const exercise of examExercises) {
 			examExercisesAttemptReq.push(
 				await challengeAttemptExample.attemptExamExercise({
-					challengeId,
+					challengeAttemptId,
 					unitOrderNumber,
 					exerciseOrderNumber: examExercises.indexOf(exercise),
 					answer: correctAnswer(exercise)
@@ -197,7 +215,7 @@ describe('/challengeAttempts', () => {
 		});
 
 		it('should reward with 10 coins when passed in the first attempt', async () => {
-			const getLessonAttemptReq = await challengeAttemptExample.getLessonAttempt({ challengeId, unitOrderNumber, lessonOrderNumber });
+			const getLessonAttemptReq = await challengeAttemptExample.getLessonAttempt({ challengeAttemptId, unitOrderNumber, lessonOrderNumber });
 			expect(getLessonAttemptReq).to.have.status(200);
 			expect(getLessonAttemptReq.body.reward.coins).to.eql(10);
 		});
@@ -252,7 +270,7 @@ describe('/challengeAttempts', () => {
 
 	describe('GET /:challengeAttemptId', () => {
 		it('should return the challenge attempt', async () => {
-			const getChallengeAttemptReq = await challengeAttemptExample.getChallengeAttempt({ challengeId });
+			const getChallengeAttemptReq = await challengeAttemptExample.getChallengeAttempt({ challengeAttemptId });
 			expect(getChallengeAttemptReq).to.have.status(200);
 
 			compare({
@@ -265,7 +283,7 @@ describe('/challengeAttempts', () => {
 
 	describe('GET /:challengeAttemptId/unitsAttempts/:unitOrderNumber', () => {
 		it('should return the unit attempt', async () => {
-			const getUnitAttemptReq = await challengeAttemptExample.getUnitAttempt({ challengeId, unitOrderNumber });
+			const getUnitAttemptReq = await challengeAttemptExample.getUnitAttempt({ challengeAttemptId, unitOrderNumber });
 
 			expect(getUnitAttemptReq).to.have.status(200);
 
@@ -279,7 +297,7 @@ describe('/challengeAttempts', () => {
 
 	describe('GET /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber', () => {
 		it('should return the lesson attempt', async () => {
-			const getLessonAttemptReq = await challengeAttemptExample.getLessonAttempt({ challengeId, unitOrderNumber, lessonOrderNumber });
+			const getLessonAttemptReq = await challengeAttemptExample.getLessonAttempt({ challengeAttemptId, unitOrderNumber, lessonOrderNumber });
 
 			expect(getLessonAttemptReq).to.have.status(200);
 
