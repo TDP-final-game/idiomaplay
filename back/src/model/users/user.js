@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { schema: Stats } = require('../stats/stats');
 
 const User = new mongoose.Schema({
 	email: {
@@ -21,6 +22,11 @@ const User = new mongoose.Schema({
 	},
 	photo: {
 		type: String
+	},
+	stats: {
+		type: Stats,
+		required: true,
+		default: () => ({})
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
