@@ -38,6 +38,7 @@ const LessonsList = ({ navigation }) => {
     const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
 
     let response = await api.get(`/users/${userId}/challengeAttempts`);
+
     const challengeAttemptId = response.data[response.data.length - 1].id;
 
     dispatch(initResults(exercisesAttempts));

@@ -1,3 +1,4 @@
+import { cos } from 'react-native-reanimated';
 import user from '../redux/user';
 import api from './api';
 
