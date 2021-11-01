@@ -46,7 +46,8 @@ const RootComponent = () => {
         initialRouteName={isLogged ? 'Home' : 'Login'}
         screenOptions={() => ({
           header: (props) =>
-            isLogged && (
+            isLogged &&
+            header[props.route.name] && (
               <SafeAreaView style={{ flex: 0.15, marginTop: '7%' }}>
                 {header[props.route.name](props.options)}
               </SafeAreaView>

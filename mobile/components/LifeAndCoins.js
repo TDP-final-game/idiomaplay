@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export const LifeAndCoins = ({ user, vertical }) => {
-  const lifeAndCoinsSize = 25;
+export const LifeAndCoins = ({ coins, lifes, vertical, earned, fontSize, iconSize }) => {
+  const defaultIconSize = 25;
+  const defaultFontSize = 18;
 
   const LifeAndCoinsHorizontal = () => (
     <View
@@ -16,13 +17,33 @@ export const LifeAndCoins = ({ user, vertical }) => {
       }}
     >
       <View flexDirection="row">
-        <MaterialIcons name="stars" size={lifeAndCoinsSize} color="yellow" />
-        <Text style={{ fontSize: 18 }}> {user.coins}</Text>
+        <MaterialIcons name="stars" size={iconSize ?? defaultIconSize} color="yellow" />
+        <Text
+          style={{
+            fontSize: fontSize ?? defaultFontSize,
+            fontWeight: 'bold',
+            color: 'white',
+          }}
+        >
+          {' '}
+          {earned ? '+' : ''}
+          {coins}
+        </Text>
       </View>
 
       <View flexDirection="row">
-        <Ionicons name="heart" size={lifeAndCoinsSize} color={colors.INCORRECT_COLOR} />
-        <Text style={{ fontSize: 18 }}> {user.lifes}</Text>
+        <Ionicons name="heart" size={iconSize ?? defaultIconSize} color={colors.INCORRECT_COLOR} />
+        <Text
+          style={{
+            fontSize: fontSize ?? defaultFontSize,
+            fontWeight: 'bold',
+            color: '#555555',
+          }}
+        >
+          {' '}
+          {earned ? '+' : ''}
+          {lifes}
+        </Text>
       </View>
     </View>
   );
@@ -35,13 +56,33 @@ export const LifeAndCoins = ({ user, vertical }) => {
       }}
     >
       <View flexDirection="row">
-        <MaterialIcons name="stars" size={lifeAndCoinsSize} color="yellow" />
-        <Text style={{ fontSize: 18 }}> {user.coins}</Text>
+        <MaterialIcons name="stars" size={iconSize ?? defaultIconSize} color="yellow" />
+        <Text
+          style={{
+            fontSize: fontSize ?? defaultFontSize,
+            fontWeight: 'bold',
+            color: 'white',
+          }}
+        >
+          {' '}
+          {earned ? '+' : ''}
+          {lifes}
+        </Text>
       </View>
 
       <View flexDirection="row">
-        <Ionicons name="heart" size={lifeAndCoinsSize} color={colors.INCORRECT_COLOR} />
-        <Text style={{ fontSize: 18 }}> {user.lifes}</Text>
+        <Ionicons name="heart" size={iconSize ?? defaultIconSize} color={colors.INCORRECT_COLOR} />
+        <Text
+          style={{
+            fontSize: fontSize ?? defaultFontSize,
+            fontWeight: 'bold',
+            color: '#555555',
+          }}
+        >
+          {' '}
+          {earned ? '+' : ''}
+          {lifes}
+        </Text>
       </View>
     </View>
   );
