@@ -54,7 +54,7 @@ describe('lessonAttempt', () => {
 		expect(lesson.status).to.eql(Status.PASSED());
 	});
 
-	it('should be failed when two exercises are incorrectly answered', () => {
+	xit('should be failed when two exercises are incorrectly answered', () => {
 		const lesson = LessonAttemptExample.new().build();
 		lesson.attempt();
 
