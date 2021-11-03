@@ -8,8 +8,6 @@ const errors = require('./errors');
 const Status = require('./status');
 const randomGenerator = require('../randomGenerator');
 
-const { model: userModel } = require('../../model/users/user');
-
 /*
  * Schema
  */
@@ -48,7 +46,7 @@ LessonAttempt.methods.unitAttempt = function() {
 
 LessonAttempt.methods.challengeAttempt = function() {
 	return this.unitAttempt().challengeAttempt();
-}
+};
 
 LessonAttempt.methods.attempt = async function() {
 	const { challenge } = this.ownerDocument();

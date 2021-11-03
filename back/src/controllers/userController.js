@@ -47,7 +47,7 @@ const getUserInfo = async (req, res) => {
 	const { user } = req;
 	const userInfo = await userService.getUserInfo(user.email);
 	res.status(STATUS_CODES.OK).send(userInfo);
-}
+};
 
 module.exports = {
 	listChallengesAttempts,

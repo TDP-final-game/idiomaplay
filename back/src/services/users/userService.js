@@ -21,7 +21,7 @@ const logIn = async email => {
 
 const getUserInfo = async email => {
 	return User.findOne({ email });
-}
+};
 
 const listChallengeAttempts = user => {
 	return challengeAttemptModel.find({ user });

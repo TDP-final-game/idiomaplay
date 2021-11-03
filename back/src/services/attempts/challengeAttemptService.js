@@ -4,7 +4,7 @@ const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 
 const errors = require('./challengeAttemptErrors');
-const {model: userModel} = require("../../model/users/user");
+const { model: userModel } = require('../../model/users/user');
 
 const attemptChallenge = async (challengeId, userId) => {
 	if(await challengeAttemptModel.anyInProgress({ challengeId, userId }))
@@ -43,8 +43,8 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 	if(!challengeAttempt)
 		throw errors.ChallengeAttemptNotFound();
 
-	const user = await userModel.findOne({ _id: challengeAttempt.user});
-	if (user.lives < 1)
+	const user = await userModel.findOne({ _id: challengeAttempt.user });
+	if(user.lives < 1)
 		throw errors.NotEnoughLives();
 
 	user.lives -= 1;
