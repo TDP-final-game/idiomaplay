@@ -21,7 +21,6 @@ const listChallengesAttempts = async (req, res) => {
 
 const createUser = async (req, res) => {
 	// #swagger.tags = ['User']
-	console.log(req);
 	const { user } = req;
 
 	if(!user)
