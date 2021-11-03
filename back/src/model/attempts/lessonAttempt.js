@@ -6,6 +6,7 @@ const lessonInfo = require('../lessons/lessonInfo');
 const { schema: ExerciseAttempt } = require('./exerciseAttempt');
 const errors = require('./errors');
 const Status = require('./status');
+const randomGenerator = require('../randomGenerator');
 
 /*
  * Schema
@@ -40,7 +41,7 @@ LessonAttempt.methods.attempt = function() {
 	const unit = challenge.getUnit(this.unitAttempt().orderNumber);
 	const lesson = unit.getLesson(this.orderNumber);
 
-	const shuffledExercises = lesson.exercises.sort(() => 0.5 - Math.random());
+	const shuffledExercises = lesson.exercises.sort(() => 0.5 - randomGenerator.new());
 	const selected = shuffledExercises.slice(0, 8);
 
 	this.exercisesAttempts = selected.map(exercise => exercise.newAttempt());

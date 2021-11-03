@@ -11,7 +11,7 @@ import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { lessonOrderNumber } = route.params;
+  const { lessonOrderNumber, challengeAttemptId } = route.params;
   const lessonState = {
     RETRY: 'RETRY',
     RETURN_TO_UNIT: 'RETURN_TO_UNIT',
@@ -43,8 +43,8 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetResults());
-    const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
-    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts });
+    const exercisesAttempts = await UnitService.attemptLesson( 1, lessonOrderNumber);
+    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts, challengeAttemptId });
   };
 
   useEffect(() => {

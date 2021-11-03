@@ -5,9 +5,9 @@ const STATUS_CODES = require('../constants/status_codes.json');
 
 const attemptChallenge = async (req, res) => {
 	try {
-		const { userId } = req.params;
+		const { user } = req;
 		const { challengeId } = req.body;
-		const response = await challengeAttemptService.attemptChallenge(challengeId, userId);
+		const response = await challengeAttemptService.attemptChallenge(challengeId, user.id);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
 		return res.status(error.statusCode).send(error.description);

@@ -1,5 +1,3 @@
-import { cos } from 'react-native-reanimated';
-import user from '../redux/user';
 import api from './api';
 
 Array.prototype.findUnitAttempt = function (unitOrderNumber) {
@@ -10,57 +8,46 @@ Array.prototype.findLessonAttempt = function (lessonOrderNumber) {
   return this.find((lessonAttempt) => lessonAttempt.orderNumber === lessonOrderNumber);
 };
 
-async function getLessonsAttempts(userId, unitOrderNumber) {
-  console.log('user_ID ', userId);
+async function getLessonsAttempts(unitOrderNumber) {
+  const challengeAttempts = (await api.get('/users/me/challengeAttempts')).data;
 
-  let response = await api.get(`/users/${userId}/challengeAttempts`);
+  if (challengeAttempts.length === 0) {
+    const challenge = (await api.get('/challenges')).data[0]
 
-  if (response.data.length === 0) {
-    response = await api.post(`/challengeAttempts/${userId}`, {
-      challengeId: '61778ec34bb09bb4fee3d5df',
-    });
+    const challengeAttempt = (await api.post(`/challengeAttempts`, {
+      challengeId: challenge.id,
+    })).data;
 
-    console.log(`/challengeAttempts/${userId}  - `, response.data);
-
-    let challengeAttemptId = response.data._id;
-
-    response = await api.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts`, {
+    const unitAttempt = (await api.put(`/challengeAttempts/${challengeAttempt.id}/unitsAttempts`, {
       unitOrderNumber: unitOrderNumber,
-    });
+    })).data;
 
-    console.log(`/challengeAttempts/${challengeAttemptId}/unitsAttempts  - `, response.data);
-
-    response = await api.get(`/users/${userId}/challengeAttempts`);
-
-    console.log(`/users/${userId}/challengeAttempts  - `, response.data);
+    return unitAttempt.lessonsAttempts;
   }
 
-  return response.data[response.data.length - 1].unitsAttempts.findUnitAttempt(unitOrderNumber)
-    .lessonsAttempts;
+  return challengeAttempts.at(-1).unitsAttempts.findUnitAttempt(unitOrderNumber).lessonsAttempts;
 }
 
-async function attemptLesson(userId, unitOrderNumber, lessonOrderNumber) {
-  let response = await api.get(`/users/${userId}/challengeAttempts`);
+async function attemptLesson(unitOrderNumber, lessonOrderNumber) {
+  let challengeAttempt = (await api.get('/users/me/challengeAttempts')).data.at(-1);
 
-  const challengeAttemptId = response.data[response.data.length - 1].id;
+  let lessonAttempt = (await api.get(
+    `/challengeAttempts/${challengeAttempt.id}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
+  )).data;
 
-  response = await api.get(
-    `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
-  );
-
-  if (response.status === 200 && response.data.status === 'IN_PROGRESS') {
-    return response.data.exercisesAttempts;
+  if (lessonAttempt.status === 'IN_PROGRESS') {
+    return lessonAttempt.exercisesAttempts;
   }
 
-  response = await api.put(
-    `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`,
+  lessonAttempt = (await api.put(
+    `/challengeAttempts/${challengeAttempt.id}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`,
     { lessonOrderNumber }
-  );
+  )).data;
 
-  return response.data.exercisesAttempts;
+  return lessonAttempt.exercisesAttempts;
 }
 
 export default {
-  getLessonsAttempts: getLessonsAttempts,
-  attemptLesson: attemptLesson,
+  getLessonsAttempts,
+  attemptLesson,
 };
