@@ -216,7 +216,7 @@ describe('/challengeAttempts', () => {
 		});
 	});
 
-	describe,skip('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', () => {
+	describe.skip('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', () => {
 		it('should change the exam exercise attempt to "passed"', async () => {
 			const examExerciseAttemptReq = examExercisesAttemptReq[0];
 			expect(examExerciseAttemptReq).to.have.status(200);
