@@ -19,7 +19,6 @@ export const LessonCard = ({ text, state, onPress }) => {
     <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onPress}>
       <View
         style={{
-          flex: 1,
           flexDirection: 'row',
           paddingVertical: '8%',
         }}

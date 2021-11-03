@@ -66,7 +66,7 @@ export const LifeAndCoins = ({ coins, lifes, vertical, earned, fontSize, iconSiz
         >
           {' '}
           {earned ? '+' : ''}
-          {lifes}
+          {coins}
         </Text>
       </View>
 
