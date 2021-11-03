@@ -8,13 +8,23 @@ const errors = require('./errors');
 const Status = require('./status');
 const randomGenerator = require('../randomGenerator');
 
+const { model: userModel } = require('../../model/users/user');
+
 /*
  * Schema
  */
 const LessonAttempt = new mongoose.Schema({
 	_id: false,
 	...lessonInfo,
-	exercisesAttempts: [{ type: ExerciseAttempt, required: false }]
+	exercisesAttempts: [{ type: ExerciseAttempt, required: false }],
+	coinsEarned: {
+		type: Number,
+		default: 0
+	},
+	livesEarned: {
+		type: Number,
+		default: 0
+	}
 }, { autoCreate: false, toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 /*
@@ -36,7 +46,11 @@ LessonAttempt.methods.unitAttempt = function() {
 	return this.parent();
 };
 
-LessonAttempt.methods.attempt = function() {
+LessonAttempt.methods.challengeAttempt = function() {
+	return this.unitAttempt().challengeAttempt();
+}
+
+LessonAttempt.methods.attempt = async function() {
 	const { challenge } = this.ownerDocument();
 	const unit = challenge.getUnit(this.unitAttempt().orderNumber);
 	const lesson = unit.getLesson(this.orderNumber);

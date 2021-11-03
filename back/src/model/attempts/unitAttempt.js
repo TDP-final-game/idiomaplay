@@ -41,6 +41,10 @@ UnitAttempt.methods.attempt = function() {
 	this.examAttempt = exam.newAttempt();
 };
 
+UnitAttempt.methods.challengeAttempt = function() {
+	return this.parent();
+};
+
 // Lessons
 UnitAttempt.methods.getLessonAttempt = function(lessonOrderNumber) {
 	const lesson = this.lessonsAttempts.find(lessonAttempt => lessonAttempt.orderNumber === lessonOrderNumber);

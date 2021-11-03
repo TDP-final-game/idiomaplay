@@ -21,7 +21,7 @@ const listChallengesAttempts = async (req, res) => {
 
 const createUser = async (req, res) => {
 	// #swagger.tags = ['User']
-
+	console.log(req);
 	const { user } = req;
 
 	if(!user)
@@ -40,12 +40,19 @@ const logIn = async (req, res) => {
 	// #swagger.tags = ['User']
 
 	const { user } = req;
-	const foundUser = await userService.logIn({ email: user.email });
+	const foundUser = await userService.logIn(user.email);
 	res.status(STATUS_CODES.OK).send(foundUser);
 };
+
+const getUserInfo = async (req, res) => {
+	const { user } = req;
+	const userInfo = await userService.getUserInfo(user.email);
+	res.status(STATUS_CODES.OK).send(userInfo);
+}
 
 module.exports = {
 	listChallengesAttempts,
 	createUser,
-	logIn
+	logIn,
+	getUserInfo
 };

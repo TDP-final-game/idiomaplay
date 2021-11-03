@@ -21,6 +21,14 @@ const User = new mongoose.Schema({
 	},
 	photo: {
 		type: String
+	},
+	coins: {
+		type: Number,
+		default: 80
+	},
+	lives: {
+		type: Number,
+		default: 5
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
