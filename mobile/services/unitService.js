@@ -1,5 +1,3 @@
-import { cos } from 'react-native-reanimated';
-import user from '../redux/user';
 import api from './api';
 
 Array.prototype.findUnitAttempt = function (unitOrderNumber) {
@@ -11,8 +9,6 @@ Array.prototype.findLessonAttempt = function (lessonOrderNumber) {
 };
 
 async function getLessonsAttempts(userId, unitOrderNumber) {
-  console.log('user_ID ', userId);
-
   let response = await api.get(`/users/${userId}/challengeAttempts`);
 
   if (response.data.length === 0) {
@@ -20,19 +16,13 @@ async function getLessonsAttempts(userId, unitOrderNumber) {
       challengeId: '61778ec34bb09bb4fee3d5df',
     });
 
-    console.log(`/challengeAttempts/${userId}  - `, response.data);
-
     let challengeAttemptId = response.data._id;
 
     response = await api.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts`, {
       unitOrderNumber: unitOrderNumber,
     });
 
-    console.log(`/challengeAttempts/${challengeAttemptId}/unitsAttempts  - `, response.data);
-
     response = await api.get(`/users/${userId}/challengeAttempts`);
-
-    console.log(`/users/${userId}/challengeAttempts  - `, response.data);
   }
 
   return response.data[response.data.length - 1].unitsAttempts.findUnitAttempt(unitOrderNumber)
@@ -60,7 +50,13 @@ async function attemptLesson(userId, unitOrderNumber, lessonOrderNumber) {
   return response.data.exercisesAttempts;
 }
 
+async function allLessonsPassed(userId, unitOrderNumber) {
+  const response = await getLessonsAttempts(userId, unitOrderNumber);
+  return response.every((lesson) => lesson.status === 'PASSED');
+}
+
 export default {
   getLessonsAttempts: getLessonsAttempts,
   attemptLesson: attemptLesson,
+  allLessonsPassed: allLessonsPassed,
 };
