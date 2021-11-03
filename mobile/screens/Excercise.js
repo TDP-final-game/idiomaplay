@@ -13,7 +13,7 @@ import LessonService from '../services/lessonService';
 import { answer } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/native';
 
-const Excercise = ({ navigation, route }) => {
+const Exercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts, challengeAttemptId } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
@@ -35,12 +35,6 @@ const Excercise = ({ navigation, route }) => {
     [exerciseTypes.LISTENING]: 'Escucha el siguiente audio',
   };
 
-  const lessonService = LessonService.create(
-    challengeAttemptId,
-    unitOrderNumber,
-    lessonOrderNumber
-  );
-
   useEffect(() => {
     navigation.setOptions({
       unit: unitOrderNumber,
@@ -54,7 +48,7 @@ const Excercise = ({ navigation, route }) => {
   const handleContinue = () => {
     if (currentExerciseIndex >= exercisesAttempts.length) {
       setCurrentExerciseIndex(0);
-      return navigation.navigate('ExamEntry', { lessonOrderNumber });
+      return navigation.navigate('ExamEntry', { lessonOrderNumber, challengeAttemptId });
     }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
@@ -64,7 +58,7 @@ const Excercise = ({ navigation, route }) => {
   const handleAnswerSelected = async (selectedOption) => {
     const correctOption = currentExercise.options.find((option) => option.correct).text;
 
-    const _ = await lessonService.answerExercise(selectedOption, currentExerciseIndex); //todo: retry if error
+    const _ = await LessonService.answerExercise(challengeAttemptId, unitOrderNumber, lessonOrderNumber, currentExerciseIndex, selectedOption); //todo: retry if error
     dispatch(answer(selectedOption === correctOption));
 
     setCurrentExerciseIndex(currentExerciseIndex + 1);
@@ -153,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Excercise;
+export default Exercise;

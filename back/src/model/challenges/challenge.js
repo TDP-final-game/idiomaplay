@@ -13,7 +13,7 @@ const errors = require('./errors');
 const Challenge = new mongoose.Schema({
 	...challengeInfo,
 	units: [{ type: Unit, required: false }]
-});
+}, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 
 /*

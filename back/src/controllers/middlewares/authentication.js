@@ -16,8 +16,9 @@ const authentication = async (req, res, next) => {
 	// 	}
 	// }
 
+	if(authorization)
+		req.user = authorization.startsWith('userId ') ? { id: authorization.substring(7) } : { email: authorization };
 
-	req.user = { email: authorization };
 	next();
 };
 

@@ -25,6 +25,7 @@ exports.mochaHooks = {
 	},
 	async afterEach() {
 		await this.mongo.connection.db.dropDatabase();
+		await this.app.deAuthenticate();
 	},
 	async afterAll() {
 		await this.app.chaiApp.close();

@@ -24,7 +24,7 @@ const SignupConfirmation = ({ navigation, route }) => {
           email: user.email,
           userId: data.id,
           imageUrl: user.photoUrl,
-          name: data._doc.firstName + ' ' + data._doc.lastName,
+          name: data.firstName + ' ' + data.lastName,
         })
       );
       return navigation.navigate('Home');

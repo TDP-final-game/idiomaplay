@@ -22,7 +22,7 @@ const User = new mongoose.Schema({
 	photo: {
 		type: String
 	}
-});
+}, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 module.exports = {
 	schema: User,

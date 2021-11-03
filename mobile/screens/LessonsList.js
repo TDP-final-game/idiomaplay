@@ -14,10 +14,8 @@ import { screens } from '../config/screens';
 const LessonsList = ({ navigation }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
 
-  const userId = useSelector((state) => state.user.userId);
-  const unitOrderNumber = 1;
-
   const isFocused = useIsFocused();
+  const unitOrderNumber = 1;
 
   useEffect(() => {
     navigation.setOptions({
@@ -26,8 +24,7 @@ const LessonsList = ({ navigation }) => {
     });
 
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(userId, unitOrderNumber).then((data) => {
-      console.log('DATA ', data);
+    UnitService.getLessonsAttempts(/*unit orden numer*/ unitOrderNumber).then((data) => {
       setLessonsAttempts(data);
     });
   }, [isFocused]);
@@ -35,11 +32,10 @@ const LessonsList = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(userId, 1, lessonOrderNumber);
+    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber);
 
-    let response = await api.get(`/users/${userId}/challengeAttempts`);
-
-    const challengeAttemptId = response.data[response.data.length - 1].id;
+   let response = await api.get(`/users/me/challengeAttempts`);
+    const challengeAttemptId = response.data.at(-1).id;
 
     dispatch(initResults(exercisesAttempts));
 
