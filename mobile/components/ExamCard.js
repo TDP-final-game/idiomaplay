@@ -16,7 +16,7 @@ export const ExamCard = ({ text, state, onPress, disabled }) => {
     };
 
     return (
-        <TouchableOpacity style={[styles.button, commonStyles.shadow]} activeOpacity={disabled ? 1 : 0.7} onPress={onPress}>
+        <TouchableOpacity style={[styles.button, commonStyles.shadow, {backgroundColor: disabled? 'lightgray': 'white'}]} onPress={disabled? ()=>{}: onPress}>
             <View
                 style={{
                     flexDirection: 'row',

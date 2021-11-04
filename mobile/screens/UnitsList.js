@@ -12,7 +12,7 @@ const UnitsList = ({ navigation }) => {
     const [unitsAttempts, setUnitsAttempts] = useState([]);
 
     const isFocused = useIsFocused();
-    const unitOrderNumber = 1;
+    const unitOrderNumber = 1; //todo: revisar
 
     useEffect(() => {
         navigation.setOptions({

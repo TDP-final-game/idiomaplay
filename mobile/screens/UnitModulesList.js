@@ -63,7 +63,7 @@ const UnitModulesList = ({ navigation, route }) => {
                 <ExamCard
                   text={item.name}
                   state={item.status}
-                  disable={item.blocked}
+                  disabled={item.blocked}
                   onPress={() => handlePress(item.orderNumber)}
                 />
                 )
