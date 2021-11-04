@@ -14,8 +14,8 @@ const ExamEntry = ({ navigation, route }) => {
   const { lessonOrderNumber, challengeAttemptId } = route.params;
   const lessonState = {
     RETRY: 'RETRY',
-    RETURN_TO_UNIT: 'RETURN_TO_UNIT',
     GO_TO_EXAM: 'GO_TO_EXAM',
+    RETURN_TO_UNIT: 'RETURN_TO_UNIT',
   };
 
   const dispatch = useDispatch();
