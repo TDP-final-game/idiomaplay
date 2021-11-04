@@ -17,6 +17,7 @@ const main = async () => {
 		try {
 			result = await createChallenge();
 		} catch(e) {
+			// eslint-disable-next-line no-console
 			console.error('Challenge not created!', e);
 		}
 	}

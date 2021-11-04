@@ -34,7 +34,7 @@ const LessonsList = ({ navigation }) => {
   const handlePress = async (lessonOrderNumber) => {
     const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber);
 
-   let response = await api.get(`/users/me/challengeAttempts`);
+    let response = await api.get(`/users/me/challengeAttempts`);
     const challengeAttemptId = response.data[response.data.length - 1].id;
 
     dispatch(initResults(exercisesAttempts));

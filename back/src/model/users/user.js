@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { schema: Stats } = require('./stats');
 
 const User = new mongoose.Schema({
 	email: {
@@ -21,8 +22,20 @@ const User = new mongoose.Schema({
 	},
 	photo: {
 		type: String
+	},
+	stats: {
+		type: Stats,
+		required: true,
+		default: () => ({})
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
+
+/*
+ * Instance methods
+ */
+User.methods.addReward = function(reward) {
+	this.stats.addReward(reward);
+};
 
 module.exports = {
 	schema: User,

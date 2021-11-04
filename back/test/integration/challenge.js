@@ -29,7 +29,7 @@ describe('/challenges', () => {
 			const challengeExample = new ChallengeExample(this.app);
 
 			const challenge = await challengeExample.create();
-			const result = await challengeExample.get({ challengeId: challenge._id });
+			const result = await challengeExample.get({ challengeId: challenge.id });
 
 			expect(result).to.have.status(200);
 			expect(result.body).to.deep.equal(challenge);

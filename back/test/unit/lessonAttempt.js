@@ -70,4 +70,20 @@ describe('lessonAttempt', () => {
 		failLessons(lesson);
 		expect(lesson.status).to.eql(Status.FAILED());
 	});
+
+	it('should reward with 10 coins when resolved in the first attempt', () => {
+		const lesson = LessonAttemptExample.new().build();
+		lesson.attempt();
+		passLessons(lesson);
+		expect(lesson.reward.coins).to.eql(10);
+	});
+
+	it('should reward with 5 coins when resolved in the second attempt', () => {
+		const lesson = LessonAttemptExample.new().build();
+		lesson.attempt();
+		failLessons(lesson);
+		lesson.attempt();
+		passLessons(lesson);
+		expect(lesson.reward.coins).to.eql(5);
+	});
 });

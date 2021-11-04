@@ -21,6 +21,10 @@ class User {
 		this.app.authenticate(result.body.id);
 		return result;
 	}
+
+	stats() {
+		return this.app.get('/users/me/stats');
+	}
 }
 
 module.exports = User;

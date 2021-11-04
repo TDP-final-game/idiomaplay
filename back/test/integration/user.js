@@ -40,4 +40,13 @@ describe('/users', () => {
 			expect(result.body.message).to.include('User not registered');
 		});
 	});
+
+	describe('GET /stats', () => {
+		it('should return 80 coins and 5 lives on user creation', async () => {
+			await userExample.create(user);
+			const result = await userExample.stats();
+			expect(result).to.have.status(200);
+			expect(result.body).to.eql({ coins: 80, lives: 5 });
+		});
+	});
 });

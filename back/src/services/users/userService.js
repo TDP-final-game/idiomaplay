@@ -23,8 +23,16 @@ const listChallengeAttempts = user => {
 	return challengeAttemptModel.find({ user });
 };
 
+const getStats = async ({ userId }) => {
+	const user = await User.findOne({ _id: userId });
+	if(!user)
+		throw errors.UserNotRegistered();
+	return user.stats;
+};
+
 module.exports = {
 	listChallengeAttempts,
 	createUser,
-	logIn
+	logIn,
+	getStats
 };

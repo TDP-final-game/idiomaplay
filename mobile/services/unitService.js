@@ -8,7 +8,6 @@ Array.prototype.findLessonAttempt = function (lessonOrderNumber) {
   return this.find((lessonAttempt) => lessonAttempt.orderNumber === lessonOrderNumber);
 };
 
-
 async function getLessonsAttempts(unitOrderNumber) {
   const challengeAttempts = (await api.get('/users/me/challengeAttempts')).data;
 
@@ -18,7 +17,6 @@ async function getLessonsAttempts(unitOrderNumber) {
     const challengeAttempt = (await api.post(`/challengeAttempts`, {
       challengeId: challenge.id,
     })).data;
-
 
     const unitAttempt = (await api.put(`/challengeAttempts/${challengeAttempt.id}/unitsAttempts`, {
       unitOrderNumber: unitOrderNumber,

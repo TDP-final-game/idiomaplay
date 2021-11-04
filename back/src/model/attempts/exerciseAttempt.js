@@ -64,6 +64,8 @@ ExerciseAttempt.methods.correctAnswer = function(answer) {
 ExerciseAttempt.methods.attempt = function({ answer }) {
 	if(!this.status.isPending())
 		throw errors.ExerciseNotPending();
+	if(!this.validAnswer(answer))
+		throw errors.AnswerNotFound({ answer });
 	this.optionAnswered = answer;
 };
 
