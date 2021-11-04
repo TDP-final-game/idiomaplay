@@ -3,7 +3,6 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
-import { UnitHeader } from '../components/ChapterHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
@@ -11,11 +10,11 @@ import api from '../services/api';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 
-const LessonsList = ({ navigation }) => {
+const LessonsList = ({ navigation, route }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
 
   const isFocused = useIsFocused();
-  const unitOrderNumber = 1;
+  const {unitOrderNumber, challengeAttemptId} = route.params;
 
   useEffect(() => {
     navigation.setOptions({
@@ -24,7 +23,7 @@ const LessonsList = ({ navigation }) => {
     });
 
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(/*unit orden numer*/ unitOrderNumber).then((data) => {
+    UnitService.getLessonsAttempts(challengeAttemptId, unitOrderNumber).then((data) => {
       setLessonsAttempts(data);
     });
   }, [isFocused]);
@@ -32,10 +31,7 @@ const LessonsList = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber);
-
-    let response = await api.get(`/users/me/challengeAttempts`);
-    const challengeAttemptId = response.data[response.data.length - 1].id;
+    const exercisesAttempts = await UnitService.attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNumber);
 
     dispatch(initResults(exercisesAttempts));
 

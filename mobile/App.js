@@ -12,6 +12,7 @@ import Login from './screens/Login';
 import Excercise from './screens/Excercise';
 import ExamEntry from './screens/ExamEntry';
 import LessonsList from './screens/LessonsList';
+import UnitsList from './screens/UnitsList'
 import SignupConfirmation from './screens/SignupConfirmation';
 import { useSelector } from 'react-redux';
 import { firebaseConfig } from './config';
@@ -32,7 +33,8 @@ const RootComponent = () => {
 
   const header = {
     [screens.HOME]: () => <TopBar />,
-    [screens.LESSON_LIST]: ({ unit, returnButtonFunction }) => (
+    [screens.UNITS_LIST]: () => <TopBar />,
+    [screens.LESSONS_LIST]: ({ unit, returnButtonFunction }) => (
       <UnitHeader unit={unit} returnButtonFunction={returnButtonFunction} />
     ),
     [screens.EXERCISE]: ({ returnButtonFunction, unit, lesson }) => (
@@ -59,8 +61,9 @@ const RootComponent = () => {
             <Stack.Screen name={screens.HOME} component={Home} />
             <Stack.Screen name="ExamEntry" component={ExamEntry} />
             <Stack.Screen name={screens.EXERCISE} component={Excercise} />
-            <Stack.Screen name={screens.LESSON_LIST} component={LessonsList} />
+            <Stack.Screen name={screens.LESSONS_LIST} component={LessonsList} />
             <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
+            <Stack.Screen name={screens.UNITS_LIST} component={UnitsList} />
           </>
         ) : (
           <>

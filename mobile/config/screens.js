@@ -1,5 +1,6 @@
 export const screens = {
   HOME: 'Home',
   EXERCISE: 'Exercise',
-  LESSON_LIST: 'LessonsList',
+  LESSONS_LIST: 'LessonsList',
+  UNITS_LIST: 'UnitsList'
 };

@@ -11,9 +11,9 @@ const Home = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View>
         <LessonCard
-          text={'Unidad 1'}
+          text={'Challenge 1'}
           state={states.inProgress}
-          onPress={() => navigation.navigate(screens.LESSON_LIST)}
+          onPress={() => navigation.navigate(screens.UNITS_LIST)}
         />
       </View>
     </SafeAreaView>
