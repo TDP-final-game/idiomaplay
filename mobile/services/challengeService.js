@@ -16,9 +16,17 @@ async function getUnitsAttempts(challengeAttemptId) {
 }
 
 async function attemptUnit(challengeAttemptId, unitOrderNumber) {
+    let unitAttempt = (await api.get(
+        `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`
+    )).data;
+
+    if (unitAttempt.status === 'IN_PROGRESS') {
+        return unitAttempt.lessonsAttempts;
+    }
+
     return (await api.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts`, {
         unitOrderNumber: unitOrderNumber,
-    })).data;
+    })).data.lessonsAttempts;
 }
 
 export default {
