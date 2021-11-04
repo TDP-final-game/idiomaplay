@@ -15,6 +15,13 @@ async function getUnitsAttempts(challengeAttemptId) {
     return challengeAttempts[challengeAttempts.length - 1].unitsAttempts;
 }
 
+async function attemptUnit(challengeAttemptId, unitOrderNumber) {
+    return (await api.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts`, {
+        unitOrderNumber: unitOrderNumber,
+    })).data;
+}
+
 export default {
-    getUnitsAttempts: getUnitsAttempts,
+    getUnitsAttempts,
+    attemptUnit
 };

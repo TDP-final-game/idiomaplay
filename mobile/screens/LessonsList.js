@@ -6,7 +6,6 @@ import { LessonCard } from '../components/LessonCard';
 import { useDispatch, useSelector } from 'react-redux';
 import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
-import api from '../services/api';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 
