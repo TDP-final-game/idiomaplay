@@ -7,16 +7,15 @@ import { Text, StyleSheet, View } from 'react-native';
 import { states } from '../config/states';
 import { Badge } from './Badge';
 
-export const LessonCard = ({ text, state, onPress }) => {
+export const LessonCard = ({ text, state, onPress, disabled }) => {
   const badgeInfo = {
     [states.inProgress]: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
     [states.passed]: { color: 'lightgreen', text: 'Completa' },
     [states.pending]: { color: 'lightblue', text: 'Pendiente' },
     [states.failed]: { color: 'tomato', text: 'Fallida' },
   };
-
   return (
-    <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, commonStyles.shadow, {backgroundColor: disabled? 'lightgray': 'white'}]} onPress={disabled? ()=>{}: onPress}>
       <View
         style={{
           flexDirection: 'row',
@@ -67,7 +66,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 8,
     marginHorizontal: '5%',
-    backgroundColor: 'white',
     borderColor: colors.PRIMARY_DARK,
   },
 

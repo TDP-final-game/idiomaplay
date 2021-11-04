@@ -1,12 +1,20 @@
 import api from './api';
+import {moduleTypes} from '../config/constants';
+import {states} from '../config/states';
 
-Array.prototype.findLessonAttempt = function (lessonOrderNumber) {
-  return this.find((lessonAttempt) => lessonAttempt.orderNumber === lessonOrderNumber);
-};
+const _allLessonsPassed = function(lessons) {
+  return lessons.every(lesson => lesson.status === states.passed);
+}
 
-async function getLessonsAttempts(challengeAttemptId, unitOrderNumber) {
+async function getUnitModules(challengeAttemptId, unitOrderNumber) {
   const unitAttempt = (await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)).data;
-  return unitAttempt.lessonsAttempts;
+  const lessons = unitAttempt.lessonsAttempts.map(lessonAttempt => ({...lessonAttempt, type: moduleTypes.LESSON, blocked: lessonAttempt.status === states.passed}));
+  const exam = (await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt`)).data;
+  exam.type = moduleTypes.EXAM;
+  exam.blocked = !_allLessonsPassed(lessons);
+  exam.orderNumber = -1;
+
+  return [...lessons, exam];
 }
 
 async function attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNumber) {
@@ -26,13 +34,13 @@ async function attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNum
   return lessonAttempt.exercisesAttempts;
 }
 
-async function allLessonsPassed(userId, unitOrderNumber) {
-  const response = await getLessonsAttempts(userId, unitOrderNumber);
-  return response.every((lesson) => lesson.status === 'PASSED');
+async function allLessonsPassed(challengeAttemptId, unitOrderNumber) {
+  const unitAttempt = (await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)).data;
+  return _allLessonsPassed(unitAttempt.lessonsAttempts);
 }
 
 export default {
-  getLessonsAttempts: getLessonsAttempts,
-  attemptLesson: attemptLesson,
-  allLessonsPassed: allLessonsPassed,
+  getUnitModules,
+  attemptLesson,
+  allLessonsPassed,
 };

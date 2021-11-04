@@ -8,6 +8,8 @@ import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
+import {moduleTypes} from "../config/constants";
+import {ExamCard} from "../components/ExamCard";
 
 const UnitModulesList = ({ navigation, route }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
@@ -22,7 +24,7 @@ const UnitModulesList = ({ navigation, route }) => {
     });
 
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(challengeAttemptId, unitOrderNumber).then((data) => {
+    UnitService.getUnitModules(challengeAttemptId, unitOrderNumber).then((data) => {
       setLessonsAttempts(data);
     });
   }, [isFocused]);
@@ -49,11 +51,23 @@ const UnitModulesList = ({ navigation, route }) => {
           keyExtractor={(item) => item.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>
-              <LessonCard
-                text={item.name}
-                state={item.status}
-                onPress={() => handlePress(item.orderNumber)}
-              />
+              {item.type === moduleTypes.LESSON ?
+                (
+                <LessonCard
+                  text={item.name}
+                  state={item.status}
+                  disabled={item.blocked}
+                  onPress={() => handlePress(item.orderNumber)}
+                />
+                ): (
+                <ExamCard
+                  text={item.name}
+                  state={item.status}
+                  disable={item.blocked}
+                  onPress={() => handlePress(item.orderNumber)}
+                />
+                )
+              }
             </View>
           )}
         />
