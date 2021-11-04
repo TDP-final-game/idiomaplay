@@ -11,7 +11,7 @@ import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { lessonOrderNumber, challengeAttemptId } = route.params;
+  const { lessonOrderNumber, challengeAttemptId, unitOrderNumber } = route.params;
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
@@ -43,7 +43,7 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetResults());
-    const exercisesAttempts = await UnitService.attemptLesson( 1, lessonOrderNumber);
+    const exercisesAttempts = await UnitService.attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNumber);
     return navigation.navigate('Exercise', { lessonOrderNumber, exercisesAttempts, challengeAttemptId });
   };
 
@@ -63,7 +63,7 @@ const ExamEntry = ({ navigation, route }) => {
       setDescription('');
       setIconName('party-popper');
 
-      UnitService.allLessonsPassed(userId, 1).then((allPassed) => {
+      UnitService.allLessonsPassed(userId, unitOrderNumber).then((allPassed) => {
         if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
         else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
       });

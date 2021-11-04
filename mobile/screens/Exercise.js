@@ -47,7 +47,7 @@ const Exercise = ({ navigation, route }) => {
   const handleContinue = () => {
     if (currentExerciseIndex >= exercisesAttempts.length) {
       setCurrentExerciseIndex(0);
-      return navigation.navigate('ExamEntry', { lessonOrderNumber, challengeAttemptId });
+      return navigation.navigate('ExamEntry', { unitOrderNumber, lessonOrderNumber, challengeAttemptId });
     }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
@@ -97,7 +97,7 @@ const Exercise = ({ navigation, route }) => {
               <AudioExercise
                 style={styles.questionText}
                 sentence={currentExercise.statement}
-              ></AudioExercise>
+              />
             ) : (
               <Text style={styles.questionText}>{currentExercise.statement}</Text>
             )}
