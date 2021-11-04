@@ -14,8 +14,8 @@ const ExamEntry = ({ navigation, route }) => {
   const { lessonOrderNumber, challengeAttemptId } = route.params;
   const lessonState = {
     RETRY: 'RETRY',
-    RETURN_TO_UNIT: 'RETURN_TO_UNIT',
     GO_TO_EXAM: 'GO_TO_EXAM',
+    RETURN_TO_UNIT: 'RETURN_TO_UNIT',
   };
 
   const dispatch = useDispatch();
@@ -62,7 +62,11 @@ const ExamEntry = ({ navigation, route }) => {
       setSubtitle(`¡Lección ${lessonOrderNumber} finalizada con éxito!`);
       setDescription('');
       setIconName('party-popper');
-      setCurrentLessonState(lessonState.GO_TO_EXAM);
+
+      UnitService.allLessonsPassed(userId, 1).then((allPassed) => {
+        if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
+        else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
+      });
     }
   }, []);
 
