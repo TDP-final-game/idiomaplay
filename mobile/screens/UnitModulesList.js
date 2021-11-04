@@ -9,7 +9,7 @@ import { initResults } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 
-const LessonsList = ({ navigation, route }) => {
+const UnitModulesList = ({ navigation, route }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
 
   const isFocused = useIsFocused();
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LessonsList;
+export default UnitModulesList;

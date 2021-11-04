@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -9,9 +9,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import firebase from 'firebase';
 import Home from './screens/Home';
 import Login from './screens/Login';
-import Excercise from './screens/Excercise';
+import Exercise from './screens/Exercise';
 import ExamEntry from './screens/ExamEntry';
-import LessonsList from './screens/LessonsList';
+import UnitModulesList from './screens/UnitModulesList';
 import UnitsList from './screens/UnitsList'
 import SignupConfirmation from './screens/SignupConfirmation';
 import { useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ const RootComponent = () => {
   const header = {
     [screens.HOME]: () => <TopBar />,
     [screens.UNITS_LIST]: () => <TopBar />,
-    [screens.LESSONS_LIST]: ({ unit, returnButtonFunction }) => (
+    [screens.UNIT_MODULES_LIST]: ({ unit, returnButtonFunction }) => (
       <UnitHeader unit={unit} returnButtonFunction={returnButtonFunction} />
     ),
     [screens.EXERCISE]: ({ returnButtonFunction, unit, lesson }) => (
@@ -60,8 +60,8 @@ const RootComponent = () => {
           <>
             <Stack.Screen name={screens.HOME} component={Home} />
             <Stack.Screen name="ExamEntry" component={ExamEntry} />
-            <Stack.Screen name={screens.EXERCISE} component={Excercise} />
-            <Stack.Screen name={screens.LESSONS_LIST} component={LessonsList} />
+            <Stack.Screen name={screens.EXERCISE} component={Exercise} />
+            <Stack.Screen name={screens.UNIT_MODULES_LIST} component={UnitModulesList} />
             <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
             <Stack.Screen name={screens.UNITS_LIST} component={UnitsList} />
           </>

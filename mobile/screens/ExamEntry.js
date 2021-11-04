@@ -44,7 +44,7 @@ const ExamEntry = ({ navigation, route }) => {
   const retryLesson = async () => {
     dispatch(resetResults());
     const exercisesAttempts = await UnitService.attemptLesson( 1, lessonOrderNumber);
-    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts, challengeAttemptId });
+    return navigation.navigate('Exercise', { lessonOrderNumber, exercisesAttempts, challengeAttemptId });
   };
 
   useEffect(() => {

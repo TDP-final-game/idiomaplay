@@ -32,7 +32,7 @@ const UnitsList = ({ navigation }) => {
 
         await ChallengeService.attemptUnit(challengeAttemptId, unitOrderNumber);
 
-        return navigation.navigate(screens.LESSONS_LIST, {
+        return navigation.navigate(screens.UNIT_MODULES_LIST, {
             unitOrderNumber,
             challengeAttemptId,
         });

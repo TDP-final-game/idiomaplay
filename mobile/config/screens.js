@@ -1,6 +1,6 @@
 export const screens = {
   HOME: 'Home',
   EXERCISE: 'Exercise',
-  LESSONS_LIST: 'LessonsList',
+  UNIT_MODULES_LIST: 'UnitModulesList',
   UNITS_LIST: 'UnitsList'
 };
