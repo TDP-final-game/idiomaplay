@@ -9,7 +9,7 @@ const findChallenge = challengeId => {
 	return challengeModel.findOne({ _id: challengeId });
 };
 
-const listChallenges = async ({ pageNumber }) => {
+const listChallenges = async ({ pageNumber = 0 }) => {
 	return challengeModel.find({}).skip(pageNumber * pageSize)
 		.limit(pageSize);
 };

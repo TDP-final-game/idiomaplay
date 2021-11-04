@@ -25,11 +25,12 @@ async function getLessonsAttempts(unitOrderNumber) {
     return unitAttempt.lessonsAttempts;
   }
 
-  return challengeAttempts.at(-1).unitsAttempts.findUnitAttempt(unitOrderNumber).lessonsAttempts;
+  return challengeAttempts[challengeAttempts.length - 1].unitsAttempts.findUnitAttempt(unitOrderNumber).lessonsAttempts;
 }
 
 async function attemptLesson(unitOrderNumber, lessonOrderNumber) {
-  let challengeAttempt = (await api.get('/users/me/challengeAttempts')).data.at(-1);
+  let response = await api.get('/users/me/challengeAttempts');
+  let challengeAttempt = response.data[response.data.length - 1];
 
   let lessonAttempt = (await api.get(
     `/challengeAttempts/${challengeAttempt.id}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
@@ -47,7 +48,13 @@ async function attemptLesson(unitOrderNumber, lessonOrderNumber) {
   return lessonAttempt.exercisesAttempts;
 }
 
+async function allLessonsPassed(userId, unitOrderNumber) {
+  const response = await getLessonsAttempts(userId, unitOrderNumber);
+  return response.every((lesson) => lesson.status === 'PASSED');
+}
+
 export default {
-  getLessonsAttempts,
-  attemptLesson,
+  getLessonsAttempts: getLessonsAttempts,
+  attemptLesson: attemptLesson,
+  allLessonsPassed: allLessonsPassed,
 };
