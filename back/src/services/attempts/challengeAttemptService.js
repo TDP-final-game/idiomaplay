@@ -8,7 +8,6 @@ const errors = require('./challengeAttemptErrors');
 
 const attemptChallenge = async (challengeId, userId) => {
 
-	console.log(userId)
 	if(await challengeAttemptModel.anyInProgress({ challengeId, userId }))
 		throw errors.ChallengeInProgress();
 

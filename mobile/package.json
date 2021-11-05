@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
-    "@expo/ngrok": "^2.5.0",
+    "@expo/ngrok": "^2.4.3",
     "expo-cli": "^4.11.0"
   },
   "private": true,
