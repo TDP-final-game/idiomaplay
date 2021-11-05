@@ -35,7 +35,7 @@ const listChallengesAttempts = async (req, res) => {
 	try {
 		const { user } = req;
 
-		const response = await userService.listChallengeAttempts(user.id);
+		const response = await userService.listChallengeAttempts(user._id);
 
 		res.status(STATUS_CODES.OK)
 			.send(response);
@@ -47,7 +47,7 @@ const listChallengesAttempts = async (req, res) => {
 const getStats = async (req, res) => {
 	// #swagger.tags = ['User']
 	const { user } = req;
-	const stats = await userService.getStats({ userId: user.id });
+	const stats = await userService.getStats({ userId: user._id });
 	res.status(STATUS_CODES.OK).send(stats);
 };
 
