@@ -2,16 +2,9 @@
 
 const userService = require('../services/users/userService');
 const STATUS_CODES = require('../constants/status_codes.json');
-const ApiError = require('../apiError');
 
 const createUser = async (req, res) => {
 	// #swagger.tags = ['User']
-
-	// const { user } = req;
-
-	// if(!user)
-	// 	throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
-	// const { firstName, lastName } = req.body;
 
 	const createdUser = await userService.createUser(req.body);
 	res.status(STATUS_CODES.CREATED).send(createdUser);
