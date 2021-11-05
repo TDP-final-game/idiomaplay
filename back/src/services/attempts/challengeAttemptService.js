@@ -7,6 +7,7 @@ const { model: userModel } = require('../../model/users/user');
 const errors = require('./challengeAttemptErrors');
 
 const attemptChallenge = async (challengeId, userId) => {
+
 	if(await challengeAttemptModel.anyInProgress({ challengeId, userId }))
 		throw errors.ChallengeInProgress();
 

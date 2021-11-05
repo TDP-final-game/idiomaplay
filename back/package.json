@@ -28,7 +28,7 @@
     "nodemon": "^2.0.12"
   },
   "scripts": {
-    "start": "node .",
+    "start": "nodemon .",
     "start:dev": "nodemon -x yarn start",
     "test": "yarn lint && yarn test:unit && yarn test:integration",
     "test:integration": "mocha test/integration -r test/integration/setup.js",

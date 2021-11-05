@@ -3,6 +3,8 @@
 // const firebase = require('../../startup/firebase');
 // const ApiError = require('../../apiError');
 
+const { model: userModel } = require('../../model/users/user');
+
 const authentication = async (req, res, next) => {
 	const { authorization } = req.headers;
 
@@ -16,8 +18,14 @@ const authentication = async (req, res, next) => {
 	// 	}
 	// }
 
-	if(authorization)
-		req.user = authorization.startsWith('userId ') ? { id: authorization.substring(7) } : { email: authorization };
+	if(authorization) {
+		if(authorization.startsWith('userId '))
+			req.user = { id: authorization.substring(7) };
+		else {
+			const userId = await userModel.findOne({ email: authorization });
+			req.user = { id: userId };
+		}
+	}
 
 	next();
 };
