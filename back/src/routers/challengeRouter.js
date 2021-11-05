@@ -4,7 +4,11 @@ const express = require('express');
 
 const challengeController = require('../controllers/challengeController');
 
+const middlewares = require('../controllers/middlewares/index');
+
 const router = express.Router();
+
+router.use(middlewares);
 
 router.post('/', challengeController.createChallenge);
 router.get('/', challengeController.listChallenges);

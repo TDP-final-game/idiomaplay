@@ -5,17 +5,11 @@ require('express-async-errors');
 
 const routers = require('./routers/index');
 const generateOpenapi = require('./openapi/generate');
-const middlewares = require('./controllers/middlewares');
 const errorHandler = require('./controllers/middlewares/errorHandler');
 
 module.exports = async () => {
 	const app = express();
 	app.use(express.json());
-
-	/*
-	 * Middlewares
-	 */
-	app.use(middlewares);
 
 	/*
 	 * Api

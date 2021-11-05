@@ -7,10 +7,10 @@ const attemptChallenge = async (req, res) => {
 	try {
 		const { user } = req;
 		const { challengeId } = req.body;
-		const response = await challengeAttemptService.attemptChallenge(challengeId, user.id);
+		const response = await challengeAttemptService.attemptChallenge(challengeId, user._id);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
-		console.log(error)
+		console.log(error);
 		return res.status(error.statusCode).send(error.description);
 	}
 };

@@ -3,8 +3,11 @@
 const express = require('express');
 
 const challengeAttemptController = require('../controllers/challengeAttemptController');
+const middlewares = require('../controllers/middlewares/index');
 
 const router = express.Router();
+
+router.use(middlewares);
 
 router.post('/', challengeAttemptController.attemptChallenge);
 router.put('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
