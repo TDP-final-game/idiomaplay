@@ -7,25 +7,20 @@ const ApiError = require('../apiError');
 const createUser = async (req, res) => {
 	// #swagger.tags = ['User']
 
-	const { user } = req;
+	// const { user } = req;
 
-	if(!user)
-		throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
+	// if(!user)
+	// 	throw new ApiError(ApiError.codes.BAD_REQUEST, 'User is required');
+	// const { firstName, lastName } = req.body;
 
-	const { firstName, lastName } = req.body;
-	const createdUser = await userService.createUser({
-		email: user.email,
-		firstName,
-		lastName
-	});
+	const createdUser = await userService.createUser(req.body);
 	res.status(STATUS_CODES.CREATED).send(createdUser);
 };
 
 const logIn = async (req, res) => {
 	// #swagger.tags = ['User']
 
-	const { user } = req;
-	const foundUser = await userService.logIn({ email: user.email });
+	const foundUser = await userService.logIn(req.body);
 	res.status(STATUS_CODES.OK).send(foundUser);
 };
 

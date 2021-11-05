@@ -19,14 +19,14 @@ const authentication = async (req, res, next) => {
 	// 	}
 	// }
 
-	let user;
 
-	if(authorization) {
-		if(authorization.startsWith('userId '))
-			user = await userModel.findOne({ id: authorization.startsWith('userId ') });
-		else
-			user = await userModel.findOne({ email: authorization });
-	}
+	if(!authorization)
+		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'No authorization token');
+
+	if(!authorization.startsWith('userId '))
+		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'Authorization token malformed');
+
+	const user = await userModel.findOne({ _id: authorization.substring(7) });
 
 	if(!user)
 		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'User not found');
