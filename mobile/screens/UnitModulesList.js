@@ -3,19 +3,19 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import UnitService from '../services/unitService';
 import { initResults } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
-import {moduleTypes} from "../config/constants";
-import {ExamCard} from "../components/ExamCard";
+import { moduleTypes } from '../config/constants';
+import { ExamCard } from '../components/ExamCard';
 
 const UnitModulesList = ({ navigation, route }) => {
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
 
   const isFocused = useIsFocused();
-  const {unitOrderNumber, challengeAttemptId} = route.params;
+  const { unitOrderNumber, challengeAttemptId } = route.params;
 
   useEffect(() => {
     navigation.setOptions({
@@ -24,15 +24,17 @@ const UnitModulesList = ({ navigation, route }) => {
     });
 
     // todo: spinner while loading
-    UnitService.getUnitModules(challengeAttemptId, unitOrderNumber).then((data) => {
-      setLessonsAttempts(data);
-    });
+    UnitService.getUnitModules(challengeAttemptId, unitOrderNumber).then(setLessonsAttempts);
   }, [isFocused]);
 
   const dispatch = useDispatch();
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNumber);
+    const exercisesAttempts = await UnitService.attemptLesson(
+      challengeAttemptId,
+      unitOrderNumber,
+      lessonOrderNumber
+    );
 
     dispatch(initResults(exercisesAttempts));
 
@@ -51,23 +53,21 @@ const UnitModulesList = ({ navigation, route }) => {
           keyExtractor={(item) => item.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>
-              {item.type === moduleTypes.LESSON ?
-                (
+              {item.type === moduleTypes.LESSON ? (
                 <LessonCard
                   text={item.name}
                   state={item.status}
                   disabled={item.blocked}
                   onPress={() => handlePress(item.orderNumber)}
                 />
-                ): (
+              ) : (
                 <ExamCard
                   text={item.name}
                   state={item.status}
                   disabled={item.blocked}
                   onPress={() => handlePress(item.orderNumber)}
                 />
-                )
-              }
+              )}
             </View>
           )}
         />

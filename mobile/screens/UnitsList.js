@@ -9,62 +9,62 @@ import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 
 const UnitsList = ({ navigation }) => {
-    const [unitsAttempts, setUnitsAttempts] = useState([]);
+  const [unitsAttempts, setUnitsAttempts] = useState([]);
 
-    const isFocused = useIsFocused();
-    const unitOrderNumber = 1; //todo: revisar
+  const isFocused = useIsFocused();
+  const unitOrderNumber = 1; //todo: revisar
 
-    useEffect(() => {
-        navigation.setOptions({
-            unit: unitOrderNumber,
-            returnButtonFunction: () => navigation.goBack(),
-        });
+  useEffect(() => {
+    navigation.setOptions({
+      unit: unitOrderNumber,
+      returnButtonFunction: () => navigation.goBack(),
+    });
 
-        // todo: spinner while loading
-        ChallengeService.getUnitsAttempts('challengeAttemptId').then((data) => {
-            setUnitsAttempts(data);
-        });
-    }, [isFocused]);
+    // todo: spinner while loading
+    ChallengeService.getUnitsAttempts('challengeAttemptId').then((data) => {
+      setUnitsAttempts(data);
+    });
+  }, [isFocused]);
 
-    const handlePress = async (unitOrderNumber) => {
-        let response = await api.get(`/users/me/challengeAttempts`);
-        const challengeAttemptId = response.data[response.data.length - 1].id;
+  const handlePress = async (unitOrderNumber) => {
+    let response = await api.get(`/users/me/challengeAttempts`);
+    const challengeAttemptId = response.data[response.data.length - 1].id;
 
-        await ChallengeService.attemptUnit(challengeAttemptId, unitOrderNumber);
+    await ChallengeService.attemptUnit(challengeAttemptId, unitOrderNumber);
 
-        return navigation.navigate(screens.UNIT_MODULES_LIST, {
-            unitOrderNumber,
-            challengeAttemptId,
-        });
-    };
+    return navigation.navigate(screens.UNIT_MODULES_LIST, {
+      unitOrderNumber,
+      challengeAttemptId,
+    });
+  };
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={{ flex: 0.88 }}>
-                <FlatList
-                    data={unitsAttempts}
-                    keyExtractor={(item) => item.orderNumber.toString()}
-                    renderItem={({ item }) => (
-                        <View style={{ marginVertical: '2%' }}>
-                            <UnitCard
-                                text={item.name}
-                                state={item.status}
-                                onPress={() => handlePress(item.orderNumber)}
-                            />
-                        </View>
-                    )}
-                />
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={{ flex: 0.88 }}>
+        <FlatList
+          data={unitsAttempts}
+          keyExtractor={(item) => item.orderNumber.toString()}
+          renderItem={({ item }) => (
+            <View style={{ marginVertical: '2%' }}>
+              <UnitCard
+                text={item.name}
+                state={item.status}
+                onPress={() => handlePress(item.orderNumber)}
+              />
             </View>
-        </SafeAreaView>
-    );
+          )}
+        />
+      </View>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        backgroundColor: colors.BACKGROUND,
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: colors.BACKGROUND,
+  },
 });
 
 export default UnitsList;

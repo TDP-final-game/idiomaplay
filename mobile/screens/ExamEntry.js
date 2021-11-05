@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { SecondaryButton } from '../components/SecondaryButton';
@@ -43,8 +43,16 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetResults());
-    const exercisesAttempts = await UnitService.attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNumber);
-    return navigation.navigate('Exercise', { lessonOrderNumber, exercisesAttempts, challengeAttemptId });
+    const exercisesAttempts = await UnitService.attemptLesson(
+      challengeAttemptId,
+      unitOrderNumber,
+      lessonOrderNumber
+    );
+    return navigation.navigate('Exercise', {
+      lessonOrderNumber,
+      exercisesAttempts,
+      challengeAttemptId,
+    });
   };
 
   useEffect(() => {
