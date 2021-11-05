@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
@@ -10,9 +10,14 @@ import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 import { moduleTypes } from '../config/constants';
 import { ExamCard } from '../components/ExamCard';
+import { states } from '../config/states';
+import Carousel from 'react-native-snap-carousel';
+import { Pagination } from 'react-native-snap-carousel';
 
 const UnitModulesList = ({ navigation, route }) => {
+  const [exam, setExam] = useState(null);
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
+  const [paginationLessonIndex, setPaginationLessonIndex] = useState(0);
 
   const isFocused = useIsFocused();
   const { unitOrderNumber, challengeAttemptId } = route.params;
@@ -24,7 +29,10 @@ const UnitModulesList = ({ navigation, route }) => {
     });
 
     // todo: spinner while loading
-    UnitService.getUnitModules(challengeAttemptId, unitOrderNumber).then(setLessonsAttempts);
+    UnitService.getUnitModules(challengeAttemptId, unitOrderNumber).then((modules) => {
+      setLessonsAttempts(modules.filter((module) => module.type === moduleTypes.LESSON));
+      setExam(modules.find((module) => module.type === moduleTypes.EXAM));
+    });
   }, [isFocused]);
 
   const dispatch = useDispatch();
@@ -45,31 +53,63 @@ const UnitModulesList = ({ navigation, route }) => {
     });
   };
 
+  const refCar = useRef();
+
+  const pagination = () => {
+    //const { entries, activeSlide } = this.state;
+
+    return (
+      <Pagination
+        dotsLength={lessonsAttempts.length}
+        activeDotIndex={paginationLessonIndex}
+        containerStyle={{ backgroundColor: colors.BACKGROUND }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 8,
+          backgroundColor: colors.PRIMARY,
+        }}
+        inactiveDotStyle={{}}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 0.88 }}>
-        <FlatList
+      <View style={{ flex: 0.6 }}>
+        <Carousel
+          ref={refCar}
           data={lessonsAttempts}
-          keyExtractor={(item) => item.orderNumber.toString()}
+          onSnapToItem={setPaginationLessonIndex}
+          layout="default"
           renderItem={({ item }) => (
-            <View style={{ marginVertical: '2%' }}>
-              {item.type === moduleTypes.LESSON ? (
-                <LessonCard
-                  text={item.name}
-                  state={item.status}
-                  disabled={item.blocked}
-                  onPress={() => handlePress(item.orderNumber)}
-                />
-              ) : (
-                <ExamCard
-                  text={item.name}
-                  state={item.status}
-                  disabled={item.blocked}
-                  onPress={() => handlePress(item.orderNumber)}
-                />
-              )}
+            <View
+              style={{ flexGrow: 1, marginHorizontal: '5%', backgroundColor: colors.BACKGROUND }}
+            >
+              <LessonCard
+                text={item.name}
+                state={item.status}
+                disabled={item.blocked}
+                onPress={() => handlePress(item.orderNumber)}
+              />
             </View>
           )}
+          sliderWidth={415}
+          itemWidth={415}
+        />
+      </View>
+
+      <View style={{ marginHorizontal: '5%', flex: 0.1 }}>{pagination()}</View>
+
+      <View style={{ marginVertical: '5%', marginHorizontal: '5%', flex: 0.2 }}>
+        <ExamCard
+          text={exam?.name}
+          state={exam?.status ?? states.pending}
+          disabled={exam?.blocked}
+          onPress={() => handlePress(exam?.orderNumber)}
         />
       </View>
     </SafeAreaView>

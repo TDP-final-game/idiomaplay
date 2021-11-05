@@ -12,6 +12,8 @@ export const colors = {
   PRIMARY_BUTTON_LIGHT_COLOR: '#d05ce3',
 
   SECONDARY_BUTTON_COLOR: '#ffa000',
+  SECONDARY_BUTTON_DARK_COLOR: '',
+  SECONDARY_BUTTON_LIGHT_COLOR: '',
 
   BACKGROUND: '#ffffff',
   LIGHT_GRAY: '#eeeeee',

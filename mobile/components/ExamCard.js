@@ -8,72 +8,74 @@ import { states } from '../config/states';
 import { Badge } from './Badge';
 
 export const ExamCard = ({ text, state, onPress, disabled }) => {
-    const badgeInfo = {
-        [states.inProgress]: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
-        [states.passed]: { color: 'lightgreen', text: 'Completa' },
-        [states.pending]: { color: 'lightblue', text: 'Pendiente' },
-        [states.failed]: { color: 'tomato', text: 'Fallida' },
-    };
+  const badgeInfo = {
+    [states.inProgress]: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
+    [states.passed]: { color: 'lightgreen', text: 'Completa' },
+    [states.pending]: { color: 'lightblue', text: 'Pendiente' },
+    [states.failed]: { color: 'tomato', text: 'Fallida' },
+  };
 
-    return (
-        <TouchableOpacity style={[styles.button, commonStyles.shadow, {backgroundColor: disabled? 'lightgray': 'white'}]} onPress={disabled? ()=>{}: onPress}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    paddingVertical: '8%',
-                }}
-            >
-                <View
-                    style={{
-                        width: '33.3%',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Text style={{ ...styles.text, marginLeft: '15%' }}>
-                        <Ionicons name="md-book" size={35} color={colors.PRIMARY_DARK} />
-                    </Text>
-                </View>
+  return (
+    <TouchableOpacity
+      style={[
+        styles.button,
+        commonStyles.shadow,
+        { backgroundColor: disabled ? 'lightgray' : 'white' },
+      ]}
+      onPress={disabled ? () => {} : onPress}
+    >
+      <View style={{ flexDirection: 'row', paddingVertical: '8%' }}>
+        <View
+          style={{
+            width: '33.3%',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ ...styles.text, marginLeft: '15%' }}>
+            <Ionicons name="md-book" size={35} color={colors.PRIMARY_DARK} />
+          </Text>
+        </View>
 
-                <View
-                    style={{
-                        width: '33.3%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text style={styles.text}>{text}</Text>
-                </View>
+        <View
+          style={{
+            width: '33.3%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={styles.text}>{text}</Text>
+        </View>
 
-                <View
-                    style={{
-                        width: '33.3%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Badge
-                        text={badgeInfo[state].text}
-                        color={badgeInfo[state].color}
-                        textColor={colors.PRIMARY_DARK}
-                    />
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
+        <View
+          style={{
+            width: '33.3%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Badge
+            text={badgeInfo[state].text}
+            color={badgeInfo[state].color}
+            textColor={colors.PRIMARY_DARK}
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
-    button: {
-        borderWidth: 2,
-        borderRadius: 8,
-        marginHorizontal: '5%',
-        backgroundColor: 'white',
-        borderColor: colors.PRIMARY_DARK,
-    },
+  button: {
+    borderWidth: 2,
+    borderRadius: 8,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderColor: colors.PRIMARY_DARK,
+  },
 
-    text: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.PRIMARY_DARK,
-    },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.PRIMARY_DARK,
+  },
 });
