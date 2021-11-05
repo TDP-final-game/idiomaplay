@@ -20,11 +20,9 @@ const deleteChallenges = () => {
 
 const createChallenge = async challengeData => {
 	return challengeModel.create({
-
 		name: challengeData.name,
 		description: challengeData.description,
 		difficulty: challengeData.difficulty
-
 	});
 };
 
@@ -44,26 +42,26 @@ const addUnit = async (challengeId, unitData) => {
 const addLesson = async (challengeId, unitOrderNumber, lessonData) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitOrderNumber);
-	unit.lessons.push({
 
+	unit.lessons.push({
 		name: lessonData.name,
 		description: lessonData.description,
 		orderNumber: lessonData.orderNumber
-
 	});
+
 	return challenge.save();
 };
 
 const addExam = async (challengeId, unitOrderNumber, examData) => {
 	const challenge = await challengeModel.findOne({ _id: challengeId });
 	const unit = challenge.units.find(unitToUpdate => unitToUpdate.orderNumber === unitOrderNumber);
-	unit.exam = {
 
+	unit.exam = {
 		name: examData.name,
 		description: examData.description,
 		durationInMinutes: examData.durationInMinutes
-
 	};
+
 	return challenge.save();
 };
 

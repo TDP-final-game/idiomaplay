@@ -10,6 +10,7 @@ const attemptChallenge = async (req, res) => {
 		const response = await challengeAttemptService.attemptChallenge(challengeId, user.id);
 		res.status(STATUS_CODES.OK).send(response);
 	} catch(error) {
+		console.log(error)
 		return res.status(error.statusCode).send(error.description);
 	}
 };
