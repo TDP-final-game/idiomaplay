@@ -6,7 +6,7 @@ const { expect } = chai;
 
 const ChallengeExample = require('./support/challenge');
 
-describe('/challenges', () => {
+describe.skip('/challenges', () => {
 	describe('GET /', () => {
 		it('should return an empty list when there are no challenges', async function() {
 			const challengeExample = new ChallengeExample(this.app);
