@@ -28,32 +28,34 @@ const Login = ({ navigation, route }) => {
   const onSuccessCallback = (user, accessToken) => {
     if (!logInMode) {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
-
-        if(data.id){
-          Alert.alert('Usuario ya registrado!', 'Utilice otra cuenta de google!', [
-            { text: 'OK'},
-          ]);
+        if (data.id) {
+          Alert.alert('Usuario ya registrado!', 'Utilice otra cuenta de google!', [{ text: 'OK' }]);
         } else {
           return navigation.navigate('SignupConfirmation', { user });
         }
       });
     } else {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
+        console.log(data);
 
-        if(!data.id){
-          Alert.alert('Usuario no esta registrado!', 'Registrese para poder acceder a IdiomaPlay!', [
-            { text: 'OK'},
-          ]);
+        if (!data.id) {
+          Alert.alert(
+            'Usuario no esta registrado!',
+            'Registrese para poder acceder a IdiomaPlay!',
+            [{ text: 'OK' }]
+          );
+        } else {
+          dispatch(
+            logIn({
+              email: user.email,
+              userId: data.id,
+              imageUrl: user.photoUrl,
+              name: data.firstName + ' ' + data.lastName,
+              stats: data.stats,
+            })
+          );
+          return navigation.navigate('Home');
         }
-        dispatch(
-          logIn({
-            email: user.email,
-            userId: data.id,
-            imageUrl: user.photoUrl,
-            name: data.firstName + ' ' + data.lastName,
-          })
-        );
-        return navigation.navigate('Home');
       });
     }
   };

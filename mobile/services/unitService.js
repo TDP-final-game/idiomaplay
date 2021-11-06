@@ -1,60 +1,65 @@
 import api from './api';
+import { states } from '../config/states';
+import { moduleTypes } from '../config/constants';
 
-Array.prototype.findUnitAttempt = function (unitOrderNumber) {
-  return this.find((unitAttempt) => unitAttempt.orderNumber === unitOrderNumber);
+const _allLessonsPassed = function (lessons) {
+  return lessons.every((lesson) => lesson.status === states.passed);
 };
 
-Array.prototype.findLessonAttempt = function (lessonOrderNumber) {
-  return this.find((lessonAttempt) => lessonAttempt.orderNumber === lessonOrderNumber);
-};
+async function getUnitModules(challengeAttemptId, unitOrderNumber) {
+  const unitAttempt = (
+    await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)
+  ).data;
 
-async function getLessonsAttempts(unitOrderNumber) {
-  const challengeAttempts = (await api.get('/users/me/challengeAttempts')).data;
+  const lessons = unitAttempt.lessonsAttempts.map((lessonAttempt) => ({
+    ...lessonAttempt,
+    type: moduleTypes.LESSON,
+    blocked: lessonAttempt.status === states.passed,
+  }));
 
-  if (challengeAttempts.length === 0) {
-    const challenge = (await api.get('/challenges')).data[0]
+  const exam = (
+    await api.get(
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt`
+    )
+  ).data;
 
-    const challengeAttempt = (await api.post(`/challengeAttempts`, {
-      challengeId: challenge.id,
-    })).data;
+  exam.orderNumber = -1;
+  exam.type = moduleTypes.EXAM;
+  exam.blocked = !_allLessonsPassed(lessons);
 
-    const unitAttempt = (await api.put(`/challengeAttempts/${challengeAttempt.id}/unitsAttempts`, {
-      unitOrderNumber: unitOrderNumber,
-    })).data;
-
-    return unitAttempt.lessonsAttempts;
-  }
-
-  return challengeAttempts[challengeAttempts.length - 1].unitsAttempts.findUnitAttempt(unitOrderNumber).lessonsAttempts;
+  return [...lessons, exam];
 }
 
-async function attemptLesson(unitOrderNumber, lessonOrderNumber) {
-  let response = await api.get('/users/me/challengeAttempts');
-  let challengeAttempt = response.data[response.data.length - 1];
-
-  let lessonAttempt = (await api.get(
-    `/challengeAttempts/${challengeAttempt.id}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
-  )).data;
+async function attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNumber) {
+  let lessonAttempt = (
+    await api.get(
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
+    )
+  ).data;
 
   if (lessonAttempt.status === 'IN_PROGRESS') {
     return lessonAttempt.exercisesAttempts;
   }
 
-  lessonAttempt = (await api.put(
-    `/challengeAttempts/${challengeAttempt.id}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`,
-    { lessonOrderNumber }
-  )).data;
+  lessonAttempt = (
+    await api.put(
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`,
+      { lessonOrderNumber }
+    )
+  ).data;
 
   return lessonAttempt.exercisesAttempts;
 }
 
-async function allLessonsPassed(userId, unitOrderNumber) {
-  const response = await getLessonsAttempts(userId, unitOrderNumber);
-  return response.every((lesson) => lesson.status === 'PASSED');
+async function allLessonsPassed(challengeAttemptId, unitOrderNumber) {
+  const unitAttempt = (
+    await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)
+  ).data;
+  return _allLessonsPassed(unitAttempt.lessonsAttempts);
 }
 
 export default {
-  getLessonsAttempts: getLessonsAttempts,
-  attemptLesson: attemptLesson,
-  allLessonsPassed: allLessonsPassed,
+  getUnitModules,
+  attemptLesson,
+  allLessonsPassed,
 };

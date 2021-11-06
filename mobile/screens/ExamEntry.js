@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { SecondaryButton } from '../components/SecondaryButton';
@@ -11,7 +11,7 @@ import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { lessonOrderNumber, challengeAttemptId } = route.params;
+  const { lessonOrderNumber, challengeAttemptId, unitOrderNumber } = route.params;
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
@@ -43,8 +43,16 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetResults());
-    const exercisesAttempts = await UnitService.attemptLesson( 1, lessonOrderNumber);
-    return navigation.navigate('Excercise', { lessonOrderNumber, exercisesAttempts, challengeAttemptId });
+    const exercisesAttempts = await UnitService.attemptLesson(
+      challengeAttemptId,
+      unitOrderNumber,
+      lessonOrderNumber
+    );
+    return navigation.navigate('Exercise', {
+      lessonOrderNumber,
+      exercisesAttempts,
+      challengeAttemptId,
+    });
   };
 
   useEffect(() => {
@@ -63,7 +71,7 @@ const ExamEntry = ({ navigation, route }) => {
       setDescription('');
       setIconName('party-popper');
 
-      UnitService.allLessonsPassed(userId, 1).then((allPassed) => {
+      UnitService.allLessonsPassed(userId, unitOrderNumber).then((allPassed) => {
         if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
         else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
       });

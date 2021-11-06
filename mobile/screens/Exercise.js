@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { colors } from '../config/colors';
 import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
-import { ChapterHeader } from '../components/ChapterHeader';
 import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import LessonService from '../services/lessonService';
@@ -48,7 +46,11 @@ const Exercise = ({ navigation, route }) => {
   const handleContinue = () => {
     if (currentExerciseIndex >= exercisesAttempts.length) {
       setCurrentExerciseIndex(0);
-      return navigation.navigate('ExamEntry', { lessonOrderNumber, challengeAttemptId });
+      return navigation.navigate('ExamEntry', {
+        unitOrderNumber,
+        lessonOrderNumber,
+        challengeAttemptId,
+      });
     }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
     setCorrectAnswer(null);
@@ -58,7 +60,13 @@ const Exercise = ({ navigation, route }) => {
   const handleAnswerSelected = async (selectedOption) => {
     const correctOption = currentExercise.options.find((option) => option.correct).text;
 
-    const _ = await LessonService.answerExercise(challengeAttemptId, unitOrderNumber, lessonOrderNumber, currentExerciseIndex, selectedOption); //todo: retry if error
+    const _ = await LessonService.answerExercise(
+      challengeAttemptId,
+      unitOrderNumber,
+      lessonOrderNumber,
+      currentExerciseIndex,
+      selectedOption
+    ); //todo: retry if error
     dispatch(answer(selectedOption === correctOption));
 
     setCurrentExerciseIndex(currentExerciseIndex + 1);
@@ -95,10 +103,7 @@ const Exercise = ({ navigation, route }) => {
 
           <View style={styles.questionContainer}>
             {currentExercise.type === exerciseTypes.LISTENING ? (
-              <AudioExercise
-                style={styles.questionText}
-                sentence={currentExercise.statement}
-              ></AudioExercise>
+              <AudioExercise style={styles.questionText} sentence={currentExercise.statement} />
             ) : (
               <Text style={styles.questionText}>{currentExercise.statement}</Text>
             )}

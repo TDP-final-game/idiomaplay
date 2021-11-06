@@ -2,20 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
-import { LessonCard } from '../components/LessonCard';
-import { UnitHeader } from '../components/ChapterHeader';
-import { useDispatch, useSelector } from 'react-redux';
-import UnitService from '../services/unitService';
-import { initResults } from '../redux/lesson';
+import { UnitCard } from '../components/UnitCard';
+import ChallengeService from '../services/challengeService';
 import api from '../services/api';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 
-const LessonsList = ({ navigation }) => {
-  const [lessonsAttempts, setLessonsAttempts] = useState([]);
+const UnitsList = ({ navigation }) => {
+  const [unitsAttempts, setUnitsAttempts] = useState([]);
 
   const isFocused = useIsFocused();
-  const unitOrderNumber = 1;
+  const unitOrderNumber = 1; //todo: revisar
 
   useEffect(() => {
     navigation.setOptions({
@@ -24,24 +21,19 @@ const LessonsList = ({ navigation }) => {
     });
 
     // todo: spinner while loading
-    UnitService.getLessonsAttempts(/*unit orden numer*/ unitOrderNumber).then((data) => {
-      setLessonsAttempts(data);
+    ChallengeService.getUnitsAttempts('challengeAttemptId').then((data) => {
+      setUnitsAttempts(data);
     });
   }, [isFocused]);
 
-  const dispatch = useDispatch();
-
-  const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptLesson(1, lessonOrderNumber);
-
+  const handlePress = async (unitOrderNumber) => {
     let response = await api.get(`/users/me/challengeAttempts`);
     const challengeAttemptId = response.data[response.data.length - 1].id;
 
-    dispatch(initResults(exercisesAttempts));
+    await ChallengeService.attemptUnit(challengeAttemptId, unitOrderNumber);
 
-    return navigation.navigate(screens.EXERCISE, {
-      lessonOrderNumber,
-      exercisesAttempts,
+    return navigation.navigate(screens.UNIT_MODULES_LIST, {
+      unitOrderNumber,
       challengeAttemptId,
     });
   };
@@ -50,11 +42,11 @@ const LessonsList = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={{ flex: 0.88 }}>
         <FlatList
-          data={lessonsAttempts}
+          data={unitsAttempts}
           keyExtractor={(item) => item.orderNumber.toString()}
           renderItem={({ item }) => (
             <View style={{ marginVertical: '2%' }}>
-              <LessonCard
+              <UnitCard
                 text={item.name}
                 state={item.status}
                 onPress={() => handlePress(item.orderNumber)}
@@ -75,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LessonsList;
+export default UnitsList;
