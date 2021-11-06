@@ -50,7 +50,7 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 	let lessonsInProgress = 0;
 	userChallengeAttempts.forEach(attempt => {
 		attempt.unitsAttempts.forEach(unitAttempt => {
-			lessonsInProgress += unitAttempt.lessonsAttempts.find(lessonAttempt => lessonAttempt.status === STATUSES.IN_PROGRESS).length();
+			lessonsInProgress += unitAttempt.lessonsAttempts.filter(lessonAttempt => lessonAttempt.status === STATUSES.IN_PROGRESS).length;
 		});
 	});
 

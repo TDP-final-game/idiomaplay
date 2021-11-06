@@ -70,7 +70,7 @@ LessonAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }
 	}
 	if(this.isFailed()) {
 		const { user } = this.ownerDocument();
-		user.stats.lives -= 1;
+		user.addReward(this.reward);
 	}
 };
 
@@ -84,13 +84,14 @@ LessonAttempt.methods.isLessonPassed = function() {
 };
 
 LessonAttempt.virtual('reward').get(function() {
-	if(!this.isPassed())
+	if(this.isPassed()) {
+		if(this.firstAttempt)
+			return new Reward({ coins: 10, lives: 1 });
+		return new Reward({ coins: 5, lives: 0 });
+	}
+	if(this.inProgress() || this.isPending())
 		return new Reward({ coins: 0, lives: 0 });
-
-	if(this.firstAttempt)
-		return new Reward({ coins: 10, lives: 1 });
-
-	return new Reward({ coins: 5, lives: 0 });
+	return new Reward({ coins: 0, lives: -1 });
 });
 
 /*
