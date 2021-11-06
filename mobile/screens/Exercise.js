@@ -9,7 +9,9 @@ import { ChapterFooter } from '../components/ChapterFooter';
 import { AudioExercise } from '../components/AudioExercise';
 import LessonService from '../services/lessonService';
 import { answer } from '../redux/lesson';
+import { ProgressBar } from '../components/ProgressBar';
 import { useIsFocused } from '@react-navigation/native';
+import ExamService from '../services/examService';
 
 const Exercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
@@ -60,13 +62,23 @@ const Exercise = ({ navigation, route }) => {
   const handleAnswerSelected = async (selectedOption) => {
     const correctOption = currentExercise.options.find((option) => option.correct).text;
 
-    const _ = await LessonService.answerExercise(
-      challengeAttemptId,
-      unitOrderNumber,
-      lessonOrderNumber,
-      currentExerciseIndex,
-      selectedOption
-    ); //todo: retry if error
+    if (isExam) {
+      await ExamService.answerExercise(
+        challengeAttemptId,
+        unitOrderNumber,
+        currentExerciseIndex,
+        selectedOption
+      );
+    } else {
+      await LessonService.answerExercise(
+        challengeAttemptId,
+        unitOrderNumber,
+        lessonOrderNumber,
+        currentExerciseIndex,
+        selectedOption
+      ); //todo: retry if error
+    }
+
     dispatch(answer(selectedOption === correctOption));
 
     setCurrentExerciseIndex(currentExerciseIndex + 1);

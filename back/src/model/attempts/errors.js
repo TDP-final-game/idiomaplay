@@ -12,5 +12,6 @@ module.exports = {
 	ExerciseAttemptNotFound: ({ exerciseOrderNumber }) => new ApiError(STATUS_CODES.BAD_REQUEST,
 		`Exercise attempt ${exerciseOrderNumber} not found`),
 	ExerciseNotPending: () => new ApiError(STATUS_CODES.BAD_REQUEST, 'Exercise is not pending'),
-	AnswerNotFound: ({ answer }) => new ApiError(STATUS_CODES.BAD_REQUEST, `Answer "${answer}" is not an option`)
+	AnswerNotFound: ({ answer }) => new ApiError(STATUS_CODES.BAD_REQUEST, `Answer "${answer}" is not an option`),
+	ExamExpired: expirationDate => new ApiError(STATUS_CODES.BAD_REQUEST, `Exam expired at ${expirationDate}`)
 };
