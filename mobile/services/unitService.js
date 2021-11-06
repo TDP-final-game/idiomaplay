@@ -83,7 +83,7 @@ async function allLessonsPassed(challengeAttemptId, unitOrderNumber) {
   const unitAttempt = (
     await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)
   ).data;
-
+  
   return _allLessonsPassed(unitAttempt.lessonsAttempts);
 }
 

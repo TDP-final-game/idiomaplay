@@ -89,6 +89,7 @@ const Exercise = ({ navigation, route }) => {
       </View>
     ));
 
+
   return (
     <SafeAreaView style={styles.container}>
       {currentExercise && (

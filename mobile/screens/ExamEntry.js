@@ -13,7 +13,7 @@ import { screens } from '../config/screens';
 
 const ExamEntry = ({ navigation, route }) => {
   const { challengeAttemptId, unitOrderNumber, lessonOrderNumber } = route.params;
-
+  
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
@@ -48,6 +48,7 @@ const ExamEntry = ({ navigation, route }) => {
 
   const retryLesson = async () => {
     dispatch(resetResults());
+
     const exercisesAttempts = await UnitService.attemptUnitModule(
       challengeAttemptId,
       unitOrderNumber,

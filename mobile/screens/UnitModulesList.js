@@ -46,11 +46,12 @@ const UnitModulesList = ({ navigation, route }) => {
 
     const isExam = lessonOrderNumber === -1;
     dispatch(initResults(exercisesAttempts));
+
     return navigation.navigate(screens.EXERCISE, {
       lessonOrderNumber,
       exercisesAttempts,
       challengeAttemptId,
-      isExam,
+      isExam
     });
   };
 
@@ -107,7 +108,7 @@ const UnitModulesList = ({ navigation, route }) => {
         <ExamCard
           text={exam?.name}
           state={exam?.status ?? states.pending}
-          disabled={/*exam?.blocked*/ false}
+          disabled={exam?.blocked}
           onPress={() => handlePress(exam?.orderNumber)}
         />
       </View>
