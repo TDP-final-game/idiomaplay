@@ -15,11 +15,9 @@ const _attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNu
       `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
     )
   ).data;
-
   if (lessonAttempt.status === 'IN_PROGRESS') {
     return lessonAttempt.exercisesAttempts;
   }
-
   lessonAttempt = (
     await api.put(
       `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts`,
@@ -27,6 +25,12 @@ const _attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNu
     )
   ).data;
 
+  if(lessonAttempt.statusCode === 400){
+    return {
+      error: true,
+      message: lessonAttempt.message
+    }
+  }
   return lessonAttempt.exercisesAttempts;
 };
 
