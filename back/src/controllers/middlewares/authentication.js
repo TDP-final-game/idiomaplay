@@ -1,7 +1,10 @@
 'use strict';
 
+const ApiError = require('../../apiError');
 // const firebase = require('../../startup/firebase');
-// const ApiError = require('../../apiError');
+const STATUS_CODES = require('../../constants/status_codes.json');
+
+const { model: userModel } = require('../../model/users/user');
 
 const authentication = async (req, res, next) => {
 	const { authorization } = req.headers;
@@ -16,8 +19,19 @@ const authentication = async (req, res, next) => {
 	// 	}
 	// }
 
-	if(authorization)
-		req.user = authorization.startsWith('userId ') ? { id: authorization.substring(7) } : { email: authorization };
+
+	if(!authorization)
+		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'No authorization token');
+
+	if(!authorization.startsWith('userId '))
+		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'Authorization token malformed');
+
+	const user = await userModel.findOne({ _id: authorization.substring(7) });
+
+	if(!user)
+		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'User not found');
+
+	req.user = user;
 
 	next();
 };

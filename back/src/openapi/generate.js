@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint-disable */ 
+/* eslint-disable */
 
 const swaggerAutogen = require('swagger-autogen')();
 const doc = require('./doc.json');
