@@ -23,6 +23,10 @@ const ExamAttempt = new mongoose.Schema({
 		type: Number,
 		required: false
 	},
+	startingDate: {
+		type: Number,
+		required: false
+	},
 	exercisesAttempts: [{ type: ExerciseAttempt, required: false }]
 }, { autoCreate: false, toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
@@ -34,7 +38,7 @@ ExamAttempt.virtual('status').get(function() {
 		return Status.PENDING();
 	if(this.isExamPassed())
 		return Status.PASSED();
-	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()))
+	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()) || Date.now() > this.expirationDate)
 		return Status.FAILED();
 	return Status.IN_PROGRESS();
 });
@@ -53,7 +57,10 @@ ExamAttempt.methods.attempt = function() {
 	const selected = shuffledExercises.slice(0, 16);
 
 	this.firstAttempt = !this.isCompleted();
-	this.expirationDate = Date.now() + 15 * 60 * 1000;
+
+	const now = Date.now();
+	this.startingDate = now;
+	this.expirationDate = now + 15 * 60 * 1000;
 	this.exercisesAttempts = selected.map(exercise => exercise.newAttempt());
 };
 
@@ -66,6 +73,8 @@ ExamAttempt.methods.getExercise = function(exerciseOrderNumber) {
 
 ExamAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {
 	const exercise = this.getExercise(exerciseOrderNumber);
+	if(Date.now() > this.expirationDate)
+		throw errors.ExamExpired(this.expirationDate);
 	exercise.attempt({ answer });
 };
 
