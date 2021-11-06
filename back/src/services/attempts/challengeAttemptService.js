@@ -40,23 +40,24 @@ const attemptExam = async (challengeAttemptId, unitOrderNumber) => {
 };
 
 const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNumber) => {
+
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
 	if(!challengeAttempt)
 		throw errors.ChallengeAttemptNotFound();
 
-	const user = await userModel.findOne({ _id: challengeAttempt.user});
+	const user = await userModel.findOne({ _id: challengeAttempt.user });
 
 	const userChallengeAttempts = await challengeAttemptModel.find({ user: user._id, status: STATUSES.IN_PROGRESS });
 	let lessonsInProgress = 0;
 	userChallengeAttempts.forEach(attempt => {
 		attempt.unitsAttempts.forEach(unitAttempt => {
-			lessonsInProgress += unitAttempt.lessonsAttempts.find(lessonAttempt => lessonAttempt.status === STATUSES.IN_PROGRESS).length();
+			lessonsInProgress += unitAttempt.lessonsAttempts.filter(lessonAttempt => lessonAttempt.status.status === STATUSES.IN_PROGRESS).length
 		});
 	});
 
-	if(lessonsInProgress >= user.stats.lives) {
+	if(lessonsInProgress >= user.stats.lives)
 		throw errors.NotEnoughLives();
-	}
+
 
 	await challengeAttempt.attemptLesson({ unitOrderNumber, lessonOrderNumber });
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
