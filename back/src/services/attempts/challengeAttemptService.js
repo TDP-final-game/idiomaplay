@@ -44,6 +44,13 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 	if(!challengeAttempt)
 		throw errors.ChallengeAttemptNotFound();
 
+	const user = await userModel.findOne({ _id: challengeAttempt.user});
+	if (user.stats.lives < 1)
+		throw errors.NotEnoughLives();
+
+	user.stats.lives -= 1;
+	user.save();
+
 	await challengeAttempt.attemptLesson({ unitOrderNumber, lessonOrderNumber });
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
 };

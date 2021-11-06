@@ -81,10 +81,10 @@ LessonAttempt.methods.isLessonPassed = function() {
 
 LessonAttempt.virtual('reward').get(function() {
 	if(!this.isPassed())
-		return new Reward({ coins: 0, lives: 0 });
+		return new Reward({ coins: 0, lives: 1 });
 
 	if(this.firstAttempt)
-		return new Reward({ coins: 10, lives: 0 });
+		return new Reward({ coins: 10, lives: 2 });
 
 	return new Reward({ coins: 5, lives: 0 });
 });
