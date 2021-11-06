@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export const LifeAndCoins = ({ coins, lifes, vertical, earned, fontSize, iconSize }) => {
+export const LifeAndCoins = ({ coins, lives, vertical, earned, fontSize, iconSize }) => {
   const defaultIconSize = 25;
   const defaultFontSize = 18;
 
@@ -42,7 +42,7 @@ export const LifeAndCoins = ({ coins, lifes, vertical, earned, fontSize, iconSiz
         >
           {' '}
           {earned ? '+' : ''}
-          {lifes}
+          {lives}
         </Text>
       </View>
     </View>
@@ -81,7 +81,7 @@ export const LifeAndCoins = ({ coins, lifes, vertical, earned, fontSize, iconSiz
         >
           {' '}
           {earned ? '+' : ''}
-          {lifes}
+          {lives}
         </Text>
       </View>
     </View>

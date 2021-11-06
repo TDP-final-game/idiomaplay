@@ -22,7 +22,7 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
       </View>
 
       <View style={{ marginRight: '5%' }}>
-        <LifeAndCoins coins={user.coins} lifes={user.lifes} vertical={true} />
+        <LifeAndCoins coins={user.coins} lives={user.lives} vertical={true} />
       </View>
     </View>
   );
@@ -40,7 +40,7 @@ export const UnitHeader = ({ returnButtonFunction, unit }) => {
       </View>
       <View>
         <Text style={styles.chapterText}>Unidad {unit}</Text>
-        <LifeAndCoins coins={user.coins} lifes={user.lifes} />
+        <LifeAndCoins coins={user.coins} lives={user.lives} />
       </View>
 
       <View style={{ marginRight: '3%' }}>

@@ -8,17 +8,19 @@ const userSlice = createSlice({
     imageUrl: '',
     name: '',
     coins: 80,
-    lifes: 5,
+    lives: 5,
     logged: false,
   },
   reducers: {
     logIn: (state, action) => {
-      const { email, userId, imageUrl, name } = action.payload;
+      const { email, userId, imageUrl, name, stats } = action.payload;
       state.userId = userId;
       state.email = email;
       state.imageUrl = imageUrl;
       state.name = name;
       state.logged = true;
+      state.coins = stats.coins;
+      state.lives = stats.lives;
     },
   },
 });

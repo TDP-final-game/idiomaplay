@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
-import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet, View } from 'react-native';
 import { states } from '../config/states';
 import { Badge } from './Badge';
 import { LinearGradient } from 'expo-linear-gradient';
+import { commonStyles } from '../config/styles';
 
 export const LessonCard = ({ text, state, onPress, disabled }) => {
   const badgeInfo = {
@@ -15,9 +15,10 @@ export const LessonCard = ({ text, state, onPress, disabled }) => {
     [states.pending]: { color: 'lightblue', text: 'Pendiente' },
     [states.failed]: { color: 'tomato', text: 'Fallida' },
   };
+
   return (
     <TouchableOpacity style={styles.button} onPress={disabled ? () => {} : onPress}>
-      <LinearGradient colors={[colors.PRIMARY, colors.PRIMARY_DARK]}>
+      <LinearGradient colors={[colors.PRIMARY, colors.PRIMARY]}>
         <View
           style={{
             flexDirection: 'row',

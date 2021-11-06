@@ -56,8 +56,6 @@ const UnitModulesList = ({ navigation, route }) => {
   const refCar = useRef();
 
   const pagination = () => {
-    //const { entries, activeSlide } = this.state;
-
     return (
       <Pagination
         dotsLength={lessonsAttempts.length}

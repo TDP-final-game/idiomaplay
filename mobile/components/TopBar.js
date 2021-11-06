@@ -44,7 +44,7 @@ export const TopBar = () => {
 
       <View>
         <Text style={styles.primaryText}>IdiomaPlay</Text>
-        <LifeAndCoins coins={user.coins} lifes={user.lifes} />
+        <LifeAndCoins coins={user.coins} lives={user.lives} />
       </View>
 
       <View style={{ marginRight: '3%' }}>

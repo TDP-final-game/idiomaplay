@@ -36,22 +36,26 @@ const Login = ({ navigation, route }) => {
       });
     } else {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
+        console.log(data);
+
         if (!data.id) {
           Alert.alert(
             'Usuario no esta registrado!',
             'Registrese para poder acceder a IdiomaPlay!',
             [{ text: 'OK' }]
           );
+        } else {
+          dispatch(
+            logIn({
+              email: user.email,
+              userId: data.id,
+              imageUrl: user.photoUrl,
+              name: data.firstName + ' ' + data.lastName,
+              stats: data.stats,
+            })
+          );
+          return navigation.navigate('Home');
         }
-        dispatch(
-          logIn({
-            email: user.email,
-            userId: data.id,
-            imageUrl: user.photoUrl,
-            name: data.firstName + ' ' + data.lastName,
-          })
-        );
-        return navigation.navigate('Home');
       });
     }
   };
