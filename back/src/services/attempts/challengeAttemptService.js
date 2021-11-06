@@ -3,6 +3,7 @@
 const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 const { model: userModel } = require('../../model/users/user');
+const STATUSES = require('../../constants/statuses.json');
 
 const errors = require('./challengeAttemptErrors');
 
@@ -44,11 +45,18 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 		throw errors.ChallengeAttemptNotFound();
 
 	const user = await userModel.findOne({ _id: challengeAttempt.user});
-	if (user.stats.lives < 1)
-		throw errors.NotEnoughLives();
 
-	user.stats.lives -= 1;
-	user.save();
+	const userChallengeAttempts = await challengeAttemptModel.find({ user: user._id, status: STATUSES.IN_PROGRESS });
+	let lessonsInProgress = 0;
+	userChallengeAttempts.forEach(attempt => {
+		attempt.unitsAttempts.forEach(unitAttempt => {
+			lessonsInProgress += unitAttempt.lessonsAttempts.find(lessonAttempt => lessonAttempt.status === STATUSES.IN_PROGRESS).length();
+		});
+	});
+
+	if(lessonsInProgress >= user.stats.lives) {
+		throw errors.NotEnoughLives();
+	}
 
 	await challengeAttempt.attemptLesson({ unitOrderNumber, lessonOrderNumber });
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
