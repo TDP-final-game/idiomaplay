@@ -1,27 +1,23 @@
 import * as React from 'react';
-import { View, StyleSheet, Animated, Text } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { commonStyles } from '../config/styles';
 import { useState, useEffect } from 'react';
-const MAX_TIME = 300;
 
-export const ProgressBar = () => {
-  const [percentagePassed, setPercentagePassed] = useState('0%');
-  const initialTime = new Date();
+const TOTAL_TIME_IN_MILLISECONDS = 15 * 60 * 1000;
 
-  function getPercentagePassed() {
-    var endTime = new Date();
-    var timeDiff = endTime - initialTime; //in ms
-    timeDiff /= 1000;
+export const ProgressBar = ({ endTime }) => {
+  const [percentagePassed, setPercentagePassed] = useState(calcPercentagePassed());
 
-    var seconds = Math.round(timeDiff);
-    const percentage = Math.min(100, (seconds * 100) / MAX_TIME);
-
-    return String(percentage) + '%';
+  function calcPercentagePassed() {
+    var timeToEnd = endTime - Date.now(); //in ms
+    const percentageCompleted =
+      (TOTAL_TIME_IN_MILLISECONDS - timeToEnd) / TOTAL_TIME_IN_MILLISECONDS;
+    return String(100 - percentageCompleted * 100) + '%';
   }
 
   useEffect(() => {
     let secTimer = setInterval(() => {
-      setPercentagePassed(getPercentagePassed());
+      setPercentagePassed(calcPercentagePassed());
     }, 1000);
 
     return () => clearInterval(secTimer);
