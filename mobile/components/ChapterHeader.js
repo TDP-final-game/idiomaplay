@@ -38,7 +38,8 @@ export const UnitHeader = ({ returnButtonFunction, unit }) => {
           <Ionicons name="arrow-undo" size={45} color={colors.PRIMARY_DARK} />
         </TouchableOpacity>
       </View>
-      <View>
+
+      <View style={{ minWidth: '35%' }}>
         <Text style={styles.chapterText}>Unidad {unit}</Text>
         <LifeAndCoins coins={user.coins} lives={user.lives} />
       </View>
@@ -55,13 +56,13 @@ export const UnitHeader = ({ returnButtonFunction, unit }) => {
 const styles = StyleSheet.create({
   headerContainer: {
     flexGrow: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: colors.PRIMARY,
-    borderBottomColor: colors.PRIMARY_DARK,
-    flexDirection: 'row',
     overflow: 'hidden',
+    alignItems: 'center',
+    flexDirection: 'row',
     borderBottomWidth: 3,
+    backgroundColor: colors.PRIMARY,
+    justifyContent: 'space-between',
+    borderBottomColor: colors.PRIMARY_DARK,
   },
 
   chapterText: {
