@@ -25,7 +25,6 @@ const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
 	if(!challengeAttempt)
 		throw errors.ChallengeAttemptNotFound();
-
 	await challengeAttempt.attemptUnit({ unitOrderNumber });
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber);
 };
