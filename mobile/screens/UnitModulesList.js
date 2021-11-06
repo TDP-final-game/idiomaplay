@@ -47,12 +47,19 @@ const UnitModulesList = ({ navigation, route }) => {
     const isExam = lessonOrderNumber === -1;
     dispatch(initResults(exercisesAttempts));
 
-    return navigation.navigate(screens.EXERCISE, {
+    let exerciseParams = {
       lessonOrderNumber,
       exercisesAttempts,
       challengeAttemptId,
-      isExam
-    });
+      isExam,
+    };
+
+    if (isExam) {
+      exerciseParams['startingDate'] = exam.startingDate;
+      exerciseParams['expirationDate'] = exam.expirationDate;
+    }
+
+    return navigation.navigate(screens.EXERCISE, exerciseParams);
   };
 
   const refCar = useRef();

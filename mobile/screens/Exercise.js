@@ -101,14 +101,13 @@ const Exercise = ({ navigation, route }) => {
       </View>
     ));
 
-
   return (
     <SafeAreaView style={styles.container}>
       {currentExercise && (
         <>
           {isExam && (
             <View style={{ flex: 0.015, padding: '2%' }}>
-              <ProgressBar />
+              <ProgressBar endTime={route.params.expirationDate} />
             </View>
           )}
 

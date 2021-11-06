@@ -38,7 +38,6 @@ const _attemptExam = async (challengeAttemptId, unitOrderNumber) => {
   ).data;
 
   if (examAttempt.status === 'IN_PROGRESS') {
-    console.log(examAttempt);
     return examAttempt.exercisesAttempts;
   }
 
@@ -85,7 +84,7 @@ async function allLessonsPassed(challengeAttemptId, unitOrderNumber) {
   const unitAttempt = (
     await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)
   ).data;
-  
+
   return _allLessonsPassed(unitAttempt.lessonsAttempts);
 }
 
