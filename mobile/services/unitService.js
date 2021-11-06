@@ -52,9 +52,15 @@ async function attemptLesson(challengeAttemptId, unitOrderNumber, lessonOrderNum
 }
 
 async function allLessonsPassed(challengeAttemptId, unitOrderNumber) {
+  console.log('CHALL_ATTEMPT ', challengeAttemptId);
+  console.log('UNIT_ORDEN ', unitOrderNumber);
+
   const unitAttempt = (
     await api.get(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}`)
   ).data;
+
+  console.log('RESPONSE ', unitAttempt);
+
   return _allLessonsPassed(unitAttempt.lessonsAttempts);
 }
 
