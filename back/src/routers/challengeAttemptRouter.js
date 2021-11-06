@@ -20,6 +20,6 @@ router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exer
 router.get('/:challengeAttemptId', challengeAttemptController.getChallenge);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber', challengeAttemptController.getUnit);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber', challengeAttemptController.getLesson);
-router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', challengeAttemptController.getExam);
+router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', challengeAttemptController.getExam);
 
 module.exports = router;
