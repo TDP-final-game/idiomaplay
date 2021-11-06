@@ -89,7 +89,7 @@ LessonAttempt.virtual('reward').get(function() {
 			return new Reward({ coins: 10, lives: 1 });
 		return new Reward({ coins: 5, lives: 0 });
 	}
-	if(this.inProgress() || this.isPending())
+	if(this.isInProgress() || this.isPending())
 		return new Reward({ coins: 0, lives: 0 });
 	return new Reward({ coins: 0, lives: -1 });
 });
