@@ -26,8 +26,6 @@ UnitAttempt.virtual('status').get(function() {
 		return Status.PENDING();
 	if(this.lessonsAttempts.every(lesson => lesson.isPassed()) && this.examAttempt.isPassed())
 		return Status.PASSED();
-	if(this.lessonsAttempts.every(lesson => lesson.isCompleted()) && this.examAttempt.isCompleted())
-		return Status.FAILED();
 	return Status.IN_PROGRESS();
 });
 
