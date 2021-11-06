@@ -9,9 +9,11 @@ import { SecondaryButton } from '../components/SecondaryButton';
 import { resetResults } from '../redux/lesson';
 import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
+import { screens } from '../config/screens';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { lessonOrderNumber, challengeAttemptId, unitOrderNumber } = route.params;
+  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber } = route.params;
+
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
@@ -38,7 +40,10 @@ const ExamEntry = ({ navigation, route }) => {
 
   const goToUnit = () => {
     dispatch(resetResults());
-    return navigation.navigate('LessonsList');
+    return navigation.navigate(screens.UNIT_MODULES_LIST, {
+      unitOrderNumber,
+      challengeAttemptId,
+    });
   };
 
   const retryLesson = async () => {
@@ -48,7 +53,8 @@ const ExamEntry = ({ navigation, route }) => {
       unitOrderNumber,
       lessonOrderNumber
     );
-    return navigation.navigate('Exercise', {
+
+    return navigation.navigate(screens.EXERCISE, {
       lessonOrderNumber,
       exercisesAttempts,
       challengeAttemptId,
@@ -57,6 +63,7 @@ const ExamEntry = ({ navigation, route }) => {
 
   useEffect(() => {
     const minimumCorrectResponses = Math.ceil(exerciseResults.length * minimumPercentage);
+
     if (countCorrectExercises(exerciseResults) < minimumCorrectResponses) {
       setTitle('¡Estuviste cerca!');
       setSubtitle('¡No bajes los brazos!');
@@ -71,7 +78,7 @@ const ExamEntry = ({ navigation, route }) => {
       setDescription('');
       setIconName('party-popper');
 
-      UnitService.allLessonsPassed(userId, unitOrderNumber).then((allPassed) => {
+      UnitService.allLessonsPassed(challengeAttemptId, unitOrderNumber).then((allPassed) => {
         if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
         else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
       });
