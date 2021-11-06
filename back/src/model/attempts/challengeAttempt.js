@@ -42,8 +42,6 @@ ChallengeAttempt.statics.anyInProgress = async function({ challengeId, userId })
 ChallengeAttempt.virtual('status').get(function() {
 	if(this.unitsAttempts.every(unit => unit.isPassed()))
 		return Status.PASSED();
-	if(this.unitsAttempts.every(unit => unit.isCompleted()))
-		return Status.FAILED();
 	return Status.IN_PROGRESS();
 });
 
