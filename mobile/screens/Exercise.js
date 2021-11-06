@@ -12,7 +12,7 @@ import { answer } from '../redux/lesson';
 import { useIsFocused } from '@react-navigation/native';
 
 const Exercise = ({ navigation, route }) => {
-  const { lessonOrderNumber, exercisesAttempts, challengeAttemptId } = route.params;
+  const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
@@ -89,14 +89,16 @@ const Exercise = ({ navigation, route }) => {
       </View>
     ));
 
-  const handleReturn = () => {
-    return navigation.navigate('Home');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       {currentExercise && (
         <>
+          {isExam && (
+            <View style={{ flex: 0.015, padding: '2%' }}>
+              <ProgressBar />
+            </View>
+          )}
+
           <View style={{ marginLeft: '2%' }}>
             <Text>{explanationByType[currentExercise.type]}</Text>
           </View>
