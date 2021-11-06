@@ -11,7 +11,7 @@ router.use(middlewares);
 
 router.post('/', challengeAttemptController.attemptChallenge);
 router.put('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
-router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', challengeAttemptController.attemptExam);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', challengeAttemptController.attemptExam);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', challengeAttemptController.attemptLesson);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts',
 	challengeAttemptController.attemptLessonExercise);
@@ -20,6 +20,6 @@ router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exer
 router.get('/:challengeAttemptId', challengeAttemptController.getChallenge);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber', challengeAttemptController.getUnit);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber', challengeAttemptController.getLesson);
-router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', challengeAttemptController.getExam);
+router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', challengeAttemptController.getExam);
 
 module.exports = router;
