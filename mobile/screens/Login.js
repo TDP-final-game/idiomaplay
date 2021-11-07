@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/user';
 import { GoogleButton } from '../components/GoogleButton';
 import UserService from '../services/userService';
+import { UserAlreadyRegistered } from '../components/alert-messages/UserAlReadyRegistered';
+import { UserNotRegistered } from '../components/alert-messages/UserNotRegistered';
 
 const Login = ({ navigation, route }) => {
   const iconSize = 200;
@@ -16,6 +18,9 @@ const Login = ({ navigation, route }) => {
 
   const [logInMode, setLogInMode] = useState(false);
   const [text, setText] = useState(logInText);
+  const [userAlReadyRegisteredVisible, setUserAlreadyRegistered] = useState(false);
+  const [userNotRegisteredVisible, setUserNotRegistered] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -29,7 +34,7 @@ const Login = ({ navigation, route }) => {
     if (!logInMode) {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
         if (data.id) {
-          Alert.alert('Usuario ya registrado!', 'Utilice otra cuenta de google!', [{ text: 'OK' }]);
+          setUserAlreadyRegistered(true)
         } else {
           return navigation.navigate('SignupConfirmation', { user });
         }
@@ -39,11 +44,7 @@ const Login = ({ navigation, route }) => {
         console.log(data);
 
         if (!data.id) {
-          Alert.alert(
-            'Usuario no esta registrado!',
-            'Registrese para poder acceder a IdiomaPlay!',
-            [{ text: 'OK' }]
-          );
+          setUserNotRegistered(true)
         } else {
           dispatch(
             logIn({
@@ -62,6 +63,8 @@ const Login = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+      <UserAlreadyRegistered modalVisible={userAlReadyRegisteredVisible} setModalVisible={setUserAlreadyRegistered} />
+      <UserNotRegistered modalVisible={userNotRegisteredVisible} setModalVisible={setUserNotRegistered} />
       <View style={styles.container}>
         <View style={styles.messageContainer}>
           <Text style={styles.textA}>Idioma Play</Text>
