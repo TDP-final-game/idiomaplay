@@ -12,11 +12,10 @@ async function answerExercise(challengeAttemptId, unitOrderNumber, exerciseOrder
 async function getResult(
     challengeAttemptId,
     unitOrderNumber,
-    lessonOrderNumber
 ) {
   return (
       await api.get(
-          `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt/result`)
+          `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt/results`)
   ).data;
 }
 

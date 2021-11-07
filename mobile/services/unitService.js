@@ -51,6 +51,13 @@ const _attemptExam = async (challengeAttemptId, unitOrderNumber) => {
     )
   ).data;
 
+  if(examAttempt.statusCode === 400){
+    return {
+      error: true,
+      message: examAttempt.message
+    }
+  }
+
   return examAttempt.exercisesAttempts;
 };
 
