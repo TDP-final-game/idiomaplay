@@ -49,29 +49,6 @@ const attemptLesson = async (req, res) => {
 };
 
 
-const attemptLessonResult = async (req, res) => {
-	try {
-		const { challengeAttemptId, unitOrderNumber, lessonOrderNumber} = req.params;
-		const response = await challengeAttemptService
-			.attemptLessonResult(challengeAttemptId, parseInt(unitOrderNumber, 10), parseInt(lessonOrderNumber, 10));
-		res.status(STATUS_CODES.OK).send(response);
-	} catch(error) {
-		console.log(error);
-		return res.status(error.statusCode).send(error.description);
-	}
-};
-
-const attemptExamResult = async (req, res) => {
-	try {
-		const { challengeAttemptId, unitOrderNumber } = req.params;
-		const response = await challengeAttemptService
-			.attemptExamResult(challengeAttemptId, parseInt(unitOrderNumber, 10));
-		res.status(STATUS_CODES.OK).send(response);
-	} catch(error) {
-		return res.status(error.statusCode).send(error.description);
-	}
-};
-
 const attemptExamExercise = async (req, res) => {
 	try {
 		const { challengeAttemptId, unitOrderNumber } = req.params;
@@ -144,8 +121,6 @@ module.exports = {
 	attemptLesson,
 	attemptExamExercise,
 	attemptLessonExercise,
-	attemptLessonResult,
-	attemptExamResult,
 	getChallenge,
 	getUnit,
 	getLesson,

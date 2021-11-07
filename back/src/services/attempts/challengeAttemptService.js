@@ -32,7 +32,6 @@ const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
 
 
 const lifesCheck = async challengeAttempt => {
-
 	const user = await userModel.findOne({ _id: challengeAttempt.user });
 
 	const userChallengeAttempts = await challengeAttemptModel.find({ user: user._id, status: STATUSES.IN_PROGRESS });
@@ -42,10 +41,9 @@ const lifesCheck = async challengeAttempt => {
 			lessonsInProgress += unitAttempt.lessonsAttempts.filter(lessonAttempt => lessonAttempt.status.status === STATUSES.IN_PROGRESS).length;
 		});
 	});
-	console.log('asd', lessonsInProgress);
+
 	if(lessonsInProgress >= user.stats.lives)
 		throw errors.NotEnoughLives();
-
 };
 
 const attemptExam = async (challengeAttemptId, unitOrderNumber) => {
@@ -54,6 +52,7 @@ const attemptExam = async (challengeAttemptId, unitOrderNumber) => {
 		throw errors.ChallengeAttemptNotFound();
 
 	await lifesCheck(challengeAttempt);
+
 	await challengeAttempt.attemptExam({ unitOrderNumber });
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt;
 };
@@ -89,22 +88,6 @@ const attemptLessonExercise = async (challengeAttemptId, unitOrderNumber, lesson
 		.getExercise(exerciseOrderNumber);
 };
 
-const attemptLessonResult = async (challengeAttemptId, unitOrderNumber, lessonOrderNumber) => {
-	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
-	if(!challengeAttempt)
-		throw errors.ChallengeAttemptNotFound();
-
-	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
-};
-
-const attemptExamResult = async (challengeAttemptId, unitOrderNumber) => {
-	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
-	if(!challengeAttempt)
-		throw errors.ChallengeAttemptNotFound();
-
-	return (await challengeAttempt).getUnitAttempt(unitOrderNumber).examAttempt;
-};
-
 const getChallenge = async challengeAttemptId => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
 	if(!challengeAttempt)
@@ -119,7 +102,5 @@ module.exports = {
 	attemptLesson,
 	attemptExamExercise,
 	attemptLessonExercise,
-	attemptLessonResult,
-	attemptExamResult,
 	getChallenge
 };
