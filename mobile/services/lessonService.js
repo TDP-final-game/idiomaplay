@@ -15,6 +15,18 @@ async function answerExercise(
   ).data;
 }
 
+async function getResult(
+  challengeAttemptId,
+  unitOrderNumber,
+  lessonOrderNumber
+) {
+  return (
+    await api.get(
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}/results`)
+  ).data;
+}
+
 export default {
   answerExercise,
+  getResult
 };

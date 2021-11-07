@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import {View, Text, StyleSheet, Animated, Alert} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +12,7 @@ import UnitService from '../services/unitService';
 import { screens } from '../config/screens';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber } = route.params;
+  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards } = route.params;
   
   const lessonState = {
     RETRY: 'RETRY',
@@ -54,6 +54,12 @@ const ExamEntry = ({ navigation, route }) => {
       unitOrderNumber,
       lessonOrderNumber
     );
+
+    // TODO: bug fixing when this happens
+    if(exercisesAttempts.error === true) {
+      Alert.alert('Te faltan vidas!', 'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!', [{ text: 'OK' }]);
+    }
+
 
     return navigation.navigate(screens.EXERCISE, {
       lessonOrderNumber,
@@ -128,11 +134,9 @@ const ExamEntry = ({ navigation, route }) => {
           </View>
         )}
 
-        {currentLessonState !== lessonState.RETRY && (
-          <View style={{ marginHorizontal: '5%' }}>
-            <LifeAndCoins coins={10} lifes={1} earned={true} iconSize={50} fontSize={35} />
+        <View style={{ marginHorizontal: '5%' }}>
+            <LifeAndCoins coins={rewards.coins} lives={rewards.lives} earned={true} iconSize={50} fontSize={35} />
           </View>
-        )}
 
         {currentLessonState === lessonState.RETURN_TO_UNIT && (
           <View style={{ ...styles.buttonContainer, flex: 0.07 }}>

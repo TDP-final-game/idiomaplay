@@ -9,6 +9,18 @@ async function answerExercise(challengeAttemptId, unitOrderNumber, exerciseOrder
   ).data;
 }
 
+async function getResult(
+    challengeAttemptId,
+    unitOrderNumber,
+    lessonOrderNumber
+) {
+  return (
+      await api.get(
+          `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt/result`)
+  ).data;
+}
+
 export default {
   answerExercise,
+  getResult
 };
