@@ -78,6 +78,15 @@ const attemptExamExercise = async (challengeAttemptId, unitOrderNumber, exercise
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt.getExercise(exerciseOrderNumber);
 };
 
+const abortExamAttempt = async (challengeAttemptId, unitOrderNumber) => {
+	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
+	if(!challengeAttempt)
+		throw errors.ChallengeAttemptNotFound();
+
+	await challengeAttempt.abortExamAttempt({ unitOrderNumber });
+	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt;
+};
+
 const attemptLessonExercise = async (challengeAttemptId, unitOrderNumber, lessonOrderNumber, exerciseOrderNumber, answer) => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
 	if(!challengeAttempt)
@@ -102,5 +111,6 @@ module.exports = {
 	attemptLesson,
 	attemptExamExercise,
 	attemptLessonExercise,
-	getChallenge
+	getChallenge,
+	abortExamAttempt
 };

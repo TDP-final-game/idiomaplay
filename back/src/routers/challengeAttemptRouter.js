@@ -15,10 +15,11 @@ router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', c
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', challengeAttemptController.attemptLesson);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', 
 	challengeAttemptController.attemptLessonExercise);
-router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', challengeAttemptController.attemptExamExercise);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts/exercisesAttempts', challengeAttemptController.attemptExamExercise);
 router.get('/:challengeAttemptId', challengeAttemptController.getChallenge);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber', challengeAttemptController.getUnit);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber', challengeAttemptController.getLesson);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', challengeAttemptController.getExam);
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts/abort', challengeAttemptController.abortExamAttempt);
 
 module.exports = router;

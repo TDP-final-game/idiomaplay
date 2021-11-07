@@ -89,6 +89,12 @@ ChallengeAttempt.methods.attemptExamExercise = async function({ unitOrderNumber,
 	await this.getUnitAttempt(unitOrderNumber).attemptExamExercise({ exerciseOrderNumber, answer });
 };
 
+ChallengeAttempt.methods.abortExamAttempt = async function({ unitOrderNumber }) {
+	if(!this.isInProgress())
+		throw errors.ChallengeAttemptNotInProgress();
+	await this.getUnitAttempt(unitOrderNumber).examAttempt.abort();
+};
+
 /*
  * Hooks
  */
