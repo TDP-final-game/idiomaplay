@@ -48,7 +48,6 @@ const attemptLesson = async (req, res) => {
 	}
 };
 
-
 const attemptExamExercise = async (req, res) => {
 	try {
 		const { challengeAttemptId, unitOrderNumber } = req.params;
