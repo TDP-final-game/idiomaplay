@@ -25,7 +25,7 @@ export const UserLoginAlertStyles = {
     button: {
       borderRadius: 20,
       padding: 20,
-      elevation: 2
+      elevation: 2,
     },
     buttonClose: {
       backgroundColor: colors.PRIMARY_BUTTON_COLOR,

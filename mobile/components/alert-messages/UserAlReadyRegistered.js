@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Platform } from "react-native";
-
+import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { UserLoginAlertStyles } from './styles/userLoginAlerts';
-
 
 export const UserAlreadyRegistered = (props) => {
   return (
