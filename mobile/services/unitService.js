@@ -16,7 +16,7 @@ const _attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNu
     )
   ).data;
   if (lessonAttempt.status === 'IN_PROGRESS') {
-    return lessonAttempt.exercisesAttempts;
+    return lessonAttempt;
   }
   lessonAttempt = (
     await api.put(
@@ -25,13 +25,13 @@ const _attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNu
     )
   ).data;
 
-  if(lessonAttempt.statusCode === 400){
+  if (lessonAttempt.statusCode === 400) {
     return {
       error: true,
-      message: lessonAttempt.message
-    }
+      message: lessonAttempt.message,
+    };
   }
-  return lessonAttempt.exercisesAttempts;
+  return lessonAttempt;
 };
 
 const _attemptExam = async (challengeAttemptId, unitOrderNumber) => {
@@ -42,7 +42,7 @@ const _attemptExam = async (challengeAttemptId, unitOrderNumber) => {
   ).data;
 
   if (examAttempt.status === 'IN_PROGRESS') {
-    return examAttempt.exercisesAttempts;
+    return examAttempt;
   }
 
   examAttempt = (
@@ -51,14 +51,14 @@ const _attemptExam = async (challengeAttemptId, unitOrderNumber) => {
     )
   ).data;
 
-  if(examAttempt.statusCode === 400){
+  if (examAttempt.statusCode === 400) {
     return {
       error: true,
-      message: examAttempt.message
-    }
+      message: examAttempt.message,
+    };
   }
 
-  return examAttempt.exercisesAttempts;
+  return examAttempt;
 };
 
 async function getUnitModules(challengeAttemptId, unitOrderNumber) {
@@ -77,6 +77,8 @@ async function getUnitModules(challengeAttemptId, unitOrderNumber) {
       `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempts`
     )
   ).data;
+
+  console.log(exam);
 
   exam.type = moduleTypes.EXAM;
   exam.orderNumber = EXAM_ORDER_NUMBER;

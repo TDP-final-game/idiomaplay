@@ -6,7 +6,6 @@ import { Text, StyleSheet, View } from 'react-native';
 import { states } from '../config/states';
 import { Badge } from './Badge';
 import { LinearGradient } from 'expo-linear-gradient';
-import { commonStyles } from '../config/styles';
 
 export const LessonCard = ({ text, state, onPress, disabled }) => {
   const badgeInfo = {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { screens } from '../config/screens';
 import { View, Text, StyleSheet, Animated, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
@@ -9,15 +10,15 @@ import { SecondaryButton } from '../components/SecondaryButton';
 import { resetResults } from '../redux/lesson';
 import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
-import { screens } from '../config/screens';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards } = route.params;
+  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards, isExam } = route.params;
 
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
     RETURN_TO_UNIT: 'RETURN_TO_UNIT',
+    RETURN_TO_CHALLENGE: 'RETURN_TO_CHALLENGE',
   };
 
   const dispatch = useDispatch();
@@ -46,17 +47,25 @@ const ExamEntry = ({ navigation, route }) => {
     });
   };
 
-  const retryLesson = async () => {
+  const goToChallenge = () => {
     dispatch(resetResults());
+    return navigation.navigate(screens.UNITS_LIST, {
+      unitOrderNumber,
+      challengeAttemptId,
+    });
+  };
 
-    const exercisesAttempts = await UnitService.attemptUnitModule(
+  const retryLesson = async () => {
+    dispatch(resetResults(isExam));
+
+    const unitModuleAttempt = await UnitService.attemptUnitModule(
       challengeAttemptId,
       unitOrderNumber,
       lessonOrderNumber
     );
 
     // TODO: bug fixing when this happens
-    if (exercisesAttempts.error === true) {
+    if (unitModuleAttempt.error === true) {
       Alert.alert(
         'Te faltan vidas!',
         'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
@@ -69,11 +78,19 @@ const ExamEntry = ({ navigation, route }) => {
       });
     }
 
-    return navigation.navigate(screens.EXERCISE, {
+    const exerciseParams = {
       lessonOrderNumber,
-      exercisesAttempts,
+      exercisesAttempts: unitModuleAttempt.exercisesAttempts,
       challengeAttemptId,
-    });
+      isExam,
+    };
+
+    if (isExam) {
+      exerciseParams['startingDate'] = unitModuleAttempt.startingDate;
+      exerciseParams['expirationDate'] = unitModuleAttempt.expirationDate;
+    }
+
+    return navigation.navigate(screens.EXERCISE, exerciseParams);
   };
 
   useEffect(() => {
@@ -83,20 +100,30 @@ const ExamEntry = ({ navigation, route }) => {
       setTitle('¡Estuviste cerca!');
       setSubtitle('¡No bajes los brazos!');
       setDescription(
-        '¡Debes completar al menos un 80% de los ejercicios correctamente para completar la lección!'
+        `¡Debes completar al menos un 80% de los ejercicios correctamente para completar ${
+          isExam ? 'el examen' : 'la lección!'
+        }`
       );
       setIconName('arm-flex');
       setCurrentLessonState(lessonState.RETRY);
     } else {
       setTitle('¡Felicidades!');
-      setSubtitle(`¡Lección ${lessonOrderNumber} finalizada con éxito!`);
+      setSubtitle(
+        `¡${isExam ? 'Unidad' : 'Lección'} ${
+          isExam ? unitOrderNumber : lessonOrderNumber
+        } finalizada con éxito!`
+      );
       setDescription('');
       setIconName('party-popper');
 
-      UnitService.allLessonsPassed(challengeAttemptId, unitOrderNumber).then((allPassed) => {
-        if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
-        else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
-      });
+      if (!isExam) {
+        UnitService.allLessonsPassed(challengeAttemptId, unitOrderNumber).then((allPassed) => {
+          if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
+          else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
+        });
+      } else {
+        setCurrentLessonState(lessonState.RETURN_TO_CHALLENGE);
+      }
     }
   }, []);
 
@@ -158,6 +185,12 @@ const ExamEntry = ({ navigation, route }) => {
           </View>
         )}
 
+        {currentLessonState === lessonState.RETURN_TO_CHALLENGE && (
+          <View style={{ ...styles.buttonContainer, flex: 0.07 }}>
+            <PrimaryButton text={'Ir al desafio'} onPress={goToChallenge}></PrimaryButton>
+          </View>
+        )}
+
         {currentLessonState === lessonState.GO_TO_EXAM && (
           <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
             <View style={{ flexGrow: 0.45 }}>
@@ -173,7 +206,7 @@ const ExamEntry = ({ navigation, route }) => {
         {currentLessonState === lessonState.RETRY && (
           <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
             <View style={{ flexGrow: 0.45 }}>
-              <PrimaryButton text={'Reintentar leccion'} onPress={retryLesson}></PrimaryButton>
+              <PrimaryButton text={'Reintentar'} onPress={retryLesson}></PrimaryButton>
             </View>
 
             <View style={{ flexGrow: 0.45, width: '75%', alignSelf: 'center' }}>

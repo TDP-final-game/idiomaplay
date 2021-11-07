@@ -50,17 +50,16 @@ const Exercise = ({ navigation, route }) => {
       setCurrentExerciseIndex(0);
       // Ask if he pass and update values, with response set winning values
 
-      const result = isExam
+      const rewards = isExam
         ? await ExamService.getReward(challengeAttemptId, unitOrderNumber)
         : await LessonService.getReward(challengeAttemptId, unitOrderNumber, lessonOrderNumber);
-
-      const rewards = result.reward;
 
       return navigation.navigate('ExamEntry', {
         unitOrderNumber,
         lessonOrderNumber,
         challengeAttemptId,
         rewards,
+        isExam,
       });
     }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
