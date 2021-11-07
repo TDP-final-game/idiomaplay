@@ -1,6 +1,34 @@
-import {colors} from '../../../config/colors';
+import React, { useState } from "react";
+import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import { colors } from "../config/colors";
 
-export const UserLoginAlertStyles = {
+export const CustomAlert = (props) => {
+  return (
+    <Modal
+        animationType="fade"
+        transparent={true}
+        visible={props.modalVisible}
+        onRequestClose={() => {
+          props.setModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>{props.title}</Text>
+            <Text style={styles.modalText}>{props.body}</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => props.setModalVisible(!props.modalVisible)}
+            >
+              <Text style={styles.textStyle}>Continuar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+  )
+};
+
+const styles = StyleSheet.create({
     centeredView: {
       flex: 1,
       justifyContent: "center",
@@ -48,4 +76,4 @@ export const UserLoginAlertStyles = {
       color: colors.PRIMARY,
       textAlign: "center"
     }
-  }
+  });
