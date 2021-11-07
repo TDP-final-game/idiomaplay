@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Alert } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { SecondaryButton } from '../components/SecondaryButton';
+import { CustomAlert } from '../components/CustomAlert';
 import { resetResults } from '../redux/lesson';
 import { LifeAndCoins } from '../components/LifeAndCoins';
 import UnitService from '../services/unitService';
@@ -37,6 +38,7 @@ const ExamEntry = ({ navigation, route }) => {
   const [description, setDescription] = useState('');
   const [iconName, setIconName] = useState('');
   const [currentLessonState, setCurrentLessonState] = useState(null);
+  const [AlertLivesVisible, setAlertLivesVisible] = useState(false);
 
   const goToUnit = () => {
     dispatch(resetResults());
@@ -57,12 +59,9 @@ const ExamEntry = ({ navigation, route }) => {
 
     // TODO: bug fixing when this happens
     if (exercisesAttempts.error === true) {
-      Alert.alert(
-        'Te faltan vidas!',
-        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
-        [{ text: 'OK' }]
-      );
 
+      setAlertLivesVisible(true);
+    
       return navigation.navigate(screens.UNIT_MODULES_LIST, {
         unitOrderNumber,
         challengeAttemptId,
@@ -120,6 +119,9 @@ const ExamEntry = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+
+      <CustomAlert modalVisible={AlertLivesVisible} setModalVisible={setAlertLivesVisible} title={'Te faltan vidas'} body={'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'}/>
+
       <View style={styles.container}>
         <View style={styles.messageContainer}>
           <Text style={styles.title}>{title}</Text>
