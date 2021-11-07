@@ -10,6 +10,7 @@ import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 import { moduleTypes } from '../config/constants';
 import { ExamCard } from '../components/ExamCard';
+import { CustomAlert } from '../components/CustomAlert';
 import { states } from '../config/states';
 import Carousel from 'react-native-snap-carousel';
 import { Pagination } from 'react-native-snap-carousel';
@@ -18,6 +19,7 @@ const UnitModulesList = ({ navigation, route }) => {
   const [exam, setExam] = useState(null);
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
   const [paginationLessonIndex, setPaginationLessonIndex] = useState(0);
+  const [AlertLivesVisible, setAlertLivesVisible] = useState(false);
 
   const isFocused = useIsFocused();
   const { unitOrderNumber, challengeAttemptId } = route.params;
@@ -95,6 +97,15 @@ const UnitModulesList = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <CustomAlert
+        modalVisible={AlertLivesVisible}
+        setModalVisible={setAlertLivesVisible}
+        title={'Te faltan vidas'}
+        body={
+          'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'
+        }
+      />
+
       <View style={{ flex: 0.6 }}>
         <Carousel
           ref={refCar}

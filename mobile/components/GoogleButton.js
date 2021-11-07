@@ -33,14 +33,13 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
 
   return (
     <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onGoogleButtonPress}>
-      <View style={styles.textContainer}>
-        <View style={{ width: '15%' }}>
+        <View style={styles.icon}>
           <AntDesign name="google" size={30} color={colors.PRIMARY_DARK} />
         </View>
         <View style={{ width: '75%' }}>
           <Text style={styles.text}>{text}</Text>
         </View>
-      </View>
+
     </TouchableOpacity>
   );
 };
@@ -52,17 +51,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '5%',
     justifyContent: 'center',
+    flexDirection: 'row',
+    width: '90%',
     backgroundColor: colors.LIGHT_GRAY,
   },
-
-  textContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
+  icon: {
+    width: '15%'
   },
-
   text: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
     color: colors.PRIMARY_DARK,
   },
