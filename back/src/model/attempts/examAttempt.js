@@ -40,6 +40,8 @@ const ExamAttempt = new mongoose.Schema({
  */
 
 ExamAttempt.virtual('status').get(function() {
+	if(this.aborted)
+		return Status.FAILED();
 	if(!this.exercisesAttempts || this.exercisesAttempts.length === 0)
 		return Status.PENDING();
 	if(this.isExamPassed())
