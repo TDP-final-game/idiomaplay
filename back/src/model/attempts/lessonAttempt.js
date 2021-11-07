@@ -36,6 +36,18 @@ LessonAttempt.virtual('status').get(function() {
 	return Status.IN_PROGRESS();
 });
 
+LessonAttempt.virtual('reward').get(function() {
+	if(this.isPassed()) {
+		if(this.firstAttempt)
+			return new Reward({ coins: 10, lives: 1 });
+		return new Reward({ coins: 5, lives: 0 });
+	}
+	if(this.isInProgress() || this.isPending())
+		return new Reward({ coins: 0, lives: 0 });
+	return new Reward({ coins: 0, lives: -1 });
+});
+
+
 Status.AddMethodsToSchema(LessonAttempt);
 
 LessonAttempt.methods.unitAttempt = function() {
@@ -68,6 +80,10 @@ LessonAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }
 		const { user } = this.ownerDocument();
 		user.addReward(this.reward);
 	}
+	if(this.isFailed()) {
+		const { user } = this.ownerDocument();
+		user.addReward(this.reward);
+	}
 };
 
 LessonAttempt.methods.numberOfPassedExercises = function() {
@@ -79,15 +95,6 @@ LessonAttempt.methods.isLessonPassed = function() {
 			&& this.numberOfPassedExercises() / this.exercisesAttempts.length >= 0.8;
 };
 
-LessonAttempt.virtual('reward').get(function() {
-	if(!this.isPassed())
-		return new Reward({ coins: 0, lives: 1 });
-
-	if(this.firstAttempt)
-		return new Reward({ coins: 10, lives: 2 });
-
-	return new Reward({ coins: 5, lives: 0 });
-});
 
 /*
  * Exports

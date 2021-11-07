@@ -5,6 +5,10 @@ class Reward {
 		this.coins = coins;
 		this.lives = lives;
 	}
+
+	toJSON() {
+		return this;
+	}
 }
 
 module.exports = Reward;

@@ -15,6 +15,17 @@ async function answerExercise(
   ).data;
 }
 
+async function getReward(challengeAttemptId, unitOrderNumber, lessonOrderNumber) {
+  const lessonAttempt = (
+    await api.get(
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
+    )
+  ).data;
+
+  return lessonAttempt.reward;
+}
+
 export default {
   answerExercise,
+  getReward,
 };

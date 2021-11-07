@@ -7,7 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 export const LifeAndCoins = ({ coins, lives, vertical, earned, fontSize, iconSize }) => {
   const defaultIconSize = 25;
   const defaultFontSize = 18;
-
   const LifeAndCoinsHorizontal = () => (
     <View
       style={{
@@ -41,7 +40,7 @@ export const LifeAndCoins = ({ coins, lives, vertical, earned, fontSize, iconSiz
           }}
         >
           {' '}
-          {earned ? '+' : ''}
+          {earned && lives > 0 ? '+' : ''}
           {lives}
         </Text>
       </View>
