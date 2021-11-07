@@ -40,29 +40,34 @@ const UnitModulesList = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const handlePress = async (lessonOrderNumber) => {
-    const exercisesAttempts = await UnitService.attemptUnitModule(
+    const unitModuleAttempt = await UnitService.attemptUnitModule(
       challengeAttemptId,
       unitOrderNumber,
       lessonOrderNumber
     );
 
-    if (exercisesAttempts.error === true) {
-      setAlertLivesVisible(true);
+    if (unitModuleAttempt.error === true) {
+      Alert.alert(
+        'Te faltan vidas!',
+        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
+        [{ text: 'OK' }]
+      );
+      return;
     }
 
     const isExam = lessonOrderNumber === -1;
-    dispatch(initResults(exercisesAttempts));
+    dispatch(initResults(unitModuleAttempt.exercisesAttempts));
 
     let exerciseParams = {
       lessonOrderNumber,
-      exercisesAttempts,
+      exercisesAttempts: unitModuleAttempt.exercisesAttempts,
       challengeAttemptId,
       isExam,
     };
 
     if (isExam) {
-      exerciseParams['startingDate'] = exam.startingDate;
-      exerciseParams['expirationDate'] = exam.expirationDate;
+      exerciseParams['startingDate'] = unitModuleAttempt.startingDate;
+      exerciseParams['expirationDate'] = unitModuleAttempt.expirationDate;
     }
 
     return navigation.navigate(screens.EXERCISE, exerciseParams);
@@ -92,7 +97,14 @@ const UnitModulesList = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CustomAlert modalVisible={AlertLivesVisible} setModalVisible={setAlertLivesVisible} title={'Te faltan vidas'} body={'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'}/>
+      <CustomAlert
+        modalVisible={AlertLivesVisible}
+        setModalVisible={setAlertLivesVisible}
+        title={'Te faltan vidas'}
+        body={
+          'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'
+        }
+      />
 
       <View style={{ flex: 0.6 }}>
         <Carousel

@@ -12,7 +12,7 @@ async function answerExercise(challengeAttemptId, unitOrderNumber, exerciseOrder
 async function getReward(challengeAttemptId, unitOrderNumber) {
   const examAttempt = (
     await api.get(
-      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt`
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempts`
     )
   ).data;
 
