@@ -18,7 +18,7 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
 
       <View>
         <Text style={styles.chapterText}>Unidad {unit}</Text>
-        <Text style={styles.lessonText}>Leccion {lesson}</Text>
+        <Text style={styles.lessonText}>{lesson === -1 ? 'Examen' : `Lesson ${lesson}`}</Text>
       </View>
 
       <View style={{ marginRight: '5%' }}>

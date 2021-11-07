@@ -9,8 +9,9 @@ const lessonSlice = createSlice({
     answer: (state, action) => {
       state.exerciseResults[state.exerciseResults.indexOf(null)] = action.payload;
     },
-    resetResults: (state) => {
-      state.exerciseResults = new Array(8).fill(null);
+    resetResults: (state, action) => {
+      const isExam = action.payload;
+      state.exerciseResults = new Array(isExam ? 16 : 8).fill(null);
     },
     initResults: (state, action) => {
       const statusConverter = { PENDING: null, FAILED: false, PASSED: true };
