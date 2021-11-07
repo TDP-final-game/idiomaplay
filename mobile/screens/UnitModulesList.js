@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
@@ -43,10 +43,13 @@ const UnitModulesList = ({ navigation, route }) => {
       unitOrderNumber,
       lessonOrderNumber
     );
-    console.log(exercisesAttempts)
 
-    if(exercisesAttempts.error === true) {
-      Alert.alert('Te faltan vidas!', 'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!', [{ text: 'OK' }]);
+    if (exercisesAttempts.error === true) {
+      Alert.alert(
+        'Te faltan vidas!',
+        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
+        [{ text: 'OK' }]
+      );
     }
 
     const isExam = lessonOrderNumber === -1;

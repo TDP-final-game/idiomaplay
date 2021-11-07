@@ -12,7 +12,8 @@ export const ProgressBar = ({ endTime }) => {
     var timeToEnd = endTime - Date.now(); //in ms
     const percentageCompleted =
       (TOTAL_TIME_IN_MILLISECONDS - timeToEnd) / TOTAL_TIME_IN_MILLISECONDS;
-    return String(100 - percentageCompleted * 100) + '%';
+    const a = String(100 - percentageCompleted * 100) + '%';
+    return a;
   }
 
   useEffect(() => {

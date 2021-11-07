@@ -15,18 +15,17 @@ async function answerExercise(
   ).data;
 }
 
-async function getResult(
-  challengeAttemptId,
-  unitOrderNumber,
-  lessonOrderNumber
-) {
-  return (
+async function getReward(challengeAttemptId, unitOrderNumber, lessonOrderNumber) {
+  const lessonAttempt = (
     await api.get(
-      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}/results`)
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/lessonsAttempts/${lessonOrderNumber}`
+    )
   ).data;
+
+  return lessonAttempt.reward;
 }
 
 export default {
   answerExercise,
-  getResult
+  getReward,
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, Animated, Alert} from 'react-native';
+import { View, Text, StyleSheet, Animated, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ import { screens } from '../config/screens';
 
 const ExamEntry = ({ navigation, route }) => {
   const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards } = route.params;
-  
+
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
@@ -56,10 +56,18 @@ const ExamEntry = ({ navigation, route }) => {
     );
 
     // TODO: bug fixing when this happens
-    if(exercisesAttempts.error === true) {
-      Alert.alert('Te faltan vidas!', 'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!', [{ text: 'OK' }]);
-    }
+    if (exercisesAttempts.error === true) {
+      Alert.alert(
+        'Te faltan vidas!',
+        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
+        [{ text: 'OK' }]
+      );
 
+      return navigation.navigate(screens.UNIT_MODULES_LIST, {
+        unitOrderNumber,
+        challengeAttemptId,
+      });
+    }
 
     return navigation.navigate(screens.EXERCISE, {
       lessonOrderNumber,
@@ -135,8 +143,14 @@ const ExamEntry = ({ navigation, route }) => {
         )}
 
         <View style={{ marginHorizontal: '5%' }}>
-            <LifeAndCoins coins={rewards.coins} lives={rewards.lives} earned={true} iconSize={50} fontSize={35} />
-          </View>
+          <LifeAndCoins
+            coins={rewards.coins}
+            lives={rewards.lives}
+            earned={true}
+            iconSize={50}
+            fontSize={35}
+          />
+        </View>
 
         {currentLessonState === lessonState.RETURN_TO_UNIT && (
           <View style={{ ...styles.buttonContainer, flex: 0.07 }}>

@@ -9,17 +9,17 @@ async function answerExercise(challengeAttemptId, unitOrderNumber, exerciseOrder
   ).data;
 }
 
-async function getResult(
-    challengeAttemptId,
-    unitOrderNumber,
-) {
-  return (
-      await api.get(
-          `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt/results`)
+async function getReward(challengeAttemptId, unitOrderNumber) {
+  const examAttempt = (
+    await api.get(
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt`
+    )
   ).data;
+
+  return examAttempt.reward;
 }
 
 export default {
   answerExercise,
-  getResult
+  getReward,
 };
