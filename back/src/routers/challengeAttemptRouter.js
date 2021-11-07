@@ -16,7 +16,8 @@ router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts'
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts',
 	challengeAttemptController.attemptLessonExercise);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', challengeAttemptController.attemptExamExercise);
-
+router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/results',
+	challengeAttemptController.attemptLessonResult);
 router.get('/:challengeAttemptId', challengeAttemptController.getChallenge);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber', challengeAttemptController.getUnit);
 router.get('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber', challengeAttemptController.getLesson);

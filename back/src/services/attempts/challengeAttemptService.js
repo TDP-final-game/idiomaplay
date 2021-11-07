@@ -82,6 +82,14 @@ const attemptLessonExercise = async (challengeAttemptId, unitOrderNumber, lesson
 		.getExercise(exerciseOrderNumber);
 };
 
+const attemptLessonResult = async (challengeAttemptId, unitOrderNumber, lessonOrderNumber) => {
+	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
+	if(!challengeAttempt)
+		throw errors.ChallengeAttemptNotFound();
+
+	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
+};
+
 const getChallenge = async challengeAttemptId => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
 	if(!challengeAttempt)
@@ -96,5 +104,6 @@ module.exports = {
 	attemptLesson,
 	attemptExamExercise,
 	attemptLessonExercise,
+	attemptLessonResult,
 	getChallenge
 };
