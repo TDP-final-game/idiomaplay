@@ -113,6 +113,17 @@ const getExam = async (req, res) => {
 	}
 };
 
+const abortExamAttempt = async (req, res) => {
+	try {
+		const { challengeAttemptId, unitOrderNumber } = req.params;
+		const response = await challengeAttemptService
+			.abortExamAttempt(challengeAttemptId, parseInt(unitOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
 module.exports = {
 	attemptChallenge,
 	attemptUnit,
@@ -123,5 +134,6 @@ module.exports = {
 	getChallenge,
 	getUnit,
 	getLesson,
-	getExam
+	getExam,
+	abortExamAttempt
 };

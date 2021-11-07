@@ -28,6 +28,10 @@ const ExamAttempt = new mongoose.Schema({
 		type: Number,
 		required: false
 	},
+	aborted: {
+		type: Boolean,
+		default: false
+	},
 	exercisesAttempts: [{ type: ExerciseAttempt, required: false }]
 }, { autoCreate: false, toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
@@ -82,6 +86,10 @@ ExamAttempt.methods.getExercise = function(exerciseOrderNumber) {
 	if(!exercise)
 		throw errors.ExerciseAttemptNotFound({ exerciseOrderNumber });
 	return exercise;
+};
+
+ExamAttempt.methods.abort = function() {
+	this.aborted = true;
 };
 
 ExamAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {
