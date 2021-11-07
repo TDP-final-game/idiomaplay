@@ -1,19 +1,36 @@
 import * as React from 'react';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { LifeAndCoins } from './LifeAndCoins';
 import { commonStyles } from '../config/styles';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { updateStats} from "../redux/user";
+import UserService from "../services/userService";
+import {useEffect} from "react";
 
 export const TopBar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const imageScale = 0.17;
 
-  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    console.log('asd bar')
+    UserService.updateStats(/*va el access token*/).then((data) => {
+      console.log('data: ' + JSON.stringify(data))
+      dispatch(
+          updateStats({
+            stats: data
+          }));
+    });
+  });
 
   const borderRadius = () => {
     return Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2;
   };
+
+
 
   const ProfileImage = () => {
     return (

@@ -12,7 +12,13 @@ async function logIn(email) {
   return response.data;
 }
 
+async function updateStats() {
+  const response = await api.get('/users/me/stats');
+  return response.data;
+}
+
 export default {
   logIn,
   createUser,
+  updateStats
 };
