@@ -25,8 +25,8 @@ Challenge.methods.newAttempt = function() {
 		challenge: this,
 		unitsAttempts: this.units.map(unit => unit.newAttempt())
 	});
-	attempt.delete('id');
-	attempt.delete('_id');
+	attempt.id = undefined;
+	attempt._id = undefined;
 	return attempt;
 };
 
