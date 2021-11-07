@@ -18,7 +18,7 @@ export const Badge = ({ text, color, textColor, fontSize }) => {
 
 const styles = StyleSheet.create({
   badge: {
-    borderRadius: 30,
+    borderRadius: 20,
     textAlign: 'center',
     paddingHorizontal: '15%',
     paddingVertical: '5%',

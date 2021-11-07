@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/user';
 import { GoogleButton } from '../components/GoogleButton';
 import UserService from '../services/userService';
+import { CustomAlert } from '../components/CustomAlert';
 
 const Login = ({ navigation, route }) => {
   const iconSize = 200;
@@ -16,6 +17,9 @@ const Login = ({ navigation, route }) => {
 
   const [logInMode, setLogInMode] = useState(false);
   const [text, setText] = useState(logInText);
+  const [userAlReadyRegisteredVisible, setUserAlreadyRegistered] = useState(false);
+  const [userNotRegisteredVisible, setUserNotRegistered] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -29,7 +33,7 @@ const Login = ({ navigation, route }) => {
     if (!logInMode) {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
         if (data.id) {
-          Alert.alert('Usuario ya registrado!', 'Utilice otra cuenta de google!', [{ text: 'OK' }]);
+          setUserAlreadyRegistered(true)
         } else {
           return navigation.navigate('SignupConfirmation', { user });
         }
@@ -39,11 +43,7 @@ const Login = ({ navigation, route }) => {
         console.log(data);
 
         if (!data.id) {
-          Alert.alert(
-            'Usuario no esta registrado!',
-            'Registrese para poder acceder a IdiomaPlay!',
-            [{ text: 'OK' }]
-          );
+          setUserNotRegistered(true)
         } else {
           dispatch(
             logIn({
@@ -62,6 +62,8 @@ const Login = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+      <CustomAlert modalVisible={userAlReadyRegisteredVisible} setModalVisible={setUserAlreadyRegistered} title={'Usuario ya registrado!'} body={'Utilice otra cuenta de google o inicie sesión'}/>
+      <CustomAlert modalVisible={userNotRegisteredVisible} setModalVisible={setUserNotRegistered}  title={'Usuario no esta registrado!'} body={'Registrese para poder acceder a IdiomaPlay!'}/>
       <View style={styles.container}>
         <View style={styles.messageContainer}>
           <Text style={styles.textA}>Idioma Play</Text>

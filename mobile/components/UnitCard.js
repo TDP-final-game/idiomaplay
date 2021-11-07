@@ -21,11 +21,12 @@ export const UnitCard = ({ text, state, onPress }) => {
         style={{
           flexDirection: 'row',
           paddingVertical: '8%',
+          paddingHorizontal: "3%"
         }}
       >
         <View
           style={{
-            width: '33.3%',
+            width: '20%',
             justifyContent: 'center',
           }}
         >
@@ -36,7 +37,7 @@ export const UnitCard = ({ text, state, onPress }) => {
 
         <View
           style={{
-            width: '33.3%',
+            width: '45%',
             justifyContent: 'center',
             alignItems: 'center',
           }}
@@ -46,7 +47,7 @@ export const UnitCard = ({ text, state, onPress }) => {
 
         <View
           style={{
-            width: '33.3%',
+            width: '35%',
             alignItems: 'center',
             justifyContent: 'center',
           }}
