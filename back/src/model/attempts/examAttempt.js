@@ -6,7 +6,8 @@ const examInfo = require('../exams/examInfo');
 const { schema: ExerciseAttempt } = require('./exerciseAttempt');
 const errors = require('./errors');
 const Status = require('./status');
-const randomGenerator = require("../randomGenerator");
+const Reward = require('./reward');
+const randomGenerator = require('../randomGenerator');
 
 /*
  * Schema
@@ -33,6 +34,7 @@ const ExamAttempt = new mongoose.Schema({
 /*
  * Instance methods
  */
+
 ExamAttempt.virtual('status').get(function() {
 	if(!this.exercisesAttempts || this.exercisesAttempts.length === 0)
 		return Status.PENDING();
@@ -41,6 +43,17 @@ ExamAttempt.virtual('status').get(function() {
 	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()) || Date.now() > this.expirationDate)
 		return Status.FAILED();
 	return Status.IN_PROGRESS();
+});
+
+ExamAttempt.virtual('reward').get(function() {
+	if(this.isExamPassed()) {
+		if (this.firstAttempt)
+			return new Reward({ coins: 30, lives: 1 });
+		return new Reward({ coins: 15, lives: 0 });
+	}
+	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()) || Date.now() > this.expirationDate)
+		return new Reward({ coins: 0, lives: -1 });
+	return new Reward({ coins: 0, lives: 0 });
 });
 
 Status.AddMethodsToSchema(ExamAttempt);
@@ -73,9 +86,20 @@ ExamAttempt.methods.getExercise = function(exerciseOrderNumber) {
 
 ExamAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {
 	const exercise = this.getExercise(exerciseOrderNumber);
+	
 	if(Date.now() > this.expirationDate)
 		throw errors.ExamExpired(this.expirationDate);
 	exercise.attempt({ answer });
+
+	if(this.isExamPassed()) {
+		const { user } = this.ownerDocument();
+		user.addReward(this.reward);
+	}
+	
+	if(this.exercisesAttempts.every(examExercise => examExercise.isCompleted()) || Date.now() > this.expirationDate) {
+		const { user } = this.ownerDocument();
+		user.addReward(this.reward);
+	}
 };
 
 ExamAttempt.methods.numberOfPassedExercises = function() {

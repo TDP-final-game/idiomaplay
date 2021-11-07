@@ -45,13 +45,22 @@ const Exercise = ({ navigation, route }) => {
     handleContinue();
   }, [isFocused]);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (currentExerciseIndex >= exercisesAttempts.length) {
       setCurrentExerciseIndex(0);
+      // Ask if he pass and update values, with response set winning values
+
+      const result = isExam
+        ? await ExamService.getReward(challengeAttemptId, unitOrderNumber)
+        : await LessonService.getReward(challengeAttemptId, unitOrderNumber, lessonOrderNumber);
+
+      const rewards = result.reward;
+
       return navigation.navigate('ExamEntry', {
         unitOrderNumber,
         lessonOrderNumber,
         challengeAttemptId,
+        rewards,
       });
     }
     setCurrentExercise(exercisesAttempts[currentExerciseIndex]);
@@ -76,7 +85,7 @@ const Exercise = ({ navigation, route }) => {
         lessonOrderNumber,
         currentExerciseIndex,
         selectedOption
-      ); //todo: retry if error
+      );
     }
 
     dispatch(answer(selectedOption === correctOption));
