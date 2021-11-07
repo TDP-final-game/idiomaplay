@@ -17,18 +17,18 @@ export const ExamCard = ({ text, state, onPress, disabled }) => {
   };
 
   const VisibleContent = () => (
-    <View style={{ flexDirection: 'row', paddingVertical: '8%' }}>
-      <View style={{ width: '33.3%', justifyContent: 'center' }}>
-        <Text style={{ ...styles.text, marginLeft: '15%' }}>
+    <View style={{ flexDirection: 'row', paddingVertical: '8%', paddingHorizontal: "3%" }}>
+      <View style={{ width: '20%', justifyContent: 'center' }}>
+        <Text style={{ ...styles.text, paddingLeft: '5%' }}>
           <Ionicons name="md-book" size={35} color={colors.PRIMARY_DARK} />
         </Text>
       </View>
 
-      <View style={{ width: '33.3%', justifyContent: 'center' }}>
+      <View style={{ width: '45%', justifyContent: 'center' }}>
         <Text style={styles.text}>{text}</Text>
       </View>
 
-      <View style={{ width: '33.3%', justifyContent: 'center' }}>
+      <View style={{ width: '35%', justifyContent: 'center' }}>
         <Badge
           text={badgeInfo[state].text}
           color={badgeInfo[state].color}

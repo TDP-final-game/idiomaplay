@@ -39,7 +39,7 @@ export const GoogleButton = ({ logInMode, onSuccessCallback }) => {
         <View style={{ width: '75%' }}>
           <Text style={styles.text}>{text}</Text>
         </View>
- 
+
     </TouchableOpacity>
   );
 };
