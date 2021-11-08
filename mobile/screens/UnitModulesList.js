@@ -16,10 +16,15 @@ import Carousel from 'react-native-snap-carousel';
 import { Pagination } from 'react-native-snap-carousel';
 
 const UnitModulesList = ({ navigation, route }) => {
+  const NOT_ENOUGHT_LIVES_ALERT_BODY =
+    'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!';
+  const NOT_ENOUGHT_LIVES_ALERT_TITLE = 'Te faltan vidas!';
+
   const [exam, setExam] = useState(null);
   const [lessonsAttempts, setLessonsAttempts] = useState([]);
   const [paginationLessonIndex, setPaginationLessonIndex] = useState(0);
-  const [AlertLivesVisible, setAlertLivesVisible] = useState(false);
+
+  const [showNotEnoughtLivesAlert, setshowNotEnoughtLivesAlert] = useState(false);
 
   const isFocused = useIsFocused();
   const { unitOrderNumber, challengeAttemptId } = route.params;
@@ -47,11 +52,7 @@ const UnitModulesList = ({ navigation, route }) => {
     );
 
     if (unitModuleAttempt.error === true) {
-      Alert.alert(
-        'Te faltan vidas!',
-        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
-        [{ text: 'OK' }]
-      );
+      setshowNotEnoughtLivesAlert(true);
       return;
     }
 
@@ -98,12 +99,11 @@ const UnitModulesList = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomAlert
-        modalVisible={AlertLivesVisible}
-        setModalVisible={setAlertLivesVisible}
-        title={'Te faltan vidas'}
-        body={
-          'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'
-        }
+        visible={showNotEnoughtLivesAlert}
+        title={NOT_ENOUGHT_LIVES_ALERT_TITLE}
+        body={NOT_ENOUGHT_LIVES_ALERT_BODY}
+        primaryButtonText={'Continuar'}
+        onPrimaryButtonPress={() => setshowNotEnoughtLivesAlert(false)}
       />
 
       <View style={{ flex: 0.6 }}>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../config/colors';
 import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
@@ -13,12 +14,16 @@ import { ProgressBar } from '../components/ProgressBar';
 import { useIsFocused } from '@react-navigation/native';
 import ExamService from '../services/examService';
 
+import { CustomAlert } from '../components/CustomAlert';
+
 const Exercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
+  const [showExitExamAlert, setShowExitExamAlert] = useState(false);
+
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(
     exercisesAttempts.indexOf(exercisesAttempts.find((attemp) => attemp.status === 'PENDING'))
   );
@@ -35,11 +40,16 @@ const Exercise = ({ navigation, route }) => {
     [exerciseTypes.LISTENING]: 'Escucha el siguiente audio',
   };
 
+  const abortExam = () => {
+    setShowExitExamAlert(false);
+    ExamService.abort(challengeAttemptId, unitOrderNumber).then(() => navigation.goBack());
+  };
+
   useEffect(() => {
     navigation.setOptions({
       unit: unitOrderNumber,
       lesson: lessonOrderNumber,
-      returnButtonFunction: () => navigation.goBack(),
+      returnButtonFunction: () => (isExam ? setShowExitExamAlert(true) : navigation.goBack()),
     });
 
     handleContinue();
@@ -105,40 +115,52 @@ const Exercise = ({ navigation, route }) => {
           onPress={() => handleAnswerSelected(option.text)}
           correctAnswer={correctAnswer}
           incorrectAnswer={incorrectAnswer}
+          isExam = {isExam}
         />
       </View>
     ));
 
   return (
     <SafeAreaView style={styles.container}>
+      <CustomAlert
+        visible={showExitExamAlert}
+        title={'Estas seguro que desea salir?'}
+        body={'Al salir del examen, este se desaprobará, desea continuar?'}
+        primaryButtonText={'Salir'}
+        onPrimaryButtonPress={abortExam}
+        secondaryButtonText={'Volver al examen'}
+        onSecondaryButtonPress={() => setShowExitExamAlert(false)}
+      />
+
       {currentExercise && (
         <>
           {isExam && (
-            <View style={{ flex: 0.015, padding: '2%' }}>
+            <View style={{ padding: '2%', flexDirection: 'row', justifyContent: 'center',}}>
+              <AntDesign name="clockcircle" size={20} color={colors.PRIMARY_DARK} />
               <ProgressBar endTime={route.params.expirationDate} />
             </View>
           )}
 
-          <View style={{ marginLeft: '2%' }}>
-            <Text>{explanationByType[currentExercise.type]}</Text>
+          <View style={{marginLeft: '2%'}}>
+            <Text style={{fontWeight: 'bold', fontSize: 20}}>{explanationByType[currentExercise.type]}</Text>
           </View>
 
           <View style={styles.questionContainer}>
             {currentExercise.type === exerciseTypes.LISTENING ? (
               <AudioExercise style={styles.questionText} sentence={currentExercise.statement} />
             ) : (
-              <Text style={styles.questionText}>{currentExercise.statement}</Text>
+              <Text style={styles.questionText}> "{currentExercise.statement}"</Text>
             )}
           </View>
 
-          <View style={{ marginLeft: '2%' }}>
-            <Text>Seleccione la opción correcta:</Text>
+          <View style={{ marginLeft: '5%' }}>
+            <Text style={{ fontSize: 17 }}>Seleccione la opción correcta:</Text>
           </View>
 
           {renderButtons()}
 
-          <View style={{ flex: 0.12 }}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} />
+          <View style={styles.footer}>
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} isExam={isExam} />
           </View>
         </>
       )}
@@ -170,8 +192,12 @@ const styles = StyleSheet.create({
 
   questionText: {
     fontSize: 18,
+    fontStyle: 'italic',
     marginHorizontal: '5%',
   },
+  footer: {
+    flex: 0.12 
+  }
 });
 
 export default Exercise;
