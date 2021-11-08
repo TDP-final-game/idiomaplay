@@ -21,4 +21,6 @@ export const colors = {
 
   CORRECT_COLOR: '#2e7d32',
   INCORRECT_COLOR: '#f44336',
+  
+  DARK_LOGO: '#606060'
 };
