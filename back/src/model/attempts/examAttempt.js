@@ -57,7 +57,7 @@ ExamAttempt.virtual('reward').get(function() {
 			return new Reward({ coins: 30, lives: 1 });
 		return new Reward({ coins: 15, lives: 0 });
 	}
-	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()) || Date.now() > this.expirationDate)
+	if(this.exercisesAttempts.every(exercise => exercise.isCompleted()) || Date.now() > this.expirationDate || this.aborted)
 		return new Reward({ coins: 0, lives: -1 });
 	return new Reward({ coins: 0, lives: 0 });
 });
@@ -92,6 +92,8 @@ ExamAttempt.methods.getExercise = function(exerciseOrderNumber) {
 
 ExamAttempt.methods.abort = function() {
 	this.aborted = true;
+	const { user } = this.ownerDocument();
+	user.addReward(this.reward);
 };
 
 ExamAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {

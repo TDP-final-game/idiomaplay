@@ -10,10 +10,15 @@ import { SecondaryButton } from '../components/SecondaryButton';
 import { CustomAlert } from '../components/CustomAlert';
 import { resetResults } from '../redux/lesson';
 import { LifeAndCoins } from '../components/LifeAndCoins';
+import { initResults } from '../redux/lesson';
 import UnitService from '../services/unitService';
 
 const ExamEntry = ({ navigation, route }) => {
   const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards, isExam } = route.params;
+
+  const NOT_ENOUGHT_LIVES_ALERT_BODY =
+    'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!';
+  const NOT_ENOUGHT_LIVES_ALERT_TITLE = 'Te faltan vidas!';
 
   const lessonState = {
     RETRY: 'RETRY',
@@ -39,7 +44,7 @@ const ExamEntry = ({ navigation, route }) => {
   const [description, setDescription] = useState('');
   const [iconName, setIconName] = useState('');
   const [currentLessonState, setCurrentLessonState] = useState(null);
-  const [AlertLivesVisible, setAlertLivesVisible] = useState(false);
+  const [showNotEnoughtLivesAlert, setshowNotEnoughtLivesAlert] = useState(false);
 
   const goToUnit = () => {
     dispatch(resetResults());
@@ -57,6 +62,32 @@ const ExamEntry = ({ navigation, route }) => {
     });
   };
 
+  const goToExam = async () => {
+    const unitModuleAttempt = await UnitService.attemptUnitModule(
+      challengeAttemptId,
+      unitOrderNumber,
+      -1
+    );
+
+    if (unitModuleAttempt.error === true) {
+      setshowNotEnoughtLivesAlert(true);
+      return;
+    }
+
+    dispatch(initResults(unitModuleAttempt.exercisesAttempts));
+
+    let exerciseParams = {
+      lessonOrderNumber: -1,
+      exercisesAttempts: unitModuleAttempt.exercisesAttempts,
+      challengeAttemptId,
+      isExam: true,
+      startingDate: unitModuleAttempt.startingDate,
+      expirationDate: unitModuleAttempt.expirationDate,
+    };
+
+    return navigation.navigate(screens.EXERCISE, exerciseParams);
+  };
+
   const retryLesson = async () => {
     dispatch(resetResults(isExam));
 
@@ -69,7 +100,7 @@ const ExamEntry = ({ navigation, route }) => {
     // TODO: bug fixing when this happens
     if (unitModuleAttempt.error === true) {
 
-      setAlertLivesVisible(true);
+      setshowNotEnoughtLivesAlert(true);
 
       return navigation.navigate(screens.UNIT_MODULES_LIST, {
         unitOrderNumber,
@@ -147,12 +178,11 @@ const ExamEntry = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <CustomAlert
-        modalVisible={AlertLivesVisible}
-        setModalVisible={setAlertLivesVisible}
-        title={'Te faltan vidas'}
-        body={
-          'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'
-        }
+        visible={showNotEnoughtLivesAlert}
+        title={NOT_ENOUGHT_LIVES_ALERT_TITLE}
+        body={NOT_ENOUGHT_LIVES_ALERT_BODY}
+        primaryButtonText={'Continuar'}
+        onPrimaryButtonPress={() => setshowNotEnoughtLivesAlert(false)}
       />
 
       <View style={styles.container}>
@@ -202,7 +232,7 @@ const ExamEntry = ({ navigation, route }) => {
         {currentLessonState === lessonState.GO_TO_EXAM && (
           <View style={{ ...styles.buttonContainer, flex: 0.17, justifyContent: 'space-between' }}>
             <View style={{ flexGrow: 0.45 }}>
-              <PrimaryButton text={'Realizar examen'}></PrimaryButton>
+              <PrimaryButton text={'Realizar examen'} onPress={goToExam}></PrimaryButton>
             </View>
 
             <View style={{ flexGrow: 0.45, width: '75%', alignSelf: 'center' }}>
