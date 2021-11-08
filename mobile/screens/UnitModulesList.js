@@ -47,12 +47,7 @@ const UnitModulesList = ({ navigation, route }) => {
     );
 
     if (unitModuleAttempt.error === true) {
-      Alert.alert(
-        'Te faltan vidas!',
-        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
-        [{ text: 'OK' }]
-      );
-      return;
+      setAlertLivesVisible(true);
     }
 
     const isExam = lessonOrderNumber === -1;

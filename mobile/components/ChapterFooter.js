@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../config/colors';
 import { PrimaryButton } from './PrimaryButton';
 
-export const ChapterFooter = ({ showContinue, onContinue }) => {
+export const ChapterFooter = ({ showContinue, onContinue, isExam}) => {
   const initialHeight = 100;
   const bounceValue = new Animated.Value(initialHeight);
 
@@ -53,12 +53,12 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
 
   return (
     <View
-      style={styles.footerContainer}
+      style={getStyles(isExam).footerContainer}
       onLayout={(event) => updateHeight(event.nativeEvent.layout)}
     >
       {printCurrentResults()}
-      <Animated.View style={[styles.slider, { transform: [{ translateY: bounceValue }] }]}>
-        <View style={styles.buttonContainer}>
+      <Animated.View style={[getStyles(isExam).slider, { transform: [{ translateY: bounceValue }] }]}>
+        <View style={getStyles(isExam).buttonContainer}>
           <PrimaryButton text={'Continuar'} onPress={onContinue} />
         </View>
       </Animated.View>
@@ -66,7 +66,7 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (isExam) => StyleSheet.create({
   footerContainer: {
     flexGrow: 1,
     alignItems: 'center',
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: '10%',
     borderTopWidth: 3,
     justifyContent: 'space-evenly',
-    backgroundColor: colors.PRIMARY,
-    borderTopColor: colors.PRIMARY_DARK,
+    backgroundColor: isExam ? colors.SECONDARY : colors.PRIMARY,
+    borderTopColor: isExam ? colors.SECONDARY_DARK : colors.PRIMARY_DARK,
   },
 
   buttonContainer: {

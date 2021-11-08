@@ -5,11 +5,11 @@ import { LifeAndCoins } from './LifeAndCoins';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
-export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
+export const ChapterHeader = ({ returnButtonFunction, unit, lesson, isExam }) => {
   const user = useSelector((state) => state.user);
 
   return (
-    <View style={styles.headerContainer}>
+    <View style={getStyles(isExam).headerContainer}>
       <View style={{ marginLeft: '5%' }}>
         <TouchableOpacity onPress={returnButtonFunction}>
           <Ionicons name="arrow-undo" size={45} color={colors.PRIMARY_DARK} />
@@ -17,8 +17,8 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
       </View>
 
       <View>
-        <Text style={styles.chapterText}>Unidad {unit}</Text>
-        <Text style={styles.lessonText}>{lesson === -1 ? 'Examen' : `Lesson ${lesson}`}</Text>
+        <Text style={getStyles(isExam).chapterText}>Unidad {unit}</Text>
+        <Text style={getStyles(isExam).lessonText}>{lesson === -1 ? 'Examen' : `Lesson ${lesson}`}</Text>
       </View>
 
       <View style={{ marginRight: '5%' }}>
@@ -28,11 +28,11 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson }) => {
   );
 };
 
-export const UnitHeader = ({ returnButtonFunction, unit }) => {
+export const UnitHeader = ({ returnButtonFunction, unit, isExam }) => {
   const user = useSelector((state) => state.user);
 
   return (
-    <View style={styles.headerContainer}>
+    <View style={getStyles(isExam).headerContainer}>
       <View style={{ marginLeft: '3%' }}>
         <TouchableOpacity onPress={returnButtonFunction}>
           <Ionicons name="arrow-undo" size={45} color={colors.PRIMARY_DARK} />
@@ -40,7 +40,7 @@ export const UnitHeader = ({ returnButtonFunction, unit }) => {
       </View>
 
       <View style={{ minWidth: '35%' }}>
-        <Text style={styles.chapterText}>Unidad {unit}</Text>
+        <Text style={getStyles(isExam).chapterText}>Unidad {unit}</Text>
         <LifeAndCoins coins={user.coins} lives={user.lives} />
       </View>
 
@@ -53,16 +53,16 @@ export const UnitHeader = ({ returnButtonFunction, unit }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (isExam) => StyleSheet.create({
   headerContainer: {
     flexGrow: 1,
     overflow: 'hidden',
     alignItems: 'center',
     flexDirection: 'row',
     borderBottomWidth: 3,
-    backgroundColor: colors.PRIMARY,
+    backgroundColor: isExam ? colors.SECONDARY : colors.PRIMARY,
     justifyContent: 'space-between',
-    borderBottomColor: colors.PRIMARY_DARK,
+    borderBottomColor: isExam ? colors.SECONDARY_DARK : colors.PRIMARY_DARK,
   },
 
   chapterText: {

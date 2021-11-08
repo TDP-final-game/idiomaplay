@@ -40,6 +40,7 @@ const Exercise = ({ navigation, route }) => {
       unit: unitOrderNumber,
       lesson: lessonOrderNumber,
       returnButtonFunction: () => navigation.goBack(),
+      isExam
     });
 
     handleContinue();
@@ -105,6 +106,7 @@ const Exercise = ({ navigation, route }) => {
           onPress={() => handleAnswerSelected(option.text)}
           correctAnswer={correctAnswer}
           incorrectAnswer={incorrectAnswer}
+          isExam = {isExam}
         />
       </View>
     ));
@@ -114,31 +116,31 @@ const Exercise = ({ navigation, route }) => {
       {currentExercise && (
         <>
           {isExam && (
-            <View style={{ flex: 0.015, padding: '2%' }}>
+            <View style={{ flex: 0.015, padding: '2%'}}>
               <ProgressBar endTime={route.params.expirationDate} />
             </View>
           )}
 
-          <View style={{ marginLeft: '2%' }}>
-            <Text>{explanationByType[currentExercise.type]}</Text>
+          <View style={{marginLeft: '2%'}}>
+            <Text style={{fontWeight: 'bold', fontSize: 20}}>{explanationByType[currentExercise.type]}</Text>
           </View>
 
           <View style={styles.questionContainer}>
             {currentExercise.type === exerciseTypes.LISTENING ? (
               <AudioExercise style={styles.questionText} sentence={currentExercise.statement} />
             ) : (
-              <Text style={styles.questionText}>{currentExercise.statement}</Text>
+              <Text style={styles.questionText}> "{currentExercise.statement}"</Text>
             )}
           </View>
 
-          <View style={{ marginLeft: '2%' }}>
-            <Text>Seleccione la opción correcta:</Text>
+          <View style={{ marginLeft: '5%' }}>
+            <Text style={{ fontSize: 17 }}>Seleccione la opción correcta:</Text>
           </View>
 
           {renderButtons()}
 
-          <View style={{ flex: 0.12 }}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} />
+          <View style={styles.footer}>
+            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} isExam={isExam} />
           </View>
         </>
       )}
@@ -170,8 +172,12 @@ const styles = StyleSheet.create({
 
   questionText: {
     fontSize: 18,
+    fontStyle: 'italic',
     marginHorizontal: '5%',
   },
+  footer: {
+    flex: 0.12 
+  }
 });
 
 export default Exercise;
