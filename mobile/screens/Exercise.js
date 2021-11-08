@@ -13,12 +13,16 @@ import { ProgressBar } from '../components/ProgressBar';
 import { useIsFocused } from '@react-navigation/native';
 import ExamService from '../services/examService';
 
+import { CustomAlert } from '../components/CustomAlert';
+
 const Exercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
+  const [showExitExamAlert, setShowExitExamAlert] = useState(false);
+
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(
     exercisesAttempts.indexOf(exercisesAttempts.find((attemp) => attemp.status === 'PENDING'))
   );
@@ -35,11 +39,16 @@ const Exercise = ({ navigation, route }) => {
     [exerciseTypes.LISTENING]: 'Escucha el siguiente audio',
   };
 
+  const abortExam = () => {
+    setShowExitExamAlert(false);
+    ExamService.abort(challengeAttemptId, unitOrderNumber).then(() => navigation.goBack());
+  };
+
   useEffect(() => {
     navigation.setOptions({
       unit: unitOrderNumber,
       lesson: lessonOrderNumber,
-      returnButtonFunction: () => navigation.goBack(),
+      returnButtonFunction: () => (isExam ? setShowExitExamAlert(true) : navigation.goBack()),
     });
 
     handleContinue();
@@ -111,6 +120,16 @@ const Exercise = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <CustomAlert
+        visible={showExitExamAlert}
+        title={'Estas seguro que desea salir?'}
+        body={'Al salir del examen, este se desaprobará, desea continuar?'}
+        primaryButtonText={'Salir'}
+        onPrimaryButtonPress={abortExam}
+        secondaryButtonText={'Volver al examen'}
+        onSecondaryButtonPress={() => setShowExitExamAlert(false)}
+      />
+
       {currentExercise && (
         <>
           {isExam && (

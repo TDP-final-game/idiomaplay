@@ -16,6 +16,10 @@ import UnitService from '../services/unitService';
 const ExamEntry = ({ navigation, route }) => {
   const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards, isExam } = route.params;
 
+  const NOT_ENOUGHT_LIVES_ALERT_BODY =
+    'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!';
+  const NOT_ENOUGHT_LIVES_ALERT_TITLE = 'Te faltan vidas!';
+
   const lessonState = {
     RETRY: 'RETRY',
     GO_TO_EXAM: 'GO_TO_EXAM',
@@ -40,7 +44,7 @@ const ExamEntry = ({ navigation, route }) => {
   const [description, setDescription] = useState('');
   const [iconName, setIconName] = useState('');
   const [currentLessonState, setCurrentLessonState] = useState(null);
-  const [AlertLivesVisible, setAlertLivesVisible] = useState(false);
+  const [showNotEnoughtLivesAlert, setshowNotEnoughtLivesAlert] = useState(false);
 
   const goToUnit = () => {
     dispatch(resetResults());
@@ -66,11 +70,7 @@ const ExamEntry = ({ navigation, route }) => {
     );
 
     if (unitModuleAttempt.error === true) {
-      Alert.alert(
-        'Te faltan vidas!',
-        'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!',
-        [{ text: 'OK' }]
-      );
+      setshowNotEnoughtLivesAlert(true);
       return;
     }
 
@@ -105,7 +105,7 @@ const ExamEntry = ({ navigation, route }) => {
         [{ text: 'OK' }]
       );
 
-      setAlertLivesVisible(true);
+      setshowNotEnoughtLivesAlert(true);
 
       return navigation.navigate(screens.UNIT_MODULES_LIST, {
         unitOrderNumber,
@@ -183,12 +183,11 @@ const ExamEntry = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <CustomAlert
-        modalVisible={AlertLivesVisible}
-        setModalVisible={setAlertLivesVisible}
-        title={'Te faltan vidas'}
-        body={
-          'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!'
-        }
+        visible={showNotEnoughtLivesAlert}
+        title={NOT_ENOUGHT_LIVES_ALERT_TITLE}
+        body={NOT_ENOUGHT_LIVES_ALERT_BODY}
+        primaryButtonText={'Continuar'}
+        onPrimaryButtonPress={() => setshowNotEnoughtLivesAlert(false)}
       />
 
       <View style={styles.container}>

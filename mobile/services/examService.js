@@ -19,7 +19,14 @@ async function getReward(challengeAttemptId, unitOrderNumber) {
   return examAttempt.reward;
 }
 
+async function abort(challengeAttemptId, unitOrderNumber) {
+  return await api.put(
+    `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempts/abort`
+  );
+}
+
 export default {
   answerExercise,
   getReward,
+  abort,
 };
