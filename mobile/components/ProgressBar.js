@@ -26,11 +26,11 @@ export const ProgressBar = ({ endTime }) => {
   // const porcentage = String((currentQuestion / 8) * 100) + '%';
 
   return (
-    <View style={styles.progressBar}>
+    <View style={getStyles(calcPercentagePassed()).progressBar}>
       <Animated.View
         style={[
           StyleSheet.absoluteFill,
-          styles.progressFill,
+          getStyles(calcPercentagePassed()).progressFill,
           commonStyles.shadow,
           { width: percentagePassed },
         ]}
@@ -39,16 +39,30 @@ export const ProgressBar = ({ endTime }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getColorFromPercentage = percentage => {
+  percentage = Number(percentage.slice(0, -1));
+  if(percentage > 80)
+    return '#2dc653';
+  else if(percentage > 50)
+    return '#FF8000'
+  else
+    return '#FF0000';
+}
+
+const getStyles = timeConsumedPercentaje => StyleSheet.create({
   progressBar: {
-    flexGrow: 1,
+    //flexGrow: 1,
     borderWidth: 0,
     borderRadius: 5,
+    height: '30%',
+    marginHorizontal: '3%',
+    marginTop: '2%',
+    width: '85%',
     backgroundColor: 'lightgrey',
   },
 
   progressFill: {
     borderRadius: 5,
-    backgroundColor: '#2dc653',
+    backgroundColor: getColorFromPercentage(timeConsumedPercentaje),
   },
 });

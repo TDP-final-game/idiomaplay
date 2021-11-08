@@ -37,8 +37,8 @@ const RootComponent = () => {
     [screens.UNIT_MODULES_LIST]: ({ unit, returnButtonFunction }) => (
       <UnitHeader unit={unit} returnButtonFunction={returnButtonFunction} />
     ),
-    [screens.EXERCISE]: ({ returnButtonFunction, unit, lesson }) => (
-      <ChapterHeader unit={unit} lesson={lesson} returnButtonFunction={returnButtonFunction} />
+    [screens.EXERCISE]: ({ returnButtonFunction, unit, lesson, isExam }) => (
+      <ChapterHeader unit={unit} lesson={lesson} returnButtonFunction={returnButtonFunction} isExam={isExam}/>
     ),
   };
 
