@@ -9,17 +9,17 @@ import { GoogleButton } from '../components/GoogleButton';
 import UserService from '../services/userService';
 import { CustomAlert } from '../components/CustomAlert';
 
-const Login = ({ navigation, route }) => {
+const Login = ({ navigation }) => {
   const iconSize = 200;
 
   const logInText = '¿Ya tienes cuenta? Inicia sesión.';
   const signUpText = '¿No tienes cuenta? Registrate.';
 
-  const [logInMode, setLogInMode] = useState(false);
   const [text, setText] = useState(logInText);
-  const [userAlReadyRegisteredVisible, setUserAlreadyRegistered] = useState(false);
-  const [userNotRegisteredVisible, setUserNotRegistered] = useState(false);
+  const [logInMode, setLogInMode] = useState(false);
 
+  const [showNotRegisteredAlert, setShowNotRegisteredAlert] = useState(true);
+  const [showAlreadyRegisteredAlert, setShowAlreadyRegisteredAlert] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -29,21 +29,47 @@ const Login = ({ navigation, route }) => {
     setText(nextMode ? signUpText : logInText);
   };
 
-  const onSuccessCallback = (user, accessToken) => {
+  const Alerts = () => {
+    const ALREADY_REGISTERED_TITLE = 'Usuario ya registrado!';
+    const ALREADY_REGISTERED_BODY = 'Utilice otra cuenta de google o inicie sesión';
+
+    const NOT_REGISTERED_TITLE = 'Usuario no esta registrado!';
+    const NOT_REGISTERED_BODY = 'Registrese para poder acceder a IdiomaPlay!';
+
+    return (
+      <>
+        <CustomAlert
+          visible={showAlreadyRegisteredAlert}
+          title={ALREADY_REGISTERED_TITLE}
+          body={ALREADY_REGISTERED_BODY}
+          primaryButtonText={'Continuar'}
+          onPrimaryButtonPress={() => setShowAlreadyRegisteredAlert(false)}
+        />
+
+        <CustomAlert
+          visible={showNotRegisteredAlert}
+          title={NOT_REGISTERED_TITLE}
+          body={NOT_REGISTERED_BODY}
+          primaryButtonText={'Continuar'}
+          onPrimaryButtonPress={() => setShowNotRegisteredAlert(false)}
+        />
+      </>
+    );
+  };
+
+  const onSuccessCallback = (user, _accessToken) => {
     if (!logInMode) {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
         if (data.id) {
-          setUserAlreadyRegistered(true)
+          setShowAlreadyRegisteredAlert(true);
         } else {
           return navigation.navigate('SignupConfirmation', { user });
         }
       });
     } else {
       UserService.logIn(user.email /*va el access token*/).then((data) => {
-        console.log(data);
-
         if (!data.id) {
-          setUserNotRegistered(true)
+          setShowNotRegisteredAlert(true);
         } else {
           dispatch(
             logIn({
@@ -62,8 +88,8 @@ const Login = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
-      <CustomAlert modalVisible={userAlReadyRegisteredVisible} setModalVisible={setUserAlreadyRegistered} title={'Usuario ya registrado!'} body={'Utilice otra cuenta de google o inicie sesión'}/>
-      <CustomAlert modalVisible={userNotRegisteredVisible} setModalVisible={setUserNotRegistered}  title={'Usuario no esta registrado!'} body={'Registrese para poder acceder a IdiomaPlay!'}/>
+      <Alerts />
+
       <View style={styles.container}>
         <View style={styles.messageContainer}>
           <Text style={styles.textA}>Idioma Play</Text>

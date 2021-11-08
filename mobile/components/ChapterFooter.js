@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
@@ -26,30 +26,38 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
   }).start();
 
   const resultIcon = {
-    [true]: (key) => (
-      <FontAwesome name="check-circle" size={30} color={colors.CORRECT_COLOR} key={key} />
+    [true]: (key, size) => (
+      <FontAwesome name="check-circle" size={size} color={colors.CORRECT_COLOR} key={key} />
     ),
-    [false]: (key) => (
-      <FontAwesome name="times-circle" size={30} color={colors.INCORRECT_COLOR} key={key} />
+    [false]: (key, size) => (
+      <FontAwesome name="times-circle" size={size} color={colors.INCORRECT_COLOR} key={key} />
     ),
-    ['current']: (key) => (
-      <FontAwesome name="circle-o" size={30} color={colors.SECONDARY_LIGHT} key={key} />
+    ['current']: (key, size) => (
+      <FontAwesome name="circle-o" size={size} color={colors.SECONDARY_LIGHT} key={key} />
     ),
-    [null]: (key) => (
-      <FontAwesome name="circle-o" size={30} color={colors.PRIMARY_DARK} key={key} />
+    [null]: (key, size) => (
+      <FontAwesome name="circle-o" size={size} color={colors.PRIMARY_DARK} key={key} />
     ),
+  };
+
+  const calcIconSize = () => {
+    if (results.length <= 8) return 30;
+    return 22;
   };
 
   const printCurrentResults = () => {
     const res = [...results];
+    const iconSize = calcIconSize();
     res[res.indexOf(null)] = 'current';
-    return res.map((result, i) => resultIcon[result](i));
+    return res.map((result, i) => resultIcon[result](i, iconSize));
   };
 
   const updateHeight = (layout) => {
     const { height } = layout;
     setFooterHeight(height);
   };
+
+  useEffect(() => {});
 
   return (
     <View
@@ -69,10 +77,10 @@ export const ChapterFooter = ({ showContinue, onContinue }) => {
 const styles = StyleSheet.create({
   footerContainer: {
     flexGrow: 1,
+    borderTopWidth: 3,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: '10%',
-    borderTopWidth: 3,
+    paddingHorizontal: '8%',
     justifyContent: 'space-evenly',
     backgroundColor: colors.PRIMARY,
     borderTopColor: colors.PRIMARY_DARK,
