@@ -3,7 +3,7 @@ import api from './api';
 async function answerExercise(challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer) {
   return (
     await api.put(
-      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt/exercisesAttempts`,
+      `/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempts/exercisesAttempts`,
       { answer, exerciseOrderNumber }
     )
   ).data;
