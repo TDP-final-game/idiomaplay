@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../config/colors';
 import { exerciseTypes } from '../config/exercisesTypes';
 import { AnswerButton } from '../components/AnswerButton';
@@ -116,7 +117,8 @@ const Exercise = ({ navigation, route }) => {
       {currentExercise && (
         <>
           {isExam && (
-            <View style={{ flex: 0.015, padding: '2%'}}>
+            <View style={{ padding: '2%', flexDirection: 'row', justifyContent: 'center',}}>
+              <AntDesign name="clockcircle" size={20} color={colors.PRIMARY_DARK} />
               <ProgressBar endTime={route.params.expirationDate} />
             </View>
           )}

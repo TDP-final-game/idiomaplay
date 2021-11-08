@@ -33,7 +33,7 @@ const getStyles = isExam => StyleSheet.create({
   button: {
     fontSize: 15,
     textAlign: 'center',
-    color: isExam ? colors.BACKGROUND : '#000000',
+    color: colors.BACKGROUND,
     fontWeight: 'bold',
   }
 });
