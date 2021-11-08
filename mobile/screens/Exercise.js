@@ -50,6 +50,7 @@ const Exercise = ({ navigation, route }) => {
       unit: unitOrderNumber,
       lesson: lessonOrderNumber,
       returnButtonFunction: () => (isExam ? setShowExitExamAlert(true) : navigation.goBack()),
+      isExam
     });
 
     handleContinue();
