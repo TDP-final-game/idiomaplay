@@ -76,6 +76,7 @@ ExamAttempt.methods.attempt = function() {
 	const selected = shuffledExercises.slice(0, 16);
 
 	this.firstAttempt = !this.isCompleted();
+	this.aborted = false;
 
 	const now = Date.now();
 	this.startingDate = now;
