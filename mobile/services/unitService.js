@@ -78,8 +78,6 @@ async function getUnitModules(challengeAttemptId, unitOrderNumber) {
     )
   ).data;
 
-  console.log(exam);
-
   exam.type = moduleTypes.EXAM;
   exam.orderNumber = EXAM_ORDER_NUMBER;
   exam.blocked = !_allLessonsPassed(lessons);
