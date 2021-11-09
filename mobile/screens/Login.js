@@ -18,7 +18,7 @@ const Login = ({ navigation }) => {
   const [text, setText] = useState(logInText);
   const [logInMode, setLogInMode] = useState(false);
 
-  const [showNotRegisteredAlert, setShowNotRegisteredAlert] = useState(true);
+  const [showNotRegisteredAlert, setShowNotRegisteredAlert] = useState(false);
   const [showAlreadyRegisteredAlert, setShowAlreadyRegisteredAlert] = useState(false);
 
   const dispatch = useDispatch();

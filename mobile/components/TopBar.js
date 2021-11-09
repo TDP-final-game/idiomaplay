@@ -58,7 +58,7 @@ export const TopBar = () => {
       </View>
 
       <View style={{ marginRight: '3%' }}>
-        <TouchableOpacity onPress={() => console.log('cart')}>
+        <TouchableOpacity onPress={() => {}}>
           <Ionicons name="cart" size={50} color={colors.PRIMARY_DARK} />
         </TouchableOpacity>
       </View>

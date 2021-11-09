@@ -16,13 +16,17 @@ import ExamService from '../services/examService';
 
 import { CustomAlert } from '../components/CustomAlert';
 
+const endTime = new Date().getTime() + 60 * 2 * 1000;
+
 const Exercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
+
   const [showExitExamAlert, setShowExitExamAlert] = useState(false);
+  const [showFinishedTimeAlert, setShowFinishedTimeAlert] = useState(false);
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(
     exercisesAttempts.indexOf(exercisesAttempts.find((attemp) => attemp.status === 'PENDING'))
@@ -54,6 +58,29 @@ const Exercise = ({ navigation, route }) => {
 
     handleContinue();
   }, [isFocused]);
+
+  const Alerts = () => (
+    <>
+      <CustomAlert
+        visible={showFinishedTimeAlert}
+        title={'Te quedaste sin tiempo =('}
+        body={'Vuelve al menu principal para reintentar'}
+        primaryButtonText={'Volver a la unidad'}
+        onPrimaryButtonPress={() => {
+          ExamService.abort().then(() => navigation.goBack());
+        }}
+      />
+      <CustomAlert
+        visible={showExitExamAlert}
+        title={'Estas seguro que desea salir?'}
+        body={'Al salir del examen, este se desaprobará, desea continuar?'}
+        primaryButtonText={'Salir'}
+        onPrimaryButtonPress={abortExam}
+        secondaryButtonText={'Volver al examen'}
+        onSecondaryButtonPress={() => setShowExitExamAlert(false)}
+      />
+    </>
+  );
 
   const handleContinue = async () => {
     if (currentExerciseIndex >= exercisesAttempts.length) {
@@ -115,34 +142,31 @@ const Exercise = ({ navigation, route }) => {
           onPress={() => handleAnswerSelected(option.text)}
           correctAnswer={correctAnswer}
           incorrectAnswer={incorrectAnswer}
-          isExam = {isExam}
+          isExam={isExam}
         />
       </View>
     ));
 
   return (
     <SafeAreaView style={styles.container}>
-      <CustomAlert
-        visible={showExitExamAlert}
-        title={'Estas seguro que desea salir?'}
-        body={'Al salir del examen, este se desaprobará, desea continuar?'}
-        primaryButtonText={'Salir'}
-        onPrimaryButtonPress={abortExam}
-        secondaryButtonText={'Volver al examen'}
-        onSecondaryButtonPress={() => setShowExitExamAlert(false)}
-      />
+      <Alerts />
 
       {currentExercise && (
         <>
           {isExam && (
-            <View style={{ padding: '2%', flexDirection: 'row', justifyContent: 'center',}}>
+            <View style={{ padding: '2%', flexDirection: 'row', justifyContent: 'center' }}>
               <AntDesign name="clockcircle" size={20} color={colors.PRIMARY_DARK} />
-              <ProgressBar endTime={route.params.expirationDate} />
+              <ProgressBar
+                endTime={endTime}
+                onTimeFinishedCallback={() => setShowFinishedTimeAlert(true)}
+              />
             </View>
           )}
 
-          <View style={{marginLeft: '2%'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 20}}>{explanationByType[currentExercise.type]}</Text>
+          <View style={{ marginLeft: '2%' }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+              {explanationByType[currentExercise.type]}
+            </Text>
           </View>
 
           <View style={styles.questionContainer}>
@@ -160,7 +184,11 @@ const Exercise = ({ navigation, route }) => {
           {renderButtons()}
 
           <View style={styles.footer}>
-            <ChapterFooter showContinue={Boolean(correctAnswer)} onContinue={handleContinue} isExam={isExam} />
+            <ChapterFooter
+              showContinue={Boolean(correctAnswer)}
+              onContinue={handleContinue}
+              isExam={isExam}
+            />
           </View>
         </>
       )}
@@ -196,8 +224,8 @@ const styles = StyleSheet.create({
     marginHorizontal: '5%',
   },
   footer: {
-    flex: 0.12 
-  }
+    flex: 0.12,
+  },
 });
 
 export default Exercise;
