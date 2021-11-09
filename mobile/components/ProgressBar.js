@@ -4,7 +4,7 @@ import { commonStyles } from '../config/styles';
 import { useState, useEffect } from 'react';
 
 export const ProgressBar = ({ endTime, onTimeFinishedCallback }) => {
-  const TOTAL_TIME_IN_MILLISECONDS = 2 * 60 * 1000;
+  const TOTAL_TIME_IN_MILLISECONDS = 15 * 60 * 1000;
   const [percentagePassed, setPercentagePassed] = useState(`${calcPercentagePassed()}%`);
 
   function calcPercentagePassed() {

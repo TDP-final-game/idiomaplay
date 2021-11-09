@@ -16,8 +16,6 @@ import ExamService from '../services/examService';
 
 import { CustomAlert } from '../components/CustomAlert';
 
-const endTime = new Date().getTime() + 60 * 2 * 1000;
-
 const Exercise = ({ navigation, route }) => {
   const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
 
@@ -157,7 +155,7 @@ const Exercise = ({ navigation, route }) => {
             <View style={{ padding: '2%', flexDirection: 'row', justifyContent: 'center' }}>
               <AntDesign name="clockcircle" size={20} color={colors.PRIMARY_DARK} />
               <ProgressBar
-                endTime={endTime}
+                endTime={route.params.expirationDate}
                 onTimeFinishedCallback={() => setShowFinishedTimeAlert(true)}
               />
             </View>
