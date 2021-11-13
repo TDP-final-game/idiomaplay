@@ -17,7 +17,6 @@ class Status {
 		return this.status === STATUSES.IN_PROGRESS;
 	}
 
-
 	isFailed() {
 		return this.status === STATUSES.FAILED;
 	}
@@ -30,16 +29,17 @@ class Status {
 		return this.isPassed() || this.isFailed();
 	}
 
+	isNotAvailable() {
+		return this.status === STATUSES.NOT_AVAILABLE;
+	}
 
 	static PENDING() {
 		return new Status(STATUSES.PENDING);
 	}
 
-
 	static IN_PROGRESS() {
 		return new Status(STATUSES.IN_PROGRESS);
 	}
-
 
 	static FAILED() {
 		return new Status(STATUSES.FAILED);
@@ -49,6 +49,9 @@ class Status {
 		return new Status(STATUSES.PASSED);
 	}
 
+	static NOT_AVAILABLE() {
+		return new Status(STATUSES.NOT_AVAILABLE);
+	}
 
 	static AddMethodsToSchema(schema) {
 		schema.methods.isPending = function() {
@@ -69,6 +72,10 @@ class Status {
 
 		schema.methods.isCompleted = function() {
 			return this.status.isCompleted();
+		};
+
+		schema.methods.isNotAvailable = function() {
+			return this.status.isNotAvailable();
 		};
 	}
 

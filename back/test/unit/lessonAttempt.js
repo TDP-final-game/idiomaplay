@@ -11,7 +11,9 @@ const passLessons = (lesson, start, finish) => {
 };
 
 const failLessons = (lesson, start, finish) => {
-	lesson.exercisesAttempts.slice(start, finish).forEach(exercise => exercise.attempt({ answer: exercise.options[0].text }));
+	lesson.exercisesAttempts
+		.slice(start, finish)
+		.forEach(exercise => exercise.attempt({ answer: exercise.options.find(option => !exercise.correctAnswer(option.text)).text }));
 };
 
 describe('lessonAttempt', () => {
@@ -54,7 +56,7 @@ describe('lessonAttempt', () => {
 		expect(lesson.status).to.eql(Status.PASSED());
 	});
 
-	xit('should be failed when two exercises are incorrectly answered', () => {
+	it('should be failed when two exercises are incorrectly answered', () => {
 		const lesson = LessonAttemptExample.new().build();
 		lesson.attempt();
 

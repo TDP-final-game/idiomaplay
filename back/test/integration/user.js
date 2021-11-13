@@ -6,7 +6,7 @@ const { expect } = chai;
 
 const UserExample = require('./support/user');
 
-describe.skip('/users', () => {
+describe('/users', () => {
 	let userExample;
 	const user = {
 		email: 'test@test.com',
