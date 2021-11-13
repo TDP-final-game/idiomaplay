@@ -139,14 +139,14 @@ describe('/challengeAttempts', () => {
 			expect(unitAttempt.lessonsAttempts).to.eql([]);
 
 			// Unit 2
-			// const unit2 = challenge.units[1];
-			// const unitAttempt2 = challengeAttempt.unitsAttempts[1];
-			// compare({
-			// 	properties: ['name', 'orderNumber', 'description'],
-			// 	obj1: unitAttempt2,
-			// 	obj2: unit2
-			// });
-			// expect(unitAttempt2.status).to.eql(STATUSES.NOT_AVAILABLE);
+			const unit2 = challenge.units[1];
+			const unitAttempt2 = challengeAttempt.unitsAttempts[1];
+			compare({
+				properties: ['name', 'orderNumber', 'description'],
+				obj1: unitAttempt2,
+				obj2: unit2
+			});
+			expect(unitAttempt2.status).to.eql(STATUSES.NOT_AVAILABLE);
 		});
 	});
 
@@ -292,6 +292,20 @@ describe('/challengeAttempts', () => {
 				obj1: getChallengeAttemptReq.body,
 				obj2: challenge
 			});
+		});
+
+		it('should return a unit with status "pending"', async () => {
+			const getChallengeAttemptReq = await challengeAttemptExample.getChallengeAttempt({ challengeAttemptId });
+
+			// Unit 2
+			const unit2 = challenge.units[1];
+			const unitAttempt2 = getChallengeAttemptReq.body.unitsAttempts[1];
+			compare({
+				properties: ['name', 'orderNumber', 'description'],
+				obj1: unitAttempt2,
+				obj2: unit2
+			});
+			expect(unitAttempt2.status).to.eql(STATUSES.PENDING);
 		});
 	});
 
