@@ -34,13 +34,13 @@ class ChallengeAttempt {
 
 	attemptExam({ challengeAttemptId, unitOrderNumber }) {
 		return this.app
-			.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt`)
+			.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempts`)
 			.send({});
 	}
 
 	attemptExamExercise({ challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer }) {
 		return this.app
-			.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempt/exercisesAttempts`)
+			.put(`/challengeAttempts/${challengeAttemptId}/unitsAttempts/${unitOrderNumber}/examAttempts/exercisesAttempts`)
 			.send({ exerciseOrderNumber, answer });
 	}
 
