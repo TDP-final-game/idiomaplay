@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run tests
-        run: docker-compose run ${{ env.SERVICE }} sh -c "yarn install && yarn test"
+        run: docker-compose run ${{ env.SERVICE }} sh -c "yarn install && yarn test --ci --watchAll=false"
 
   package:
     runs-on: ubuntu-20.04

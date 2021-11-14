@@ -1,6 +1,6 @@
 import { fetchUtils } from 'react-admin';
 
-const apiUrl = window.__RUNTIME_CONFIG__.REACT_APP_BACK_URL;
+const apiUrl = window.__RUNTIME_CONFIG__?.REACT_APP_BACK_URL;
 const httpClient = fetchUtils.fetchJson;
 
 const dataProvider = {
