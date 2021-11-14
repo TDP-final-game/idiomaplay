@@ -1,22 +1,22 @@
-name: back
+name: backoffice
 on:
   pull_request:
     paths:
-      - "back/**"
-      - ".github/workflows/back.yaml"
+      - "backoffice/**"
+      - ".github/workflows/backoffice.yaml"
   push:
     paths:
-      - "back/**"
-      - ".github/workflows/back.yaml"
+      - "backoffice/**"
+      - ".github/workflows/backoffice.yaml"
 env:
-  SERVICE: back
+  SERVICE: backoffice
   REGISTRY_URL: ghcr.io
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-  IMAGE_NAME: ghcr.io/tdp-final-game/idiomaplay-back
+  IMAGE_NAME: ghcr.io/tdp-final-game/idiomaplay-backoffice
   IMAGE_VERSION: ${{ github.sha }}
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  HEROKU_APP: idiomaplay
+  HEROKU_APP: idiomaplay-backoffice
 jobs:
   test:
     runs-on: ubuntu-20.04
