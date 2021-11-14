@@ -61,16 +61,16 @@ const Exercise = ({ navigation, route }) => {
     <>
       <CustomAlert
         visible={showFinishedTimeAlert}
-        title={'Te quedaste sin tiempo =('}
+        title={'Te quedaste sin tiempo!'}
         body={'Vuelve al menu principal para reintentar'}
         primaryButtonText={'Volver a la unidad'}
         onPrimaryButtonPress={() => {
-          ExamService.abort().then(() => navigation.goBack());
+          ExamService.abort(challengeAttemptId, unitOrderNumber).then(() => navigation.goBack());
         }}
       />
       <CustomAlert
         visible={showExitExamAlert}
-        title={'Estas seguro que desea salir?'}
+        title={'Estas seguro que deseas salir?'}
         body={'Al salir del examen, este se desaprobará, desea continuar?'}
         primaryButtonText={'Salir'}
         onPrimaryButtonPress={abortExam}
