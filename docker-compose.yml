@@ -39,6 +39,21 @@ services:
     depends_on:
       - mongo
 
+  backoffice:
+    stdin_open: true
+    image: node:16.10.0-stretch
+    working_dir: "/backoffice"
+    command: sh -c "yarn install && yarn start"
+    ports:
+      - "4000:4000"
+    volumes:
+      - "./backoffice:/backoffice"
+    environment:
+      PORT: 4000
+      BACK_URL: http://back:3000
+    depends_on:
+      - back
+
   # Support for mobile is not optimal, therefore it's disabled
   # and expo should be run natively
   #  mobile:

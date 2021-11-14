@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const { schema: Stats } = require('./stats');
 
 const User = new mongoose.Schema({
 	email: {
@@ -12,37 +11,20 @@ const User = new mongoose.Schema({
 		required: [true, 'Email address is required'],
 		match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 	},
-	firstName: {
+	password: {
 		type: String,
-		required: [true, 'first name is required']
-	},
-	lastName: {
-		type: String,
-		required: [true, 'last name is required']
-	},
-	photo: {
-		type: String
-	},
-	stats: {
-		type: Stats,
-		required: true,
-		default: () => ({})
-	},
-	enabled: {
-		type: Boolean,
-		required: true,
-		default: true
+		required: true
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 /*
  * Instance methods
  */
-User.methods.addReward = function(reward) {
-	this.stats.addReward(reward);
+User.methods.validPassword = function(password) {
+	return this.password === password;
 };
 
 module.exports = {
 	schema: User,
-	model: mongoose.model('User', User)
+	model: mongoose.model('AdminUser', User)
 };
