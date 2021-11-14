@@ -1,10 +1,9 @@
 import { fetchUtils } from 'react-admin';
-import { stringify } from 'query-string';
 
-const apiUrl = 'http://localhost:3000/api/v1';
+const apiUrl = window.__RUNTIME_CONFIG__.REACT_APP_BACK_URL;
 const httpClient = fetchUtils.fetchJson;
 
-export default {
+const dataProvider = {
 	getList: (resource, params) => {
 		// const { page, perPage } = params.pagination;
 		// const { field, order } = params.sort;
@@ -96,3 +95,5 @@ export default {
 		// }).then(({ json }) => ({ data: json }));
 	}
 };
+
+export default dataProvider;

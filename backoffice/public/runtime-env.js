@@ -1,0 +1,1 @@
+window.__RUNTIME_CONFIG__ = {"REACT_APP_BACK_URL":"http://localhost:3000/api/v1"};

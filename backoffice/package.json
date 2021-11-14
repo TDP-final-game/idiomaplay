@@ -12,9 +12,11 @@
     "react-admin": "^3.19.0",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "runtime-env-cra": "^0.2.4",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "prestart": "NODE_ENV=development runtime-env-cra --config-name=./public/runtime-env.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
