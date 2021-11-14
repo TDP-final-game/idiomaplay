@@ -27,6 +27,11 @@ const User = new mongoose.Schema({
 		type: Stats,
 		required: true,
 		default: () => ({})
+	},
+	enabled: {
+		type: Boolean,
+		required: true,
+		default: true
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 

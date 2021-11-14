@@ -17,6 +17,29 @@ const logIn = async (req, res) => {
 	res.status(STATUS_CODES.OK).send(foundUser);
 };
 
+const list = async (req, res) => {
+	// #swagger.tags = ['User']
+
+	const users = await userService.list();
+	res.status(STATUS_CODES.OK).send(users);
+};
+
+const get = async (req, res) => {
+	// #swagger.tags = ['User']
+
+	const { userId } = req.params;
+	const user = await userService.get(userId);
+	res.status(STATUS_CODES.OK).send(user);
+};
+
+const update = async (req, res) => {
+	// #swagger.tags = ['User']
+
+	const { userId } = req.params;
+	const user = await userService.update({ ...req.body, id: userId });
+	res.status(STATUS_CODES.OK).send(user);
+};
+
 const listChallengesAttempts = async (req, res) => {
 	// #swagger.tags = ['User']
 
@@ -42,6 +65,9 @@ const getStats = async (req, res) => {
 module.exports = {
 	createUser,
 	logIn,
+	list,
+	get,
+	update,
 	listChallengesAttempts,
 	getStats
 };
