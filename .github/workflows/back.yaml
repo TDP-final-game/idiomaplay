@@ -16,6 +16,7 @@ env:
   IMAGE_NAME: ghcr.io/tdp-final-game/idiomaplay-back
   IMAGE_VERSION: ${{ github.sha }}
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_APP: idiomaplay
 jobs:
   test:
     runs-on: ubuntu-20.04

@@ -22,6 +22,8 @@ const UnitAttempt = new mongoose.Schema({
  * Instance methods
  */
 UnitAttempt.virtual('status').get(function() {
+	if(this.previousUnit() && !this.previousUnit().isPassed())
+		return Status.NOT_AVAILABLE();
 	if(!this.lessonsAttempts || this.lessonsAttempts.length === 0)
 		return Status.PENDING();
 	if(this.lessonsAttempts.every(lesson => lesson.isPassed()) && this.examAttempt.isPassed())
@@ -30,6 +32,13 @@ UnitAttempt.virtual('status').get(function() {
 });
 
 Status.AddMethodsToSchema(UnitAttempt);
+
+UnitAttempt.methods.previousUnit = function() {
+	if(this.orderNumber === 1 || !this.ownerDocument)
+		return undefined;
+	const challengeAttempt = this.ownerDocument();
+	return challengeAttempt.getUnitAttempt(this.orderNumber - 1);
+};
 
 UnitAttempt.methods.attempt = function() {
 	const { challenge } = this.ownerDocument();

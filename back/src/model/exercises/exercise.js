@@ -6,6 +6,7 @@ const exerciseInfo = require('./exerciseInfo');
 const STATUSES = require('../../constants/statuses.json');
 const { model: ExerciseAttempt } = require('../attempts/exerciseAttempt');
 const exerciseTypes = require('../../constants/exerciseTypes');
+const randomGenerator = require('../randomGenerator');
 
 /*
  * Schema
@@ -16,7 +17,7 @@ const Exercise = new mongoose.Schema(exerciseInfo);
  * Instance methods
  */
 Exercise.methods.newAttempt = function() {
-	const incorrectAnswersShuffled = this.options.filter(option => option.correct === false).sort(() => 0.5 - Math.random());
+	const incorrectAnswersShuffled = this.options.filter(option => option.correct === false).sort(() => 0.5 - randomGenerator.new());
 
 	let wrongOptionsAmount;
 	if(this.type === exerciseTypes.COMPLETE_SENTENCE)
@@ -27,7 +28,7 @@ Exercise.methods.newAttempt = function() {
 
 	const selected = incorrectAnswersShuffled.slice(0, wrongOptionsAmount);
 	const correctAnswer = this.options.filter(option => option.correct === true);
-	const options = selected.concat(correctAnswer).sort(() => 0.5 - Math.random());
+	const options = selected.concat(correctAnswer).sort(() => 0.5 - randomGenerator.new());
 
 	return new ExerciseAttempt({
 		type: this.type,

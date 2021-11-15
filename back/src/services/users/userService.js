@@ -19,6 +19,20 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
+const list = async () => {
+	return User.find();
+};
+
+const get = async userId => {
+	return User.findOne({ _id: userId });
+};
+
+const update = async ({ id, enabled }) => {
+	const user = await User.findOne({ _id: id });
+	user.enabled = enabled;
+	return user.save();
+};
+
 const listChallengeAttempts = user => {
 	return challengeAttemptModel.find({ user });
 };
@@ -31,8 +45,11 @@ const getStats = async ({ userId }) => {
 };
 
 module.exports = {
-	listChallengeAttempts,
 	createUser,
 	logIn,
+	list,
+	get,
+	update,
+	listChallengeAttempts,
 	getStats
 };
