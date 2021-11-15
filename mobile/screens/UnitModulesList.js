@@ -51,6 +51,8 @@ const UnitModulesList = ({ navigation, route }) => {
       lessonOrderNumber
     );
 
+    console.log('HOLA ', unitModuleAttempt);
+
     if (unitModuleAttempt.error === true) {
       setshowNotEnoughtLivesAlert(true);
       return;

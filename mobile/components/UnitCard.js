@@ -8,11 +8,13 @@ import { states } from '../config/states';
 import { Badge } from './Badge';
 
 export const UnitCard = ({ text, state, onPress }) => {
+  console.log(state);
   const badgeInfo = {
     [states.inProgress]: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
     [states.passed]: { color: 'lightgreen', text: 'Completa' },
     [states.pending]: { color: 'lightblue', text: 'Pendiente' },
     [states.failed]: { color: 'tomato', text: 'Fallida' },
+    NOT_AVAILABLE: { color: colors.LIGHT_GRAY, text: 'Bloqueado' },
   };
 
   return (
@@ -21,7 +23,7 @@ export const UnitCard = ({ text, state, onPress }) => {
         style={{
           flexDirection: 'row',
           paddingVertical: '8%',
-          paddingHorizontal: "3%"
+          paddingHorizontal: '3%',
         }}
       >
         <View
