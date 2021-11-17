@@ -19,6 +19,18 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
+const logOut = async ({ email }) => {
+
+	const user = await User.findOne({ email });
+	if(!user)
+		throw errors.UserNotRegistered();
+
+	// TO AVOID SENDING NOTIFICATIONS WHEN IT IS LOGOUT
+	await User.save({ ...user, expoAccessToken: null });
+	return user;
+};
+
+
 const list = async () => {
 	return User.find();
 };
@@ -47,6 +59,7 @@ const getStats = async ({ userId }) => {
 module.exports = {
 	createUser,
 	logIn,
+	logOut,
 	list,
 	get,
 	update,

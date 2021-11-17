@@ -32,6 +32,14 @@ const User = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 		default: true
+	},
+	expoAccessToken: {
+		type: String, // TODO: VERIFY THIS IF IT IS A DAY
+		required: false
+	},
+	lastLoginDate: {
+		type: Date,
+		required: true
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
