@@ -26,7 +26,7 @@ const logOut = async ({ email }) => {
 		throw errors.UserNotRegistered();
 
 	// TO AVOID SENDING NOTIFICATIONS WHEN IT IS LOGOUT
-	await User.save({ ...user, expoAccessToken: null });
+	await User.save({ ...user, expoPushToken: null });
 	return user;
 };
 

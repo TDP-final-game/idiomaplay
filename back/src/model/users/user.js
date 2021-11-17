@@ -33,7 +33,7 @@ const User = new mongoose.Schema({
 		required: true,
 		default: true
 	},
-	expoAccessToken: {
+	expoPushToken: {
 		type: String, // TODO: VERIFY THIS IF IT IS A DAY
 		required: false
 	},
