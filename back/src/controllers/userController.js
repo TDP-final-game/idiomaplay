@@ -22,12 +22,14 @@ const list = async (req, res) => {
 
 	const [from, to] = JSON.parse(req.query.range);
 	const [sortField, sortOrder] = JSON.parse(req.query.sort);
+	const { q: query } = JSON.parse(req.query.filter);
 
 	const { users, total } = await userService.list({
 		from,
 		to,
 		sortField,
-		sortOrder
+		sortOrder,
+		query
 	});
 
 	res.status(STATUS_CODES.OK)

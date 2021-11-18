@@ -19,7 +19,9 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
-const list = async ({ from, to, sortField, sortOrder }) => {
+const list = async ({
+	from, to, sortField, sortOrder, query
+}) => {
 	const options = {
 		skip: from,
 		limit: to - from + 1,
@@ -27,8 +29,16 @@ const list = async ({ from, to, sortField, sortOrder }) => {
 			[sortField]: sortOrder === 'ASC' ? -1 : 1
 		}
 	};
+	const regex = query ? new RegExp(`(${query.split(' ').join('|')})`, 'gi') : /.*/;
+
 	return {
-		users: await User.find({}, null, options),
+		users: await User.find({
+			$or: [
+				{ email: { $regex: regex } },
+				{ firstName: { $regex: regex } },
+				{ lastName: { $regex: regex } }
+			]
+		}, null, options),
 		total: await User.countDocuments()
 	};
 };
