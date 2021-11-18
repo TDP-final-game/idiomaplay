@@ -21,8 +21,15 @@ const list = async (req, res) => {
 	// #swagger.tags = ['User']
 
 	const [from, to] = JSON.parse(req.query.range);
+	const [sortField, sortOrder] = JSON.parse(req.query.sort);
 
-	const { users, total } = await userService.list({ from, to });
+	const { users, total } = await userService.list({
+		from,
+		to,
+		sortField,
+		sortOrder
+	});
+
 	res.status(STATUS_CODES.OK)
 		.header('Content-Range', total)
 		.set('Access-Control-Expose-Headers', 'Content-Range')

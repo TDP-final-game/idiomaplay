@@ -19,9 +19,18 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
-const list = async ({ from, to }) => {
-	const options = { skip: from, limit: to - from + 1 };
-	return { users: await User.find({}, null, options), total: await User.countDocuments() };
+const list = async ({ from, to, sortField, sortOrder }) => {
+	const options = {
+		skip: from,
+		limit: to - from + 1,
+		sort: {
+			[sortField]: sortOrder === 'ASC' ? -1 : 1
+		}
+	};
+	return {
+		users: await User.find({}, null, options),
+		total: await User.countDocuments()
+	};
 };
 
 const get = async userId => {
