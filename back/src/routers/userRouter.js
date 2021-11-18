@@ -14,7 +14,7 @@ router.get('/', userController.list);
 router.get('/:userId', userController.get);
 router.put('/:userId', userController.update);
 router.post('/session', errorHandler, userController.logIn);
-router.delete('/session', errorHandler, userController.logOut);
+router.delete('/session', middlewares, userController.logOut);
 router.get('/me/challengeAttempts', middlewares, userController.listChallengesAttempts);
 router.get('/me/stats', middlewares, userController.getStats);
 

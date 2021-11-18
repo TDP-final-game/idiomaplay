@@ -37,9 +37,9 @@ const User = new mongoose.Schema({
 		type: String, // TODO: VERIFY THIS IF IT IS A DAY
 		required: false
 	},
-	lastLoginDate: {
+	lastActivityDetected: {
 		type: Date,
-		required: true
+		required: false
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
