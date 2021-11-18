@@ -13,7 +13,7 @@ async function createUser(firstName, lastName, email) {
     experienceId,
   });
 
-  const response = await api.post('/users', { firstName, lastName, email, expoPushToken });
+  const response = await api.post('/users', { firstName, lastName, email, expoPushToken:  expoPushToken.data });
   authenticate(response.data.id);
   return response.data;
 }
