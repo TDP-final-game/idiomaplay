@@ -20,8 +20,13 @@ const logIn = async (req, res) => {
 const list = async (req, res) => {
 	// #swagger.tags = ['User']
 
-	const users = await userService.list();
-	res.status(STATUS_CODES.OK).send(users);
+	const [from, to] = JSON.parse(req.query.range);
+
+	const { users, total } = await userService.list({ from, to });
+	res.status(STATUS_CODES.OK)
+		.header('Content-Range', total)
+		.set('Access-Control-Expose-Headers', 'Content-Range')
+		.send(users);
 };
 
 const get = async (req, res) => {
