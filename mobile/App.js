@@ -20,6 +20,7 @@ import { firebaseConfig } from './config';
 import { TopBar } from './components/TopBar';
 import { screens } from './config/screens';
 import { ChapterHeader, UnitHeader } from './components/ChapterHeader';
+import registerForPushNotificationsAsync from './services/pushNotificationService';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,11 +80,14 @@ const RootComponent = () => {
 
 function App() {
 
-  const [, setNotification] = useState(false);
+  const [notification, setNotification] = useState(false);
+  const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
 
   useEffect(() => {
+
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);

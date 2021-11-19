@@ -2,8 +2,8 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
 
-export async function registerForPushNotificationsAsync() {
-    
+export default async function registerForPushNotificationsAsync() {
+
   let token;
   if (Constants.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -24,3 +24,4 @@ export async function registerForPushNotificationsAsync() {
 
   return token;
 };
+
