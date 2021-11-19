@@ -1,13 +1,17 @@
-import { List, Datagrid, EmailField, TextField, BooleanField, EditButton } from 'react-admin';
+import { List, Datagrid, EmailField, TextField, BooleanField, EditButton, TextInput, DateField } from 'react-admin';
 
 const UserList = props => (
-	<List {...props} pagination={false} bulkActionButtons={false}>
+	<List {...props}
+				bulkActionButtons={false}
+				exporter={false}
+				filters={[<TextInput style={{width: 500}} source="q" label="Filtrar por email, nombre o apellido" alwaysOn />]}
+	>
 		<Datagrid rowClick="edit">
-			<TextField source="id" />
 			<EmailField source="email" />
-			<TextField source="firstName" />
-			<TextField source="lastName" />
-			<BooleanField source="enabled" />
+			<TextField source="firstName" sortable={false} />
+			<TextField source="lastName" sortable={false} />
+			<DateField source="lastAccess" />
+			<BooleanField source="enabled" sortable={false} />
 			<EditButton />
 		</Datagrid>
 	</List>

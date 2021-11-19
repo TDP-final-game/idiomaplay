@@ -19,8 +19,32 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
-const list = async () => {
-	return User.find();
+const list = async ({
+	from, to, sortField, sortOrder, query
+}) => {
+	const options = {
+		skip: from,
+		limit: to - from + 1,
+		sort: {
+			[sortField]: sortOrder === 'ASC' ? -1 : 1
+		}
+	};
+	const regex = query ?
+		new RegExp(`(${query.trim().split(' ')
+			.join('|')})`, 'gi')
+		: /.*/;
+	const filter = {
+		$or: [
+			{ email: { $regex: regex } },
+			{ firstName: { $regex: regex } },
+			{ lastName: { $regex: regex } }
+		]
+	};
+
+	return {
+		users: await User.find(filter, null, options),
+		total: await User.countDocuments(filter)
+	};
 };
 
 const get = async userId => {
