@@ -29,17 +29,21 @@ const list = async ({
 			[sortField]: sortOrder === 'ASC' ? -1 : 1
 		}
 	};
-	const regex = query ? new RegExp(`(${query.split(' ').join('|')})`, 'gi') : /.*/;
+	const regex = query ?
+		new RegExp(`(${query.trim().split(' ')
+			.join('|')})`, 'gi')
+		: /.*/;
+	const filter = {
+		$or: [
+			{ email: { $regex: regex } },
+			{ firstName: { $regex: regex } },
+			{ lastName: { $regex: regex } }
+		]
+	};
 
 	return {
-		users: await User.find({
-			$or: [
-				{ email: { $regex: regex } },
-				{ firstName: { $regex: regex } },
-				{ lastName: { $regex: regex } }
-			]
-		}, null, options),
-		total: await User.countDocuments()
+		users: await User.find(filter, null, options),
+		total: await User.countDocuments(filter)
 	};
 };
 

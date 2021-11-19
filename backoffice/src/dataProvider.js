@@ -18,7 +18,7 @@ const dataProvider = {
 
 		return httpClient(url).then(({ headers, json }) => ({
 			data: json,
-			total: parseInt(headers.get('content-range'), 10),
+			total: json.length === 0 ? 0 : parseInt(headers.get('content-range'), 10),
 		}));
 	},
 
