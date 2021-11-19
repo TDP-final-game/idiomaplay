@@ -76,6 +76,12 @@ const getStats = async (req, res) => {
 	res.status(STATUS_CODES.OK).send(stats);
 };
 
+const exchangeCoinsForLives = async (req, res) => {
+	const { user } = req;
+	const response = await userService.exchangeCoinsForLives({ userId: user._id });
+	res.status(STATUS_CODES.OK).send(response);
+};
+
 module.exports = {
 	createUser,
 	logIn,
@@ -83,5 +89,6 @@ module.exports = {
 	get,
 	update,
 	listChallengesAttempts,
-	getStats
+	getStats,
+	exchangeCoinsForLives
 };
