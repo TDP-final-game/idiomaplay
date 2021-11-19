@@ -27,9 +27,9 @@ Stats.methods.addReward = function(reward) {
 };
 
 Stats.methods.exchangeCoinsForLives = function() {
-	if(this.stats.coins < 100)
+	if(this.coins < 100)
 		throw errors.NotEnoughCoins();
-	else if(this.stats.lives >= 5)
+	else if(this.lives >= 5)
 		throw errors.MaxLivesAlreadyReached();
 	this.coins -= 100;
 	this.lives += 1;
