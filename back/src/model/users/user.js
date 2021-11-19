@@ -32,6 +32,9 @@ const User = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 		default: true
+	},
+	lastAccess: {
+		type: Date
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 

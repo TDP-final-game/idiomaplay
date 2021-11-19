@@ -27,6 +27,8 @@ const authentication = async (req, res, next) => {
 		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'Authorization token malformed');
 
 	const user = await userModel.findOne({ _id: authorization.substring(7) });
+	user.lastAccess = Date.now(); // I don't care about good design anymore
+	await user.save(); // Same thing
 
 	if(!user)
 		throw new ApiError(STATUS_CODES.UNAUTHORIZED, 'User not found');
