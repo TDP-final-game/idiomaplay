@@ -7,6 +7,7 @@ import ChallengeService from '../services/challengeService';
 import api from '../services/api';
 import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
+import { states } from '../config/states';
 
 const UnitsList = ({ navigation }) => {
   const [unitsAttempts, setUnitsAttempts] = useState([]);
@@ -26,7 +27,9 @@ const UnitsList = ({ navigation }) => {
     });
   }, [isFocused]);
 
-  const handlePress = async (unitOrderNumber) => {
+  const handlePress = async (unitOrderNumber, status) => {
+    if (status == states.notAvailable) return;
+
     let response = await api.get(`/users/me/challengeAttempts`);
     const challengeAttemptId = response.data[response.data.length - 1].id;
 
@@ -49,7 +52,7 @@ const UnitsList = ({ navigation }) => {
               <UnitCard
                 text={item.name}
                 state={item.status}
-                onPress={() => handlePress(item.orderNumber)}
+                onPress={() => handlePress(item.orderNumber, item.status)}
               />
             </View>
           )}
