@@ -78,6 +78,14 @@ const RootComponent = () => {
   );
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 function App() {
 
   const [notification, setNotification] = useState(false);

@@ -17,7 +17,7 @@ const sendNotification = async ({ email }) => {
 	messages.push({
 		to: expoPushToken,
 		sound: 'default',
-		body: 'holis'
+		body: 'TESTING - SENDING NOTIFICATION'
 	});
 
 	const chunks = expo.chunkPushNotifications(messages);
