@@ -5,6 +5,7 @@ const modelMessages = {
 			fields: {
 				firstName: 'Nombre',
 				lastName: 'Apellido',
+				lastAccess: 'Último acceso',
 				enabled: 'Habilitado',
 			},
 		}

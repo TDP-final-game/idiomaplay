@@ -1,4 +1,4 @@
-import { List, Datagrid, EmailField, TextField, BooleanField, EditButton, TextInput } from 'react-admin';
+import { List, Datagrid, EmailField, TextField, BooleanField, EditButton, TextInput, DateField } from 'react-admin';
 
 const UserList = props => (
 	<List {...props}
@@ -10,6 +10,7 @@ const UserList = props => (
 			<EmailField source="email" />
 			<TextField source="firstName" sortable={false} />
 			<TextField source="lastName" sortable={false} />
+			<DateField source="lastAccess" />
 			<BooleanField source="enabled" sortable={false} />
 			<EditButton />
 		</Datagrid>
