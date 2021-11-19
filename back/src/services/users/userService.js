@@ -71,7 +71,7 @@ const getStats = async ({ userId }) => {
 const exchangeCoinsForLives = async ({ userId }) => {
 	const user = await User.findOne({ _id: userId });
 	user.exchangeCoinsForLives();
-	return user.save().stats;
+	return (await user.save()).stats;
 };
 
 module.exports = {
