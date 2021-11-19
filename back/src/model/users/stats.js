@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const errors = require('./errors');
 
 const Stats = new mongoose.Schema({
 	_id: false,
@@ -21,7 +22,17 @@ const Stats = new mongoose.Schema({
  */
 Stats.methods.addReward = function(reward) {
 	this.coins += reward.coins;
-	this.lives += reward.lives;
+	if(this.lives + reward.lives <= 5)
+		this.lives += reward.lives;
+};
+
+Stats.methods.exchangeCoinsForLives = function() {
+	if(this.coins < 100)
+		throw errors.NotEnoughCoins();
+	else if(this.lives >= 5)
+		throw errors.MaxLivesAlreadyReached();
+	this.coins -= 100;
+	this.lives += 1;
 };
 
 module.exports = {

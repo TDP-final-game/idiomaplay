@@ -30,9 +30,32 @@ const logOut = async ({ email }) => {
 	return user;
 };
 
+const list = async ({
+	from, to, sortField, sortOrder, query
+}) => {
+	const options = {
+		skip: from,
+		limit: to - from + 1,
+		sort: {
+			[sortField]: sortOrder === 'ASC' ? -1 : 1
+		}
+	};
+	const regex = query ?
+		new RegExp(`(${query.trim().split(' ')
+			.join('|')})`, 'gi')
+		: /.*/;
+	const filter = {
+		$or: [
+			{ email: { $regex: regex } },
+			{ firstName: { $regex: regex } },
+			{ lastName: { $regex: regex } }
+		]
+	};
 
-const list = async () => {
-	return User.find();
+	return {
+		users: await User.find(filter, null, options),
+		total: await User.countDocuments(filter)
+	};
 };
 
 const get = async userId => {
@@ -56,6 +79,12 @@ const getStats = async ({ userId }) => {
 	return user.stats;
 };
 
+const exchangeCoinsForLives = async ({ userId }) => {
+	const user = await User.findOne({ _id: userId });
+	user.exchangeCoinsForLives();
+	return (await user.save()).stats;
+};
+
 module.exports = {
 	createUser,
 	logIn,
@@ -64,5 +93,6 @@ module.exports = {
 	get,
 	update,
 	listChallengeAttempts,
-	getStats
+	getStats,
+	exchangeCoinsForLives
 };

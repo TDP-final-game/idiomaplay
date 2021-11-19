@@ -37,9 +37,8 @@ const User = new mongoose.Schema({
 		type: String, // TODO: VERIFY THIS IF IT IS A DAY
 		required: false
 	},
-	lastActivityDetected: {
-		type: Date,
-		required: false
+	lastAccess: {
+		type: Date
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
@@ -48,6 +47,10 @@ const User = new mongoose.Schema({
  */
 User.methods.addReward = function(reward) {
 	this.stats.addReward(reward);
+};
+
+User.methods.exchangeCoinsForLives = function() {
+	this.stats.exchangeCoinsForLives();
 };
 
 module.exports = {

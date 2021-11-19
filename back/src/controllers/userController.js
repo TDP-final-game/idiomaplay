@@ -31,8 +31,22 @@ const logOut = async (req, res) => {
 const list = async (req, res) => {
 	// #swagger.tags = ['User']
 
-	const users = await userService.list();
-	res.status(STATUS_CODES.OK).send(users);
+	const [from, to] = JSON.parse(req.query.range);
+	const [sortField, sortOrder] = JSON.parse(req.query.sort);
+	const { q: query } = JSON.parse(req.query.filter);
+
+	const { users, total } = await userService.list({
+		from,
+		to,
+		sortField,
+		sortOrder,
+		query
+	});
+
+	res.status(STATUS_CODES.OK)
+		.header('Content-Range', total)
+		.set('Access-Control-Expose-Headers', 'Content-Range')
+		.send(users);
 };
 
 const get = async (req, res) => {
@@ -73,6 +87,12 @@ const getStats = async (req, res) => {
 	res.status(STATUS_CODES.OK).send(stats);
 };
 
+const exchangeCoinsForLives = async (req, res) => {
+	const { user } = req;
+	const response = await userService.exchangeCoinsForLives({ userId: user._id });
+	res.status(STATUS_CODES.OK).send(response);
+};
+
 module.exports = {
 	createUser,
 	logIn,
@@ -81,5 +101,6 @@ module.exports = {
 	get,
 	update,
 	listChallengesAttempts,
-	getStats
+	getStats,
+	exchangeCoinsForLives
 };

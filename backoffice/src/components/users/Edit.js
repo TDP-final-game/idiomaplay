@@ -1,4 +1,4 @@
-import { Edit, SimpleForm, BooleanInput, TextField, EmailField, Toolbar, SaveButton } from 'react-admin';
+import { Edit, SimpleForm, BooleanInput, TextField, EmailField, Toolbar, SaveButton, DateField } from 'react-admin';
 
 const CustomToolbar = props => (
 	<Toolbar {...props}>
@@ -13,6 +13,7 @@ const UserEdit = props => (
 			<EmailField source="email" />
 			<TextField source="firstName" />
 			<TextField source="lastName" />
+			<DateField source="lastAccess" showTime={true} />
 		</SimpleForm>
 	</Edit>
 );
