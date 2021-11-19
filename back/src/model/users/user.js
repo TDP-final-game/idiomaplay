@@ -45,6 +45,10 @@ User.methods.addReward = function(reward) {
 	this.stats.addReward(reward);
 };
 
+User.methods.exchangeCoinsForLives = function() {
+	this.stats.exchangeCoinsForLives();
+};
+
 module.exports = {
 	schema: User,
 	model: mongoose.model('User', User)

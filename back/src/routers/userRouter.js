@@ -16,5 +16,6 @@ router.put('/:userId', userController.update);
 router.post('/session', errorHandler, userController.logIn);
 router.get('/me/challengeAttempts', middlewares, userController.listChallengesAttempts);
 router.get('/me/stats', middlewares, userController.getStats);
+router.put('/me/exchanges', middlewares, userController.exchangeCoinsForLives);
 
 module.exports = router;

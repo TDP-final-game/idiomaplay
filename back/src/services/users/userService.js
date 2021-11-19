@@ -68,6 +68,12 @@ const getStats = async ({ userId }) => {
 	return user.stats;
 };
 
+const exchangeCoinsForLives = async ({ userId }) => {
+	const user = await User.findOne({ _id: userId });
+	user.exchangeCoinsForLives();
+	return user.save().stats;
+};
+
 module.exports = {
 	createUser,
 	logIn,
@@ -75,5 +81,6 @@ module.exports = {
 	get,
 	update,
 	listChallengeAttempts,
-	getStats
+	getStats,
+	exchangeCoinsForLives
 };
