@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
@@ -124,8 +124,8 @@ const UnitModulesList = ({ navigation, route }) => {
               />
             </View>
           )}
-          sliderWidth={415}
-          itemWidth={415}
+          sliderWidth={Dimensions.get('window').width}
+          itemWidth={Dimensions.get('window').width}
         />
       </View>
 
