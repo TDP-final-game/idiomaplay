@@ -17,8 +17,15 @@ async function updateStats() {
   return response.data;
 }
 
+async function buyLives() {
+  const response = await api.put('/users/me/exchanges');
+  console.log('RESPONSE ', response);
+  return response.data;
+}
+
 export default {
   logIn,
+  buyLives,
   createUser,
-  updateStats
+  updateStats,
 };

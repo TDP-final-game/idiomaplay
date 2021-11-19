@@ -7,6 +7,12 @@ import { states } from '../config/states';
 import { ExamCard } from '../components/ExamCard';
 
 const Home = ({ navigation }) => {
+  useEffect(() => {
+    navigation.setOptions({
+      cartButtonFunction: () => navigation.navigate(screens.MARKET),
+    });
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ marginHorizontal: '5%' }}>
