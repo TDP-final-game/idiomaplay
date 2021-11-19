@@ -17,6 +17,7 @@ const Login = ({ navigation }) => {
 
   const [text, setText] = useState(logInText);
   const [logInMode, setLogInMode] = useState(false);
+  const [expoPushToken, setExpoPushToken] = useState('');
 
   const [showNotRegisteredAlert, setShowNotRegisteredAlert] = useState(false);
   const [showAlreadyRegisteredAlert, setShowAlreadyRegisteredAlert] = useState(false);
@@ -59,7 +60,7 @@ const Login = ({ navigation }) => {
 
   const onSuccessCallback = (user, _accessToken) => {
     if (!logInMode) {
-      UserService.logIn(user.email /*va el access token*/).then((data) => {
+      UserService.logIn(user.email /*va el access token*/, expoPushToken).then((data) => {
         if (data.id) {
           setShowAlreadyRegisteredAlert(true);
         } else {
@@ -67,7 +68,7 @@ const Login = ({ navigation }) => {
         }
       });
     } else {
-      UserService.logIn(user.email /*va el access token*/).then((data) => {
+      UserService.logIn(user.email /*va el access token*/, expoPushToken).then((data) => {
         if (!data.id) {
           setShowNotRegisteredAlert(true);
         } else {

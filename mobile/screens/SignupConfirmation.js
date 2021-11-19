@@ -14,11 +14,12 @@ const SignupConfirmation = ({ navigation, route }) => {
 
   const [firstName, setFirstName] = useState(user.givenName);
   const [secondName, setSecondName] = useState(user.familyName);
+  const [expoPushToken, setExpoPushToken] = useState('');
 
   const dispatch = useDispatch();
 
   const confirmUser = () => {
-    UserService.createUser(firstName, secondName, user.email).then((data) => {
+    UserService.createUser(firstName, secondName, user.email, expoPushToken).then((data) => {
       dispatch(
         logIn({
           email: user.email,
