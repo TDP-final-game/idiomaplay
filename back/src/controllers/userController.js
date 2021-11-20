@@ -6,16 +6,27 @@ const STATUS_CODES = require('../constants/status_codes.json');
 const createUser = async (req, res) => {
 	// #swagger.tags = ['User']
 
-	const createdUser = await userService.createUser(req.body);
+	const lastLoginDate = new Date();
+	const createdUser = await userService.createUser({ ...req.body, lastLoginDate });
 	res.status(STATUS_CODES.CREATED).send(createdUser);
 };
 
 const logIn = async (req, res) => {
 	// #swagger.tags = ['User']
 
-	const foundUser = await userService.logIn(req.body);
+	const lastLoginDate = new Date();
+	const foundUser = await userService.logIn({ ...req.body, lastLoginDate });
 	res.status(STATUS_CODES.OK).send(foundUser);
 };
+
+const logOut = async (req, res) => {
+	// #swagger.tags = ['User']
+
+	const lastLoginDate = new Date();
+	const foundUser = await userService.logOut({ ...req.body, lastLoginDate });
+	res.status(STATUS_CODES.OK).send(foundUser);
+};
+
 
 const list = async (req, res) => {
 	// #swagger.tags = ['User']
@@ -76,12 +87,20 @@ const getStats = async (req, res) => {
 	res.status(STATUS_CODES.OK).send(stats);
 };
 
+const exchangeCoinsForLives = async (req, res) => {
+	const { user } = req;
+	const response = await userService.exchangeCoinsForLives({ userId: user._id });
+	res.status(STATUS_CODES.OK).send(response);
+};
+
 module.exports = {
 	createUser,
 	logIn,
+	logOut,
 	list,
 	get,
 	update,
 	listChallengesAttempts,
-	getStats
+	getStats,
+	exchangeCoinsForLives
 };

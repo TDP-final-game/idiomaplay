@@ -19,6 +19,17 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
+const logOut = async ({ email }) => {
+
+	const user = await User.findOne({ email });
+	if(!user)
+		throw errors.UserNotRegistered();
+
+	// TO AVOID SENDING NOTIFICATIONS WHEN IT IS LOGOUT
+	await User.save({ ...user, expoPushToken: null });
+	return user;
+};
+
 const list = async ({
 	from, to, sortField, sortOrder, query
 }) => {
@@ -68,12 +79,20 @@ const getStats = async ({ userId }) => {
 	return user.stats;
 };
 
+const exchangeCoinsForLives = async ({ userId }) => {
+	const user = await User.findOne({ _id: userId });
+	user.exchangeCoinsForLives();
+	return (await user.save()).stats;
+};
+
 module.exports = {
 	createUser,
 	logIn,
+	logOut,
 	list,
 	get,
 	update,
 	listChallengeAttempts,
-	getStats
+	getStats,
+	exchangeCoinsForLives
 };

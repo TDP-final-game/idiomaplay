@@ -33,6 +33,10 @@ const User = new mongoose.Schema({
 		required: true,
 		default: true
 	},
+	expoPushToken: {
+		type: String,
+		required: false
+	},
 	lastAccess: {
 		type: Date
 	}
@@ -43,6 +47,10 @@ const User = new mongoose.Schema({
  */
 User.methods.addReward = function(reward) {
 	this.stats.addReward(reward);
+};
+
+User.methods.exchangeCoinsForLives = function() {
+	this.stats.exchangeCoinsForLives();
 };
 
 module.exports = {

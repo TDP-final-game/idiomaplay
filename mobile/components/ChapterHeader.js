@@ -30,7 +30,7 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson, isExam }) =>
   );
 };
 
-export const UnitHeader = ({ returnButtonFunction, unit, isExam }) => {
+export const UnitHeader = ({ returnButtonFunction, cartButtonFunction, unit, isExam }) => {
   const user = useSelector((state) => state.user);
 
   return (
@@ -47,7 +47,7 @@ export const UnitHeader = ({ returnButtonFunction, unit, isExam }) => {
       </View>
 
       <View style={{ marginRight: '3%' }}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={cartButtonFunction}>
           <Ionicons name="cart" size={50} color={colors.PRIMARY_DARK} />
         </TouchableOpacity>
       </View>
