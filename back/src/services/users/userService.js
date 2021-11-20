@@ -19,6 +19,17 @@ const logIn = async ({ email }) => {
 	return user;
 };
 
+const logOut = async ({ email }) => {
+
+	const user = await User.findOne({ email });
+	if(!user)
+		throw errors.UserNotRegistered();
+
+	// TO AVOID SENDING NOTIFICATIONS WHEN IT IS LOGOUT
+	await User.save({ ...user, expoPushToken: null });
+	return user;
+};
+
 const list = async ({
 	from, to, sortField, sortOrder, query
 }) => {
@@ -77,6 +88,7 @@ const exchangeCoinsForLives = async ({ userId }) => {
 module.exports = {
 	createUser,
 	logIn,
+	logOut,
 	list,
 	get,
 	update,

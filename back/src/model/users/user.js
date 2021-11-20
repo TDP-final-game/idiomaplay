@@ -33,6 +33,10 @@ const User = new mongoose.Schema({
 		required: true,
 		default: true
 	},
+	expoPushToken: {
+		type: String,
+		required: false
+	},
 	lastAccess: {
 		type: Date
 	}

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Notifications from 'expo-notifications';
 
 import firebase from 'firebase';
 import Home from './screens/Home';
@@ -20,6 +21,7 @@ import { firebaseConfig } from './config';
 import { TopBar } from './components/TopBar';
 import { screens } from './config/screens';
 import { ChapterHeader, UnitHeader } from './components/ChapterHeader';
+import registerForPushNotificationsAsync from './services/pushNotificationService';
 import { MarketTopbar } from './components/MarketTopbar';
 
 const Stack = createNativeStackNavigator();
@@ -93,7 +95,40 @@ const RootComponent = () => {
   );
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 function App() {
+
+  const [notification, setNotification] = useState(false);
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+
   return (
     <Provider store={store}>
       <SafeAreaProvider>
@@ -102,5 +137,6 @@ function App() {
     </Provider>
   );
 }
+
 
 export default App;
