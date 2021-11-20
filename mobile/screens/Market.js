@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
+import { CustomAlert } from '../components/CustomAlert';
 import { colors } from '../config/colors';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet } from 'react-native';
@@ -15,6 +16,9 @@ const Market = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [alertIsVisible, setAlertIsVisible] = useState(false);
+
   useEffect(() => {
     navigation.setOptions({
       returnButtonFunction: () => navigation.goBack(),
@@ -22,13 +26,18 @@ const Market = ({ navigation }) => {
   });
 
   const buyLives = () => {
-    UserService.buyLives().then((stats) => {
-      console.log(stats);
-      dispatch(updateStats({ stats }));
+    UserService.buyLives().then((response) => {
+      if (!response.ok) {
+        setAlertMessage(response.message);
+        setAlertIsVisible(true);
+        return;
+      }
+
+      dispatch(updateStats({ stats: response.stats }));
     });
   };
 
-  const ButLivesButton = () => (
+  const BuyLivesButton = () => (
     <TouchableOpacity style={[styles.buyLivesButton, commonStyles.shadow]} onPress={buyLives}>
       <View style={{ flexDirection: 'row' }}>
         <View>
@@ -57,6 +66,14 @@ const Market = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <CustomAlert
+        visible={alertIsVisible}
+        title={'Ups!'}
+        body={alertMessage}
+        primaryButtonText={'Continuar'}
+        onPrimaryButtonPress={() => setAlertIsVisible(false)}
+      />
+
       <View style={styles.lifesAndCoinsContainer}>
         <View style={{ flexGrow: 0.5, marginLeft: '3%', justifyContent: 'space-around' }}>
           <View style={{ flexDirection: 'row' }}>
@@ -73,7 +90,7 @@ const Market = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButLivesButton />
+        <BuyLivesButton />
       </View>
     </SafeAreaView>
   );
