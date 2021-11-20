@@ -1,5 +1,8 @@
 import api, { authenticate } from './api';
 
+const TOO_MANY_LIVES_ERROR = 'Has alcanzado el limite de 5 vidas!';
+const NOT_ENOUGHT_MONEY_ERROR = 'No tiene las monedas suficientes!';
+
 async function createUser(firstName, lastName, email) {
   const response = await api.post('/users', { firstName, lastName, email });
   authenticate(response.data.id);
@@ -17,8 +20,24 @@ async function updateStats() {
   return response.data;
 }
 
+async function buyLives() {
+  const errorTranslator = {
+    'Max lives already reached': TOO_MANY_LIVES_ERROR,
+    'Not enough coins to exchange for a live': NOT_ENOUGHT_MONEY_ERROR,
+  };
+
+  const response = await api.put('/users/me/exchanges');
+
+  if (response.status === 400) {
+    return { ok: false, message: errorTranslator[response.data.message] };
+  }
+
+  return { ok: true, stats: response.data };
+}
+
 export default {
   logIn,
+  buyLives,
   createUser,
-  updateStats
+  updateStats,
 };

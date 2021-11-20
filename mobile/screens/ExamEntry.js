@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { screens } from '../config/screens';
-import { View, Text, StyleSheet, Animated, Alert } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -99,7 +99,6 @@ const ExamEntry = ({ navigation, route }) => {
 
     // TODO: bug fixing when this happens
     if (unitModuleAttempt.error === true) {
-
       setshowNotEnoughtLivesAlert(true);
 
       return navigation.navigate(screens.UNIT_MODULES_LIST, {

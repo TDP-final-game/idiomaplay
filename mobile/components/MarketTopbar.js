@@ -9,11 +9,10 @@ import { updateStats } from '../redux/user';
 import UserService from '../services/userService';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 
-export const TopBar = ({ cartButtonFunction, cartButtonPressed }) => {
+export const MarketTopbar = ({ returnButtonFunction }) => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
-  const imageScale = 0.17;
 
   useEffect(() => {
     UserService.updateStats(/*va el access token*/).then((data) => {
@@ -21,50 +20,20 @@ export const TopBar = ({ cartButtonFunction, cartButtonPressed }) => {
     });
   });
 
-  const borderRadius = () => {
-    return Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2;
-  };
-
-  const ProfileImage = () => {
-    return (
-      <Image
-        style={[
-          {
-            borderRadius: borderRadius(),
-            backgroundColor: colors.LIGHT_GRAY,
-            borderColor: colors.PRIMARY_DARK,
-            borderWidth: 3,
-            width: Dimensions.get('window').width * imageScale,
-            height: Dimensions.get('window').width * imageScale,
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-          commonStyles.shadow,
-        ]}
-        source={{ uri: user.imageUrl }}
-      />
-    );
-  };
-
   return (
     <View style={styles.headerContainer}>
-      <View style={{ marginLeft: '3%' }}>
-        <ProfileImage />
+      <View style={{ marginLeft: '5%' }}>
+        <TouchableOpacity onPress={returnButtonFunction}>
+          <Ionicons name="arrow-undo" size={50} color={colors.PRIMARY_DARK} />
+        </TouchableOpacity>
       </View>
 
       <View>
-        <Text style={styles.primaryText}>IdiomaPlay</Text>
-        <LifeAndCoins coins={user.coins} lives={user.lives} />
+        <Text style={styles.primaryText}>Tienda</Text>
       </View>
 
       <View style={{ marginRight: '3%' }}>
-        <TouchableOpacity onPress={cartButtonFunction}>
-          <Ionicons
-            name="cart"
-            size={50}
-            color={cartButtonPressed ? colors.PRIMARY_LIGHT : colors.PRIMARY_DARK}
-          />
-        </TouchableOpacity>
+        <Ionicons name="cart" size={50} color={colors.PRIMARY_LIGHT} />
       </View>
     </View>
   );
@@ -85,6 +54,7 @@ const styles = StyleSheet.create({
   primaryText: {
     textAlign: 'center',
     fontSize: 24,
+    paddingHorizontal: '8%',
     color: 'white',
     fontWeight: 'bold',
   },
