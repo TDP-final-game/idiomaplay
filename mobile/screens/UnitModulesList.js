@@ -33,6 +33,7 @@ const UnitModulesList = ({ navigation, route }) => {
     navigation.setOptions({
       unit: unitOrderNumber,
       returnButtonFunction: () => navigation.goBack(),
+      cartButtonFunction: () => navigation.navigate(screens.MARKET),
     });
 
     // todo: spinner while loading
