@@ -4,13 +4,12 @@ import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { screens } from '../config/screens';
 import { FlatList } from 'react-native-gesture-handler';
-import { states } from '../config/states';
 import { ChallengeCard } from '../components/ChallengeCard';
 import challengeService from '../services/challengeService';
 import { useState } from 'react';
 
 const Home = ({ navigation }) => {
-  const [challenges, setChallenges] = useState([]);
+  const [challengeAttempts, setChallengeAttempts] = useState([]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -18,21 +17,21 @@ const Home = ({ navigation }) => {
     });
 
     challengeService.getChallenges().then((challenges) => {
-      setChallenges(challenges);
+      setChallengeAttempts(challenges);
     });
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={challenges}
+        data={challengeAttempts}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
             <ChallengeCard
               text={item.name}
-              state={states.pending}
-              onPress={() => navigation.navigate(screens.UNITS_LIST)}
+              state={item.status}
+              onPress={() => navigation.navigate(screens.UNITS_LIST, {challengeAttemptId: item._id})}
             />
           </View>
         )}

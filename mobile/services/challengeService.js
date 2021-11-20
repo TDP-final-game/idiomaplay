@@ -3,30 +3,28 @@ import api from './api';
 async function getChallenges() {
   const response = await api.get('/challenges');
 
-  return response.data.map((challenge) => {
-    return {
-      description: challenge.description,
-      difficult: challenge.difficult,
-      _id: challenge._id,
-      name: challenge.name,
-    };
+  const challengeAttempts = {};
+  (await api.get('/users/me/challengeAttempts')).data.forEach(challengeAttempt => {
+    challengeAttempts[challengeAttempt.challenge._id] = challengeAttempt;
   });
+
+  const res = [];
+  response.data.forEach(challenge => {
+    res.push(challengeAttempts[challenge._id] ?? attemptChallenge(challenge._id))
+  });
+  return res;
+}
+
+async function attemptChallenge(challengeId) {
+  return (
+      await api.post(`/challengeAttempts`, {
+        challengeId,
+      })
+  ).data;
 }
 
 async function getUnitsAttempts(challengeAttemptId) {
-  const challengeAttempts = (await api.get('/users/me/challengeAttempts')).data;
-
-  if (challengeAttempts.length === 0) {
-    const challengeAttempt = (
-      await api.post(`/challengeAttempts`, {
-        challengeId: '61778ec34bb09bb4fee3d5df',
-      })
-    ).data;
-
-    return challengeAttempt.unitsAttempts;
-  }
-
-  return challengeAttempts[challengeAttempts.length - 1].unitsAttempts;
+  return (await api.get(`/challengeAttempts/${challengeAttemptId}`)).data.unitsAttempts;
 }
 
 async function attemptUnit(challengeAttemptId, unitOrderNumber) {
