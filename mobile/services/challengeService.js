@@ -1,5 +1,18 @@
 import api from './api';
 
+async function getChallenges() {
+  const response = await api.get('/challenges');
+
+  return response.data.map((challenge) => {
+    return {
+      description: challenge.description,
+      difficult: challenge.difficult,
+      _id: challenge._id,
+      name: challenge.name,
+    };
+  });
+}
+
 async function getUnitsAttempts(challengeAttemptId) {
   const challengeAttempts = (await api.get('/users/me/challengeAttempts')).data;
 
@@ -33,6 +46,7 @@ async function attemptUnit(challengeAttemptId, unitOrderNumber) {
 }
 
 export default {
+  getChallenges,
   getUnitsAttempts,
   attemptUnit,
 };
