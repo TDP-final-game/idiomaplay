@@ -5,17 +5,15 @@ const TOO_MANY_LIVES_ERROR = 'Has alcanzado el limite de 5 vidas!';
 const NOT_ENOUGHT_MONEY_ERROR = 'No tiene las monedas suficientes!';
 
 async function createUser(firstName, lastName, email) {
-
-  const expoPushToken = await registerForPushNotificationsAsync();
-  const response = await api.post('/users', { firstName, lastName, email, expoPushToken });
+  //const expoPushToken = await registerForPushNotificationsAsync();
+  const response = await api.post('/users', { firstName, lastName, email, expoPushToken: null });
   authenticate(response.data.id);
   return response.data;
 }
 
 async function logIn(email) {
-
-  const expoPushToken = await registerForPushNotificationsAsync();
-  const response = await api.post('/users/session', { email,  expoPushToken });
+  //const expoPushToken = await registerForPushNotificationsAsync();
+  const response = await api.post('/users/session', { email, expoPushToken: null });
   authenticate(response.data.id);
   return response.data;
 }
