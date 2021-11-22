@@ -73,7 +73,7 @@ const sendWeeklyNotifications = async () => {
 		$and: [
 			{
 				lastActivityDetected: {
-					$gte: deleteDaysFromDate(7, new Date(new Date().setHours(0, 0, 0))),
+					$gte: deleteDaysFromDate(30, new Date(new Date().setHours(0, 0, 0))),
 					$lte: deleteDaysFromDate(5, new Date(new Date().setHours(0, 0, 0)))
 				}
 			},
