@@ -68,6 +68,12 @@ const update = async ({ id, enabled }) => {
 	return user.save();
 };
 
+const detectActivity = async ({ id }) => {
+	const user = await User.findOne({ _id: id });
+	user.lastActivityDetected = new Date();
+	return user.save();
+};
+
 const listChallengeAttempts = user => {
 	return challengeAttemptModel.find({ user });
 };
@@ -92,6 +98,7 @@ module.exports = {
 	list,
 	get,
 	update,
+	detectActivity,
 	listChallengeAttempts,
 	getStats,
 	exchangeCoinsForLives

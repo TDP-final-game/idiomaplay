@@ -39,6 +39,14 @@ const User = new mongoose.Schema({
 	},
 	lastAccess: {
 		type: Date
+	},
+	lastActivityDetected: {
+		type: Date,
+		default: new Date()
+	},
+	lastNotificationSentDate: {
+		type: Date,
+		default: new Date()
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
