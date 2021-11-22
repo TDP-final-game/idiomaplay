@@ -96,8 +96,7 @@ const sendMonthlyNotifications = async () => {
 		$and: [
 			{
 				lastActivityDetected: {
-					$gte: deleteDaysFromDate(60, new Date(new Date().setHours(0, 0, 0))),
-					$lte: deleteDaysFromDate(7, new Date(new Date().setHours(0, 0, 0)))
+					$lte: deleteDaysFromDate(60, new Date(new Date().setHours(0, 0, 0)))
 				}
 			},
 			{ lastNotificationSentDate: { $lt: deleteDaysFromDate(30, new Date(new Date().setHours(0, 0, 0))) } }

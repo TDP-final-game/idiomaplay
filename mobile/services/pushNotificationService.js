@@ -1,7 +1,6 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
-
 export default async function registerForPushNotificationsAsync() {
 
   let token;
