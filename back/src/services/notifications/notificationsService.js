@@ -3,7 +3,6 @@
 const { Expo } = require('expo-server-sdk');
 const { model: User } = require('../../model/users/user');
 
-
 const sendNotifications = async (filter, message) => {
 
 	const users = await User.find(filter, null, null);
@@ -46,7 +45,6 @@ const deleteDaysFromDate = (days, date) => {
 	newDate.setDate(date.getDate() - days);
 	return newDate;
 };
-
 
 const sendDailyNotification = async () => {
 
@@ -110,7 +108,6 @@ const sendMonthlyNotifications = async () => {
 
 	return sendNotifications(filter, message);
 };
-
 
 module.exports = {
 	sendDailyNotification,
