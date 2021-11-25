@@ -9,8 +9,10 @@ import { useIsFocused } from '@react-navigation/core';
 import { screens } from '../config/screens';
 import { states } from '../config/states';
 
-const UnitsList = ({ navigation }) => {
+const UnitsList = ({ navigation, route }) => {
   const [unitsAttempts, setUnitsAttempts] = useState([]);
+
+  const challengeAttemptId = route.params.challengeAttemptId;
 
   const isFocused = useIsFocused();
   const unitOrderNumber = 1; //todo: revisar
@@ -23,7 +25,7 @@ const UnitsList = ({ navigation }) => {
     });
 
     // todo: spinner while loading
-    ChallengeService.getUnitsAttempts('challengeAttemptId').then((data) => {
+    ChallengeService.getUnitsAttempts(challengeAttemptId).then((data) => {
       setUnitsAttempts(data);
     });
   }, [isFocused]);

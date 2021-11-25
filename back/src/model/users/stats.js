@@ -22,8 +22,7 @@ const Stats = new mongoose.Schema({
  */
 Stats.methods.addReward = function(reward) {
 	this.coins += reward.coins;
-	if(this.lives + reward.lives <= 5)
-		this.lives += reward.lives;
+	this.lives = Math.max(5, this.lives + reward.lives);
 };
 
 Stats.methods.exchangeCoinsForLives = function() {
