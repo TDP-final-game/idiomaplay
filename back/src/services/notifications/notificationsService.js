@@ -1,7 +1,10 @@
 'use strict';
 
 const { Expo } = require('expo-server-sdk');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const cron = require('node-cron');
 const { model: User } = require('../../model/users/user');
+
 
 const sendNotifications = async (filter, message) => {
 
@@ -109,8 +112,21 @@ const sendMonthlyNotifications = async () => {
 	return sendNotifications(filter, message);
 };
 
+const start = async () => {
+	cron.schedule('* * * * *', async () => {
+		await Promise.all([
+			sendDailyNotification(),
+			sendWeeklyNotifications(),
+			sendMonthlyNotifications()]);
+		// eslint-disable-next-line no-console
+	});
+
+};
+
+
 module.exports = {
 	sendDailyNotification,
 	sendWeeklyNotifications,
-	sendMonthlyNotifications
+	sendMonthlyNotifications,
+	start
 };
