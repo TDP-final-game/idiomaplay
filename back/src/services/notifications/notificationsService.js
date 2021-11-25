@@ -118,9 +118,7 @@ const start = async () => {
 			sendDailyNotification(),
 			sendWeeklyNotifications(),
 			sendMonthlyNotifications()]);
-		// eslint-disable-next-line no-console
 	});
-
 };
 
 
