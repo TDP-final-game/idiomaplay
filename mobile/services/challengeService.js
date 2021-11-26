@@ -1,19 +1,30 @@
 import api from './api';
 
-async function getUnitsAttempts(challengeAttemptId) {
-  const challengeAttempts = (await api.get('/users/me/challengeAttempts')).data;
+async function getChallenges() {
+  const response = await api.get('/challenges');
 
-  if (challengeAttempts.length === 0) {
-    const challengeAttempt = (
+  const challengeAttempts = {};
+  (await api.get('/users/me/challengeAttempts')).data.forEach(challengeAttempt => {
+    challengeAttempts[challengeAttempt.challenge._id] = challengeAttempt;
+  });
+
+  const res = [];
+  response.data.forEach(challenge => {
+    res.push(challengeAttempts[challenge._id] ?? attemptChallenge(challenge._id))
+  });
+  return res;
+}
+
+async function attemptChallenge(challengeId) {
+  return (
       await api.post(`/challengeAttempts`, {
-        challengeId: '61778ec34bb09bb4fee3d5df',
+        challengeId,
       })
-    ).data;
+  ).data;
+}
 
-    return challengeAttempt.unitsAttempts;
-  }
-
-  return challengeAttempts[challengeAttempts.length - 1].unitsAttempts;
+async function getUnitsAttempts(challengeAttemptId) {
+  return (await api.get(`/challengeAttempts/${challengeAttemptId}`)).data.unitsAttempts;
 }
 
 async function attemptUnit(challengeAttemptId, unitOrderNumber) {
@@ -33,6 +44,7 @@ async function attemptUnit(challengeAttemptId, unitOrderNumber) {
 }
 
 export default {
+  getChallenges,
   getUnitsAttempts,
   attemptUnit,
 };
