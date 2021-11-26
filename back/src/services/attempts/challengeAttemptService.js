@@ -66,6 +66,7 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 	await lifesCheck(challengeAttempt);
 
 	await challengeAttempt.attemptLesson({ unitOrderNumber, lessonOrderNumber });
+
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).getLessonAttempt(lessonOrderNumber);
 };
 
