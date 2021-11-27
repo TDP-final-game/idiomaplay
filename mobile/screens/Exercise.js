@@ -17,7 +17,14 @@ import ExamService from '../services/examService';
 import { CustomAlert } from '../components/CustomAlert';
 
 const Exercise = ({ navigation, route }) => {
-  const { lessonOrderNumber, exercisesAttempts, challengeAttemptId, isExam } = route.params;
+  const {
+    lessonOrderNumber,
+    exercisesAttempts,
+    challengeAttemptId,
+    unitOrderNumber,
+    isExam,
+    challengeName,
+  } = route.params;
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [incorrectAnswer, setIncorrectAnswer] = useState(null);
@@ -32,8 +39,6 @@ const Exercise = ({ navigation, route }) => {
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-
-  const unitOrderNumber = 1;
 
   const explanationByType = {
     [exerciseTypes.COMPLETE_SENTENCE]: 'Completa la siguiente frase',
@@ -91,6 +96,7 @@ const Exercise = ({ navigation, route }) => {
 
       return navigation.navigate('ExamEntry', {
         unitOrderNumber,
+        challengeName,
         lessonOrderNumber,
         challengeAttemptId,
         rewards,

@@ -31,7 +31,12 @@ const Home = ({ navigation }) => {
             <ChallengeCard
               text={item.name}
               state={item.status}
-              onPress={() => navigation.navigate(screens.UNITS_LIST, {challengeAttemptId: item._id})}
+              onPress={() =>
+                navigation.navigate(screens.UNITS_LIST, {
+                  challengeAttemptId: item._id,
+                  challengeName: item.name,
+                })
+              }
             />
           </View>
         )}
