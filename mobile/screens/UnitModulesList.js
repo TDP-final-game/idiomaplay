@@ -61,10 +61,11 @@ const UnitModulesList = ({ navigation, route }) => {
     dispatch(initResults(unitModuleAttempt.exercisesAttempts));
 
     let exerciseParams = {
+      exercisesAttempts: unitModuleAttempt.exercisesAttempts,
       unitOrderNumber,
       lessonOrderNumber,
-      exercisesAttempts: unitModuleAttempt.exercisesAttempts,
       challengeAttemptId,
+      challengeName,
       isExam,
     };
 

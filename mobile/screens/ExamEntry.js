@@ -86,6 +86,7 @@ const ExamEntry = ({ navigation, route }) => {
 
     let exerciseParams = {
       lessonOrderNumber: -1,
+      unitOrderNumber,
       exercisesAttempts: unitModuleAttempt.exercisesAttempts,
       challengeAttemptId,
       isExam: true,
