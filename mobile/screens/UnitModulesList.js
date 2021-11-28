@@ -117,7 +117,7 @@ const UnitModulesList = ({ navigation, route }) => {
           layout="default"
           renderItem={({ item }) => (
             <View
-              style={{ flexGrow: 1, marginHorizontal: '5%', backgroundColor: colors.BACKGROUND }}
+              style={{ flexGrow: 1, marginHorizontal: '10%', backgroundColor: colors.BACKGROUND }}
             >
               <LessonCard
                 text={item.name}
