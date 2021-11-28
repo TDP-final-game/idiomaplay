@@ -13,6 +13,7 @@ export const UnitCard = ({ text, state, onPress }) => {
     [states.passed]: { color: 'lightgreen', text: 'Completa' },
     [states.pending]: { color: 'lightblue', text: 'Pendiente' },
     [states.failed]: { color: 'tomato', text: 'Fallida' },
+    NOT_AVAILABLE: { color: colors.LIGHT_GRAY, text: 'Bloqueado' },
   };
 
   return (
@@ -21,7 +22,7 @@ export const UnitCard = ({ text, state, onPress }) => {
         style={{
           flexDirection: 'row',
           paddingVertical: '8%',
-          paddingHorizontal: "3%"
+          paddingHorizontal: '3%',
         }}
       >
         <View

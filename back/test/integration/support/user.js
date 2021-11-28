@@ -8,16 +8,14 @@ class User {
 
 	async create({ email, firstName, lastName }) {
 		const result = await this.app.post('/users')
-			.set('Authorization', email)
-			.send({ firstName, lastName });
+			.send({ email, firstName, lastName });
 		this.app.authenticate(result.body.id);
 		return result;
 	}
 
 	async login({ email }) {
 		const result = await this.app.post('/users/session')
-			.set('Authorization', email)
-			.send({});
+			.send({ email });
 		this.app.authenticate(result.body.id);
 		return result;
 	}

@@ -9,7 +9,7 @@ import { updateStats } from '../redux/user';
 import UserService from '../services/userService';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 
-export const TopBar = () => {
+export const TopBar = ({ cartButtonFunction, cartButtonPressed }) => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
@@ -58,8 +58,12 @@ export const TopBar = () => {
       </View>
 
       <View style={{ marginRight: '3%' }}>
-        <TouchableOpacity onPress={() => console.log('cart')}>
-          <Ionicons name="cart" size={50} color={colors.PRIMARY_DARK} />
+        <TouchableOpacity onPress={cartButtonFunction}>
+          <Ionicons
+            name="cart"
+            size={50}
+            color={cartButtonPressed ? colors.PRIMARY_LIGHT : colors.PRIMARY_DARK}
+          />
         </TouchableOpacity>
       </View>
     </View>

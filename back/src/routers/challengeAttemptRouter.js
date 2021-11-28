@@ -3,17 +3,19 @@
 const express = require('express');
 
 const challengeAttemptController = require('../controllers/challengeAttemptController');
-const middlewares = require('../controllers/middlewares/index');
+const authentication = require('../controllers/middlewares/authentication');
+const detectActivity = require('../controllers/middlewares/detectActivity');
 
 const router = express.Router();
 
-router.use(middlewares);
+// the order matters :)
+router.use([authentication, detectActivity]);
 
 router.post('/', challengeAttemptController.attemptChallenge);
 router.put('/:challengeAttemptId/unitsAttempts', challengeAttemptController.attemptUnit);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts', challengeAttemptController.attemptExam);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', challengeAttemptController.attemptLesson);
-router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', 
+router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts',
 	challengeAttemptController.attemptLessonExercise);
 router.put('/:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempts/exercisesAttempts', challengeAttemptController.attemptExamExercise);
 router.get('/:challengeAttemptId', challengeAttemptController.getChallenge);

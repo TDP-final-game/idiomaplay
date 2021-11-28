@@ -27,6 +27,26 @@ const User = new mongoose.Schema({
 		type: Stats,
 		required: true,
 		default: () => ({})
+	},
+	enabled: {
+		type: Boolean,
+		required: true,
+		default: true
+	},
+	expoPushToken: {
+		type: String,
+		required: false
+	},
+	lastAccess: {
+		type: Date
+	},
+	lastActivityDetected: {
+		type: Date,
+		default: new Date()
+	},
+	lastNotificationSentDate: {
+		type: Date,
+		default: new Date()
 	}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
@@ -35,6 +55,10 @@ const User = new mongoose.Schema({
  */
 User.methods.addReward = function(reward) {
 	this.stats.addReward(reward);
+};
+
+User.methods.exchangeCoinsForLives = function() {
+	this.stats.exchangeCoinsForLives();
 };
 
 module.exports = {

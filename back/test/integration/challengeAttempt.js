@@ -16,23 +16,25 @@ const compare = ({ properties, obj1, obj2 }) => {
 
 const correctAnswer = exercise => exercise.options.find(option => option.correct).text;
 
-describe.skip('/challengeAttempts', () => {
+describe('/challengeAttempts', () => {
 	// Example classes
+	let userExample;
 	let challengeExample;
 	let challengeAttemptExample;
 
 	beforeEach(async function() {
-		const userExample = new UserExample(this.app);
+		challengeExample = new ChallengeExample(this.app);
+		challengeAttemptExample = new ChallengeAttemptExample(this.app);
+		userExample = new UserExample(this.app);
+	});
+
+	// Authentication
+	beforeEach(async () => {
 		await userExample.create({
 			email: 'test@test.com',
 			firstName: 'Test firstName',
 			lastName: 'Test lastName'
 		});
-	});
-
-	beforeEach(async function() {
-		challengeExample = new ChallengeExample(this.app);
-		challengeAttemptExample = new ChallengeAttemptExample(this.app);
 	});
 
 	// Challenge
@@ -44,18 +46,6 @@ describe.skip('/challengeAttempts', () => {
 		challenge = await challengeExample.create();
 		unitOrderNumber = challenge.units[0].orderNumber;
 		lessonOrderNumber = challenge.units[0].lessons[0].orderNumber;
-	});
-
-	// User
-	let userExample;
-
-	beforeEach(async function() {
-		userExample = new UserExample(this.app);
-		await userExample.create({
-			email: 'test@test.com',
-			firstName: 'Test firstName',
-			lastName: 'Test lastName'
-		});
 	});
 
 	// Challenge attempt
@@ -137,6 +127,7 @@ describe.skip('/challengeAttempts', () => {
 			});
 			expect(challengeAttempt.status).to.eql(STATUSES.IN_PROGRESS);
 
+			// Unit 1
 			const unit = challenge.units[0];
 			const unitAttempt = challengeAttempt.unitsAttempts[0];
 			compare({
@@ -146,10 +137,20 @@ describe.skip('/challengeAttempts', () => {
 			});
 			expect(unitAttempt.status).to.eql(STATUSES.PENDING);
 			expect(unitAttempt.lessonsAttempts).to.eql([]);
+
+			// Unit 2
+			const unit2 = challenge.units[1];
+			const unitAttempt2 = challengeAttempt.unitsAttempts[1];
+			compare({
+				properties: ['name', 'orderNumber', 'description'],
+				obj1: unitAttempt2,
+				obj2: unit2
+			});
+			expect(unitAttempt2.status).to.eql(STATUSES.NOT_AVAILABLE);
 		});
 	});
 
-	describe.skip('PUT /:challengeAttemptId/unitsAttempts', () => {
+	describe('PUT /:challengeAttemptId/unitsAttempts', () => {
 		it('should change the unit attempt to "in progress"', async () => {
 			expect(unitAttemptReq).to.have.status(200);
 
@@ -183,7 +184,7 @@ describe.skip('/challengeAttempts', () => {
 		});
 	});
 
-	describe.skip('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', () => {
+	describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts', () => {
 		it('should change the lesson attempt to "in progress"', async () => {
 			expect(lessonAttemptReq).to.have.status(200);
 
@@ -199,15 +200,16 @@ describe.skip('/challengeAttempts', () => {
 			const exerciseAttempt = lessonAttempt.exercisesAttempts[0];
 			const exercise = lesson.exercises[0];
 			compare({
-				properties: ['type', 'statement', 'options'],
+				properties: ['type', 'statement'],
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
+			expect(exerciseAttempt.options).to.have.deep.members(exercise.options);
 			expect(exerciseAttempt.status).to.eql(STATUSES.PENDING);
 		});
 	});
 
-	describe.skip('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', () => {
+	describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/lessonsAttempts/:lessonOrderNumber/exercisesAttempts', () => {
 		it('should change the lesson exercise attempt to "passed"', async () => {
 			const lessonExerciseAttemptReq = lessonExercisesAttemptReq[0];
 			expect(lessonExerciseAttemptReq).to.have.status(200);
@@ -215,10 +217,11 @@ describe.skip('/challengeAttempts', () => {
 			const exerciseAttempt = lessonExerciseAttemptReq.body;
 			const exercise = challenge.units[0].lessons[0].exercises[0];
 			compare({
-				properties: ['type', 'statement', 'options'],
+				properties: ['type', 'statement'],
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
+			expect(exerciseAttempt.options).to.have.deep.members(exercise.options);
 			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
 		});
@@ -229,14 +232,14 @@ describe.skip('/challengeAttempts', () => {
 			expect(getLessonAttemptReq.body.reward.coins).to.eql(10);
 		});
 
-		it('should add 10 coins to the user when passed in the first attempt', async () => {
+		it('should add 40 coins to the user when passed in the first attempt', async () => {
 			const statsReq = await userExample.stats();
 			expect(statsReq).to.have.status(200);
-			expect(statsReq.body.coins).to.eql(90);
+			expect(statsReq.body.coins).to.eql(120);
 		});
 	});
 
-	describe.skip('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', () => {
+	describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt', () => {
 		it('should change the exam attempt to "in progress"', async () => {
 			expect(examAttemptReq).to.have.status(200);
 
@@ -252,15 +255,16 @@ describe.skip('/challengeAttempts', () => {
 			const exerciseAttempt = examAttempt.exercisesAttempts[0];
 			const exercise = exam.exercises[0];
 			compare({
-				properties: ['type', 'statement', 'options'],
+				properties: ['type', 'statement'],
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
+			expect(exerciseAttempt.options).to.have.deep.members(exercise.options);
 			expect(exerciseAttempt.status).to.eql(STATUSES.PENDING);
 		});
 	});
 
-	describe.skip('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', () => {
+	describe('PUT /:challengeAttemptId/unitsAttempts/:unitOrderNumber/examAttempt/exercisesAttempts', () => {
 		it('should change the exam exercise attempt to "passed"', async () => {
 			const examExerciseAttemptReq = examExercisesAttemptReq[0];
 			expect(examExerciseAttemptReq).to.have.status(200);
@@ -268,10 +272,11 @@ describe.skip('/challengeAttempts', () => {
 			const exerciseAttempt = examExerciseAttemptReq.body;
 			const exercise = challenge.units[0].exam.exercises[0];
 			compare({
-				properties: ['type', 'statement', 'options'],
+				properties: ['type', 'statement'],
 				obj1: exerciseAttempt,
 				obj2: exercise
 			});
+			expect(exerciseAttempt.options).to.have.deep.members(exercise.options);
 			expect(exerciseAttempt.status).to.eql(STATUSES.PASSED);
 			expect(exerciseAttempt.optionAnswered).to.eql(correctAnswer(exercise));
 		});
@@ -287,6 +292,20 @@ describe.skip('/challengeAttempts', () => {
 				obj1: getChallengeAttemptReq.body,
 				obj2: challenge
 			});
+		});
+
+		it('should return a unit with status "pending"', async () => {
+			const getChallengeAttemptReq = await challengeAttemptExample.getChallengeAttempt({ challengeAttemptId });
+
+			// Unit 2
+			const unit2 = challenge.units[1];
+			const unitAttempt2 = getChallengeAttemptReq.body.unitsAttempts[1];
+			compare({
+				properties: ['name', 'orderNumber', 'description'],
+				obj1: unitAttempt2,
+				obj2: unit2
+			});
+			expect(unitAttempt2.status).to.eql(STATUSES.PENDING);
 		});
 	});
 

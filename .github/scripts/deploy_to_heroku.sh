@@ -5,7 +5,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/init.sh"
 check_vars \
   SERVICE \
   IMAGE_NAME IMAGE_VERSION \
-  REGISTRY_URL REGISTRY_USERNAME REGISTRY_PASSWORD
+  REGISTRY_URL REGISTRY_USERNAME REGISTRY_PASSWORD \
+  HEROKU_API_KEY HEROKU_APP
 
 # Login to docker registry
 echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY_URL" -u "$REGISTRY_USERNAME" --password-stdin
@@ -17,16 +18,16 @@ echo "$HEROKU_API_KEY" | docker login registry.heroku.com -u _ --password-stdin
 docker pull "$IMAGE_NAME:$IMAGE_VERSION"
 
 # Tag image for heroku
-docker tag "$IMAGE_NAME:$IMAGE_VERSION" registry.heroku.com/idiomaplay/web
+docker tag "$IMAGE_NAME:$IMAGE_VERSION" registry.heroku.com/$HEROKU_APP/web
 
 # Push image
-docker push registry.heroku.com/idiomaplay/web
+docker push registry.heroku.com/$HEROKU_APP/web
 
 # Get image id
-IMAGE_ID=$(docker inspect registry.heroku.com/idiomaplay/web --format='{{.Id}}')
+IMAGE_ID=$(docker inspect registry.heroku.com/$HEROKU_APP/web --format='{{.Id}}')
 
 # Release
-curl --netrc -X PATCH https://api.heroku.com/apps/idiomaplay/formation \
+curl --netrc -X PATCH https://api.heroku.com/apps/$HEROKU_APP/formation \
   -d "{
   \"updates\": [
     {

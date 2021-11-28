@@ -4,20 +4,33 @@ import { View, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { screens } from '../config/screens';
-import { states } from '../config/states';
 import { Ionicons } from '@expo/vector-icons';
-import { ExamCard } from '../components/ExamCard';
+import { FlatList } from 'react-native-gesture-handler';
+import { ChallengeCard } from '../components/ChallengeCard';
+import challengeService from '../services/challengeService';
+import { useState } from 'react';
 
 import TalkBalloon from "react-native-talk-balloon";
 
 
 const Home = ({ navigation }) => {
+  const [challengeAttempts, setChallengeAttempts] = useState([]);
 
   const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    navigation.setOptions({
+      cartButtonFunction: () => navigation.navigate(screens.MARKET),
+    });
+
+    challengeService.getChallenges().then((challenges) => {
+      setChallengeAttempts(challenges);
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ marginHorizontal: '5%', flexDirection: 'column' }}>
-        <View style={{ marginHorizontal: '5%', flexDirection: 'row' }}>
+      <View style={{ marginHorizontal: '5%', flexDirection: 'row' }}>
           <TalkBalloon
               backgroundColor={colors.BACKGROUND}
               borderColor={colors.DARK_LOGO}
@@ -35,13 +48,24 @@ const Home = ({ navigation }) => {
             </TalkBalloon>
           <Ionicons name="logo-octocat" size={100} color={colors.DARK_LOGO} />
         </View>
-        <Text style={ { marginBottom: '5%', fontSize: 18, fontWeight: 'bold'}}> Tus Desafíos: </Text>
-        <ExamCard
-          text={'Challenge 1'}
-          state={states.inProgress}
-          onPress={() => navigation.navigate(screens.UNITS_LIST)}
-        />
-      </View>
+      <FlatList
+        data={challengeAttempts}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
+            <ChallengeCard
+              text={item.name}
+              state={item.status}
+              onPress={() =>
+                navigation.navigate(screens.UNITS_LIST, {
+                  challengeAttemptId: item._id,
+                  challengeName: item.name,
+                })
+              }
+            />
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };

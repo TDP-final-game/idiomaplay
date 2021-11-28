@@ -18,7 +18,9 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson, isExam }) =>
 
       <View>
         <Text style={getStyles(isExam).chapterText}>Unidad {unit}</Text>
-        <Text style={getStyles(isExam).lessonText}>{lesson === -1 ? 'Examen' : `Lesson ${lesson}`}</Text>
+        <Text style={getStyles(isExam).lessonText}>
+          {lesson === -1 ? 'Examen' : `Lesson ${lesson}`}
+        </Text>
       </View>
 
       <View style={{ marginRight: '5%' }}>
@@ -28,7 +30,7 @@ export const ChapterHeader = ({ returnButtonFunction, unit, lesson, isExam }) =>
   );
 };
 
-export const UnitHeader = ({ returnButtonFunction, unit, isExam }) => {
+export const UnitHeader = ({ returnButtonFunction, cartButtonFunction, unit, isExam }) => {
   const user = useSelector((state) => state.user);
 
   return (
@@ -45,7 +47,7 @@ export const UnitHeader = ({ returnButtonFunction, unit, isExam }) => {
       </View>
 
       <View style={{ marginRight: '3%' }}>
-        <TouchableOpacity onPress={() => console.log('cart')}>
+        <TouchableOpacity onPress={cartButtonFunction}>
           <Ionicons name="cart" size={50} color={colors.PRIMARY_DARK} />
         </TouchableOpacity>
       </View>
@@ -53,27 +55,28 @@ export const UnitHeader = ({ returnButtonFunction, unit, isExam }) => {
   );
 };
 
-const getStyles = (isExam) => StyleSheet.create({
-  headerContainer: {
-    flexGrow: 1,
-    overflow: 'hidden',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 3,
-    backgroundColor: isExam ? colors.SECONDARY : colors.PRIMARY,
-    justifyContent: 'space-between',
-    borderBottomColor: isExam ? colors.SECONDARY_DARK : colors.PRIMARY_DARK,
-  },
+const getStyles = (isExam) =>
+  StyleSheet.create({
+    headerContainer: {
+      flexGrow: 1,
+      overflow: 'hidden',
+      alignItems: 'center',
+      flexDirection: 'row',
+      borderBottomWidth: 3,
+      backgroundColor: isExam ? colors.SECONDARY : colors.PRIMARY,
+      justifyContent: 'space-between',
+      borderBottomColor: isExam ? colors.SECONDARY_DARK : colors.PRIMARY_DARK,
+    },
 
-  chapterText: {
-    textAlign: 'center',
-    fontSize: 24,
-    color: 'white',
-    fontWeight: 'bold',
-  },
+    chapterText: {
+      textAlign: 'center',
+      fontSize: 24,
+      color: 'white',
+      fontWeight: 'bold',
+    },
 
-  lessonText: {
-    fontSize: 14,
-    textAlign: 'center',
-  },
-});
+    lessonText: {
+      fontSize: 14,
+      textAlign: 'center',
+    },
+  });
