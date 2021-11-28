@@ -119,7 +119,7 @@ const sendMonthlyNotifications = async () => {
 };
 
 const start = async () => {
-	cron.schedule('* */1 * * *', async () => {
+	cron.schedule('* * */24 * *', async () => {
 		await Promise.all([
 			sendDailyNotification(),
 			sendWeeklyNotifications(),
