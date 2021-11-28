@@ -12,14 +12,12 @@ import { states } from '../config/states';
 const UnitsList = ({ navigation, route }) => {
   const [unitsAttempts, setUnitsAttempts] = useState([]);
 
-  const challengeAttemptId = route.params.challengeAttemptId;
+  const { challengeAttemptId, challengeName } = route.params;
 
   const isFocused = useIsFocused();
-  const unitOrderNumber = 1; //todo: revisar
 
   useEffect(() => {
     navigation.setOptions({
-      unit: unitOrderNumber,
       returnButtonFunction: () => navigation.goBack(),
       cartButtonFunction: () => navigation.navigate(screens.MARKET),
     });
@@ -33,12 +31,12 @@ const UnitsList = ({ navigation, route }) => {
   const handlePress = async (unitOrderNumber, status) => {
     if (status == states.notAvailable) return;
 
-    let response = await api.get(`/users/me/challengeAttempts`);
-    const challengeAttemptId = response.data[response.data.length - 1].id;
-
     await ChallengeService.attemptUnit(challengeAttemptId, unitOrderNumber);
 
+    console.log('UNIT ORDER NUM ', unitOrderNumber);
+
     return navigation.navigate(screens.UNIT_MODULES_LIST, {
+      challengeName,
       unitOrderNumber,
       challengeAttemptId,
     });

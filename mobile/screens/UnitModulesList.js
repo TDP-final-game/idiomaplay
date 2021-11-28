@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Alert, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../config/colors';
 import { LessonCard } from '../components/LessonCard';
@@ -27,7 +27,7 @@ const UnitModulesList = ({ navigation, route }) => {
   const [showNotEnoughtLivesAlert, setshowNotEnoughtLivesAlert] = useState(false);
 
   const isFocused = useIsFocused();
-  const { unitOrderNumber, challengeAttemptId } = route.params;
+  const { unitOrderNumber, challengeAttemptId, challengeName } = route.params;
 
   useEffect(() => {
     navigation.setOptions({
@@ -61,9 +61,11 @@ const UnitModulesList = ({ navigation, route }) => {
     dispatch(initResults(unitModuleAttempt.exercisesAttempts));
 
     let exerciseParams = {
-      lessonOrderNumber,
       exercisesAttempts: unitModuleAttempt.exercisesAttempts,
+      unitOrderNumber,
+      lessonOrderNumber,
       challengeAttemptId,
+      challengeName,
       isExam,
     };
 
