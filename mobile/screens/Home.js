@@ -11,12 +11,14 @@ import challengeService from '../services/challengeService';
 import { useState } from 'react';
 
 import TalkBalloon from "react-native-talk-balloon";
-
+import {useIsFocused} from "@react-navigation/core";
 
 const Home = ({ navigation }) => {
   const [challengeAttempts, setChallengeAttempts] = useState([]);
 
   const user = useSelector((state) => state.user);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     navigation.setOptions({
@@ -26,7 +28,7 @@ const Home = ({ navigation }) => {
     challengeService.getChallenges().then((challenges) => {
       setChallengeAttempts(challenges);
     });
-  }, []);
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.container}>
