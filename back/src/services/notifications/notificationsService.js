@@ -12,7 +12,10 @@ const sendNotifications = async (filter, message) => {
 
 	const expo = new Expo();
 
-	const messages = users.map(({ expoPushToken }) => {
+	let messages = users.map(({ expoPushToken }) => {
+
+		if(!expoPushToken)
+			return;
 
 		if(!Expo.isExpoPushToken(expoPushToken)) {
 			console.error(`Push token ${expoPushToken} is not a valid Expo push token`);
@@ -21,6 +24,9 @@ const sendNotifications = async (filter, message) => {
 
 		return { ...message, to: expoPushToken };
 	});
+
+	messages = messages.filter(element => element !== undefined);
+
 	messages.push();
 
 	const chunks = expo.chunkPushNotifications(messages);
@@ -113,7 +119,7 @@ const sendMonthlyNotifications = async () => {
 };
 
 const start = async () => {
-	cron.schedule('* * * * *', async () => {
+	cron.schedule('* * */24 * *', async () => {
 		await Promise.all([
 			sendDailyNotification(),
 			sendWeeklyNotifications(),

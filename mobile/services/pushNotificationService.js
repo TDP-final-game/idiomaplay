@@ -2,7 +2,6 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
 export default async function registerForPushNotificationsAsync() {
-
   let token;
   if (Constants.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -16,11 +15,9 @@ export default async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
 
   return token;
-};
-
+}

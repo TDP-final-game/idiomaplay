@@ -68,7 +68,7 @@ const update = async ({ id, enabled }) => {
 	return user.save();
 };
 
-const detectActivity = async ({ id }) => {
+const detectActivity = async id => {
 	const user = await User.findOne({ _id: id });
 	user.lastActivityDetected = new Date();
 	return user.save();

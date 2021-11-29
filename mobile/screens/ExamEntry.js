@@ -12,9 +12,11 @@ import { resetResults } from '../redux/lesson';
 import { LifeAndCoins } from '../components/LifeAndCoins';
 import { initResults } from '../redux/lesson';
 import UnitService from '../services/unitService';
+import challengeService from '../services/challengeService';
 
 const ExamEntry = ({ navigation, route }) => {
-  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards, isExam } = route.params;
+  const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards, isExam, challengeName } =
+    route.params;
 
   const NOT_ENOUGHT_LIVES_ALERT_BODY =
     'No tienes vidas suficientes para realizar este modulo! Completa los que esten en progreso para poder ganar vidas!';
@@ -25,6 +27,7 @@ const ExamEntry = ({ navigation, route }) => {
     GO_TO_EXAM: 'GO_TO_EXAM',
     RETURN_TO_UNIT: 'RETURN_TO_UNIT',
     RETURN_TO_CHALLENGE: 'RETURN_TO_CHALLENGE',
+    RETURN_TO_HOME: 'RETURN_TO_HOME',
   };
 
   const dispatch = useDispatch();
@@ -45,6 +48,11 @@ const ExamEntry = ({ navigation, route }) => {
   const [iconName, setIconName] = useState('');
   const [currentLessonState, setCurrentLessonState] = useState(null);
   const [showNotEnoughtLivesAlert, setshowNotEnoughtLivesAlert] = useState(false);
+
+  const goToHome = () => {
+    dispatch(resetResults());
+    return navigation.navigate(screens.HOME);
+  };
 
   const goToUnit = () => {
     dispatch(resetResults());
@@ -78,6 +86,7 @@ const ExamEntry = ({ navigation, route }) => {
 
     let exerciseParams = {
       lessonOrderNumber: -1,
+      unitOrderNumber,
       exercisesAttempts: unitModuleAttempt.exercisesAttempts,
       challengeAttemptId,
       isExam: true,
@@ -135,25 +144,33 @@ const ExamEntry = ({ navigation, route }) => {
       );
       setIconName('arm-flex');
       setCurrentLessonState(lessonState.RETRY);
-    } else {
-      setTitle('¡Felicidades!');
-      setSubtitle(
-        `¡${isExam ? 'Unidad' : 'Lección'} ${
-          isExam ? unitOrderNumber : lessonOrderNumber
-        } finalizada con éxito!`
-      );
-      setDescription('');
-      setIconName('party-popper');
+      return;
+    }
 
-      if (!isExam) {
-        UnitService.allLessonsPassed(challengeAttemptId, unitOrderNumber).then((allPassed) => {
-          if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
-          else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
-        });
+    setTitle('¡Felicidades!');
+    setDescription('');
+    setIconName('party-popper');
+
+    if (!isExam) {
+      setSubtitle(`Lección ${lessonOrderNumber} finalizada con éxito!`);
+
+      UnitService.allLessonsPassed(challengeAttemptId, unitOrderNumber).then((allPassed) => {
+        if (allPassed) setCurrentLessonState(lessonState.GO_TO_EXAM);
+        else setCurrentLessonState(lessonState.RETURN_TO_UNIT);
+      });
+
+      return;
+    }
+
+    challengeService.allUnitsPassed(challengeAttemptId).then((allPassed) => {
+      if (allPassed) {
+        setSubtitle(`Desafio ${challengeName} finalizado con éxito!`);
+        setCurrentLessonState(lessonState.RETURN_TO_HOME);
       } else {
+        setSubtitle(`Unidad ${unitOrderNumber} finalizada con éxito`);
         setCurrentLessonState(lessonState.RETURN_TO_CHALLENGE);
       }
-    }
+    });
   }, []);
 
   Animated.loop(
@@ -215,6 +232,12 @@ const ExamEntry = ({ navigation, route }) => {
             fontSize={35}
           />
         </View>
+
+        {currentLessonState === lessonState.RETURN_TO_HOME && (
+          <View style={{ ...styles.buttonContainer, flex: 0.07 }}>
+            <PrimaryButton text={'Ir al home'} onPress={goToHome}></PrimaryButton>
+          </View>
+        )}
 
         {currentLessonState === lessonState.RETURN_TO_UNIT && (
           <View style={{ ...styles.buttonContainer, flex: 0.07 }}>
