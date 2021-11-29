@@ -14,9 +14,17 @@ async function getChallenges() {
   });
 
   const res = [];
-  response.data.forEach((challenge) => {
-    res.push(challengeAttempts[challenge._id] ?? attemptChallenge(challenge._id));
-  });
+
+  for (let challenge of response.data) {
+    let challengeAttempt = challengeAttempts[challenge._id];
+
+    if (!challengeAttempt) {
+      challengeAttempt = await attemptChallenge(challenge._id);
+    }
+
+    res.push(challengeAttempt);
+  }
+
   return res;
 }
 
