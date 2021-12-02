@@ -7,11 +7,12 @@ import translations from './translations';
 import dataProvider from './dataProvider';
 import UserList from './components/users/List';
 import UserEdit from './components/users/Edit';
+import authProvider from './authProvider';
 
 const i18nProvider = polyglotI18nProvider(() => ({...spanishMessages, ...translations}), 'es');
 
 const App = () => (
-	<Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+	<Admin authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
 		<Resource name="users" list={UserList} edit={UserEdit} />
 	</Admin>
 );
