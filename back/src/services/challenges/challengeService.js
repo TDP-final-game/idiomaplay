@@ -9,8 +9,8 @@ const findChallenge = challengeId => {
 	return challengeModel.findOne({ _id: challengeId });
 };
 
-const listChallenges = async ({ pageNumber = 0 }) => {
-	return challengeModel.find({}).skip(pageNumber * pageSize)
+const listChallenges = async ({ pageNumber = 0, language }) => {
+	return challengeModel.find({ language }).skip(pageNumber * pageSize)
 		.limit(pageSize);
 };
 
@@ -22,7 +22,8 @@ const createChallenge = async challengeData => {
 	return challengeModel.create({
 		name: challengeData.name,
 		description: challengeData.description,
-		difficulty: challengeData.difficulty
+		difficulty: challengeData.difficulty,
+		language: challengeData.language
 	});
 };
 
