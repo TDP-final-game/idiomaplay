@@ -17,6 +17,7 @@ module.exports = {
 		type: String,
 		lowercase: true,
 		trim: true,
+		default: 'english',
 		required: [true, 'language is required']
 	}
 };
