@@ -5,8 +5,13 @@ const _allUnitsPassed = function (units) {
   return units.every((unit) => unit.status === states.passed);
 };
 
-async function getChallenges() {
-  const response = await api.get('/challenges');
+async function getChallenges(language) {
+  console.log(language);
+  let params = null;
+  if (language!=='all') {
+    params = {language}
+  }
+  const response = await api.get('/challenges', null,{ params });
 
   const challengeAttempts = {};
   (await api.get('/users/me/challengeAttempts')).data.forEach((challengeAttempt) => {

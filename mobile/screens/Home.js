@@ -9,7 +9,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { ChallengeCard } from '../components/ChallengeCard';
 import challengeService from '../services/challengeService';
 import { useState } from 'react';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 import TalkBalloon from "react-native-talk-balloon";
 import {useIsFocused} from "@react-navigation/core";
 
@@ -18,21 +18,46 @@ const Home = ({ navigation }) => {
 
   const user = useSelector((state) => state.user);
 
+  const [open, setOpen] = useState(false);
+  const [language, setLanguage] = useState('all');
+  const [languageOptions, setLanguageOptions] = useState([
+    {label: 'Todos', value: 'all'},
+    {label: 'Ingles', value: 'english'},
+    {label: 'Español', value: 'spanish'},
+    {label: 'Portugues', value: 'portuguese'},
+
+  ]);
+
   const isFocused = useIsFocused();
+
+  const getChallenges = (value) => {
+    challengeService.getChallenges(value).then((challenges) => {
+      setChallengeAttempts(challenges);
+    });
+  }
 
   useEffect(() => {
     navigation.setOptions({
       cartButtonFunction: () => navigation.navigate(screens.MARKET),
     });
 
-    challengeService.getChallenges().then((challenges) => {
-      setChallengeAttempts(challenges);
-    });
+    getChallenges();
   }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ marginHorizontal: '5%', flexDirection: 'row' }}>
+      <View style={{ marginHorizontal: '5%', flex: 0.1 }}>
+          <DropDownPicker
+              open={open}
+              value={language}
+              items={languageOptions}
+              setOpen={setOpen}
+              setValue={setLanguage}
+              onChangeValue={(value) => getChallenges(value)}
+              setItems={setLanguageOptions}
+          />
+      </View>
+      <View style={{ marginHorizontal: '5%', flexDirection: 'row', flex: 0.3 }}>
           <TalkBalloon
               backgroundColor={colors.BACKGROUND}
               borderColor={colors.DARK_LOGO}
@@ -50,24 +75,26 @@ const Home = ({ navigation }) => {
             </TalkBalloon>
           <Ionicons name="logo-octocat" size={100} color={colors.DARK_LOGO} />
         </View>
-      <FlatList
-        data={challengeAttempts}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
-            <ChallengeCard
-              text={item.name}
-              state={item.status}
-              onPress={() =>
-                navigation.navigate(screens.UNITS_LIST, {
-                  challengeAttemptId: item._id,
-                  challengeName: item.name,
-                })
-              }
-            />
-          </View>
-        )}
-      />
+      <View style={{ flex: 0.5 }}>
+          <FlatList
+              data={challengeAttempts}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                  <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
+                      <ChallengeCard
+                          text={item.name}
+                          state={item.status}
+                          onPress={() =>
+                              navigation.navigate(screens.UNITS_LIST, {
+                                  challengeAttemptId: item._id,
+                                  challengeName: item.name,
+                              })
+                          }
+                      />
+                  </View>
+              )}
+          />
+      </View>
     </SafeAreaView>
   );
 };
