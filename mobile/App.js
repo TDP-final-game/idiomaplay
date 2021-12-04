@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import { firebaseConfig } from './config';
 import { TopBar } from './components/TopBar';
 import { screens } from './config/screens';
+import { Tutorial } from './screens/Tutorial';
 import { ChapterHeader, UnitHeader } from './components/ChapterHeader';
 import registerForPushNotificationsAsync from './services/pushNotificationService';
 import { MarketTopbar } from './components/MarketTopbar';
@@ -83,6 +84,7 @@ const RootComponent = () => {
             <Stack.Screen name={screens.UNIT_MODULES_LIST} component={UnitModulesList} />
             <Stack.Screen name="SignupConfirmation" component={SignupConfirmation} />
             <Stack.Screen name={screens.UNITS_LIST} component={UnitsList} />
+            <Stack.Screen name={screens.TUTORIAL} component={Tutorial} />
           </>
         ) : (
           <>
@@ -104,21 +106,19 @@ Notifications.setNotificationHandler({
 });
 
 function App() {
-
   const [notification, setNotification] = useState(false);
   const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
 
   useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
 
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
       setNotification(notification);
     });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
       console.log(response);
     });
 
@@ -128,7 +128,6 @@ function App() {
     };
   }, []);
 
-
   return (
     <Provider store={store}>
       <SafeAreaProvider>
@@ -137,6 +136,5 @@ function App() {
     </Provider>
   );
 }
-
 
 export default App;

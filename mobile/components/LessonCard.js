@@ -47,9 +47,10 @@ export const LessonCard = ({ text, state, onPress, disabled }) => {
         <Text style={styles.lessonTitle}>{text}</Text>
 
         <Text style={styles.lessonDescription}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+          We have assembled an extensive list of topics that cover basic English grammar to advance
+          in a manageable succession. We hope that the new learners can follow the list put together
+          by our experts while the experienced ones can check back on their topic of necessity with
+          ease.
         </Text>
       </View>
     </TouchableOpacity>

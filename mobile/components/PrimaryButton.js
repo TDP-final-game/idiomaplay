@@ -4,9 +4,15 @@ import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
 import { Text, StyleSheet } from 'react-native';
 
-export const PrimaryButton = ({ text, onPress }) => {
+export const PrimaryButton = ({ text, onPress, disabled = false }) => {
+  const bgcolor = disabled ? 'grey' : colors.PRIMARY_BUTTON_COLOR;
+
   return (
-    <TouchableOpacity style={[styles.button, commonStyles.shadow]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, commonStyles.shadow, { backgroundColor: bgcolor }]}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
@@ -19,7 +25,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '5%',
     justifyContent: 'center',
-    backgroundColor: colors.PRIMARY_BUTTON_COLOR,
   },
 
   text: {
