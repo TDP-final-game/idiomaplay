@@ -12,5 +12,12 @@ module.exports = {
 	description: {
 		type: String,
 		required: [true, 'description is required']
+	},
+	language: {
+		type: String,
+		lowercase: true,
+		trim: true,
+		default: 'english',
+		required: [true, 'language is required']
 	}
 };
