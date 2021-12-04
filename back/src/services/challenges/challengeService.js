@@ -11,9 +11,8 @@ const findChallenge = challengeId => {
 
 const listChallenges = async ({ pageNumber = 0, language }) => {
 	let filters = {};
-	if(language) {
+	if(language)
 		filters = { language };
-	}
 	return challengeModel.find(filters).skip(pageNumber * pageSize)
 		.limit(pageSize);
 };
