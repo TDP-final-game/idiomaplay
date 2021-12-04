@@ -32,7 +32,7 @@ const listChallenges = async (req, res) => {
 	// #swagger.tags = ['Challenge']
 
 	try {
-		const response = await challengeService.listChallenges(req.body);
+		const response = await challengeService.listChallenges(req.query);
 		res.status(STATUS_CODES.OK)
 			.send(response);
 	} catch(error) {
