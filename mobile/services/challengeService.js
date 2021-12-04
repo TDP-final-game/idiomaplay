@@ -6,7 +6,6 @@ const _allUnitsPassed = function (units) {
 };
 
 async function getChallenges(language) {
-  console.log(language);
   let params = null;
   if (language!=='all') {
     params = {language}
