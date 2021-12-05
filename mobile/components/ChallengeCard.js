@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { colors } from '../config/colors';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { commonStyles } from '../config/styles';
 import { TouchableOpacity } from 'react-native';
+
 import { Text, StyleSheet, View } from 'react-native';
 import { states } from '../config/states';
 import { Badge } from './Badge';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export const ChallengeCard = ({ text, state, onPress, disabled }) => {
+export const ChallengeCard = ({ text, state, onPress, language, disabled }) => {
   const badgeInfo = {
     [states.inProgress]: { color: colors.SECONDARY_LIGHT, text: 'En progreso' },
     [states.passed]: { color: 'lightgreen', text: 'Completa' },
@@ -16,11 +17,19 @@ export const ChallengeCard = ({ text, state, onPress, disabled }) => {
     [states.failed]: { color: 'tomato', text: 'Fallida' },
   };
 
+  const languageTranslator = {
+    spanish: 'Español',
+    english: 'Inglés',
+    portuguese: 'Portugues',
+  };
+
+  const trophieColor = state == states.passed ? 'gold' : 'black';
+
   const VisibleContent = () => (
     <View style={{ flexDirection: 'row', paddingVertical: '8%', paddingHorizontal: '3%' }}>
       <View style={{ width: '20%', justifyContent: 'center' }}>
         <Text style={{ ...styles.text, paddingLeft: '5%' }}>
-          <Ionicons name="md-book" size={35} color={colors.PRIMARY_DARK} />
+          <FontAwesome5 name="trophy" size={40} color={trophieColor} />
         </Text>
       </View>
 
@@ -28,12 +37,24 @@ export const ChallengeCard = ({ text, state, onPress, disabled }) => {
         <Text style={styles.text}>{text}</Text>
       </View>
 
-      <View style={{ width: '35%', justifyContent: 'center' }}>
-        <Badge
-          text={badgeInfo[state].text}
-          color={badgeInfo[state].color}
-          textColor={colors.PRIMARY_DARK}
-        />
+      <View style={{ width: '35%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <Badge
+            fontSize={14}
+            text={badgeInfo[state].text}
+            color={badgeInfo[state].color}
+            textColor={colors.PRIMARY_DARK}
+          />
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: '5%' }}>
+          <Badge
+            fontSize={14}
+            text={languageTranslator[language]}
+            color={'red'}
+            textColor={'white'}
+          />
+        </View>
       </View>
     </View>
   );
@@ -70,7 +91,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
     color: colors.PRIMARY_DARK,
   },

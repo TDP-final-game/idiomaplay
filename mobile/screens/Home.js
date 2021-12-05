@@ -107,6 +107,7 @@ const Home = ({ navigation }) => {
             <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
               <ChallengeCard
                 text={item.name}
+                language={item.language}
                 state={item.status}
                 onPress={() =>
                   navigation.navigate(screens.UNITS_LIST, {
