@@ -10,9 +10,9 @@ import { ChallengeCard } from '../components/ChallengeCard';
 import challengeService from '../services/challengeService';
 import { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import TalkBalloon from "react-native-talk-balloon";
-import {useIsFocused} from "@react-navigation/core";
-import {Dimensions} from "react-native";
+import TalkBalloon from 'react-native-talk-balloon';
+import { useIsFocused } from '@react-navigation/core';
+import { Dimensions } from 'react-native';
 
 const Home = ({ navigation }) => {
   const [challengeAttempts, setChallengeAttempts] = useState([]);
@@ -22,10 +22,10 @@ const Home = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState('all');
   const [languageOptions, setLanguageOptions] = useState([
-    {label: 'Todos los idiomas', value: 'all'},
-    {label: 'Ingles', value: 'english'},
-    {label: 'Español', value: 'spanish'},
-    {label: 'Portugues', value: 'portuguese'},
+    { label: 'Todos los idiomas', value: 'all' },
+    { label: 'Ingles', value: 'english' },
+    { label: 'Español', value: 'spanish' },
+    { label: 'Portugues', value: 'portuguese' },
   ]);
 
   const windowWidth = Dimensions.get('window').width;
@@ -37,7 +37,7 @@ const Home = ({ navigation }) => {
     challengeService.getChallenges(value).then((challenges) => {
       setChallengeAttempts(challenges);
     });
-  }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -49,58 +49,73 @@ const Home = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ justifyContent: 'center', marginHorizontal: '5%', flexDirection: 'row', flex: 0.3}}>
-          <TalkBalloon
-              backgroundColor={colors.BACKGROUND}
-              borderColor={colors.DARK_LOGO}
-              borderRadius={7}
-              triangleSize={19}
-              triangleDirection="right"
-              triangleOffSet="30%"
-              width={windowWidth * 0.52}
-              borderWidth={8}
-              height={windowWidth * 0.2}
-              >
-                <Text style={ { marginBottom: '5%', fontSize: 18, fontWeight: 'bold', color: colors.SECONDARY, textAlign: 'center',}}>
-                  {`Hola! ${user.name}, ¿Listo para nuevos desafíos?`}
-                </Text>
-            </TalkBalloon>
-          <Ionicons name="logo-octocat" size={100} color={colors.DARK_LOGO} />
-        </View>
-      <View style={{ marginHorizontal: '5%', flex: 0.1}}>
-        <DropDownPicker
-            open={open}
-            value={language}
-            items={languageOptions}
-            setOpen={setOpen}
-            setValue={setLanguage}
-            onChangeValue={(value) => getChallenges(value)}
-            setItems={setLanguageOptions}
-            listMode={"SCROLLVIEW"}
-            modalProps={{
-                animationType: "fade"
+      <View
+        style={{
+          justifyContent: 'center',
+          marginHorizontal: '5%',
+          flexDirection: 'row',
+          flex: 0.3,
+        }}
+      >
+        <TalkBalloon
+          backgroundColor={colors.BACKGROUND}
+          borderColor={colors.DARK_LOGO}
+          borderRadius={7}
+          triangleSize={19}
+          triangleDirection="right"
+          triangleOffSet="30%"
+          width={windowWidth * 0.52}
+          borderWidth={8}
+          height={windowWidth * 0.2}
+        >
+          <Text
+            style={{
+              marginBottom: '5%',
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: colors.SECONDARY,
+              textAlign: 'center',
             }}
+          >
+            {`Hola! ${user.name}, ¿Listo para nuevos desafíos?`}
+          </Text>
+        </TalkBalloon>
+        <Ionicons name="logo-octocat" size={100} color={colors.DARK_LOGO} />
+      </View>
+      <View style={{ marginHorizontal: '5%', flex: 0.1 }}>
+        <DropDownPicker
+          open={open}
+          value={language}
+          items={languageOptions}
+          setOpen={setOpen}
+          setValue={setLanguage}
+          onChangeValue={(value) => getChallenges(value)}
+          setItems={setLanguageOptions}
+          listMode={'SCROLLVIEW'}
+          modalProps={{
+            animationType: 'fade',
+          }}
         />
       </View>
       <View style={{ flex: 0.5 }}>
-          <FlatList
-              data={challengeAttempts}
-              keyExtractor={(item) => item._id}
-              renderItem={({ item }) => (
-                  <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
-                      <ChallengeCard
-                          text={item.name}
-                          state={item.status}
-                          onPress={() =>
-                              navigation.navigate(screens.UNITS_LIST, {
-                                  challengeAttemptId: item._id,
-                                  challengeName: item.name,
-                              })
-                          }
-                      />
-                  </View>
-              )}
-          />
+        <FlatList
+          data={challengeAttempts}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <View style={{ marginHorizontal: '5%', marginTop: '2%', marginBottom: '2%' }}>
+              <ChallengeCard
+                text={item.name}
+                state={item.status}
+                onPress={() =>
+                  navigation.navigate(screens.UNITS_LIST, {
+                    challengeAttemptId: item._id,
+                    challengeName: item.name,
+                  })
+                }
+              />
+            </View>
+          )}
+        />
       </View>
     </SafeAreaView>
   );
