@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { colors } from '../config/colors';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { screens } from '../config/screens';
@@ -57,6 +57,7 @@ const Home = ({ navigation }) => {
           flex: 0.3,
         }}
       >
+        {/* <Button onPress={() => navigation.navigate(screens.TUTORIAL)} title={'hola'}></Button> */}
         <TalkBalloon
           backgroundColor={colors.BACKGROUND}
           borderColor={colors.DARK_LOGO}

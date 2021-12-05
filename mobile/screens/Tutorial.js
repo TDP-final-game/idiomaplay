@@ -12,7 +12,11 @@ import { screens } from '../config/screens';
 import { TutorialCard } from '../components/TutorialCard';
 import { PrimaryButton } from '../components/PrimaryButton';
 
-import { TUTORIAL_IMAGE_1, TUTORIAL_IMAGE_2 } from '../config/images';
+import {
+  TUTORIAL_IMAGE_MARKET,
+  TUTORIAL_IMAGE_LESSONS,
+  TUTORIAL_IMAGE_GAMIFICATION,
+} from '../config/images';
 
 export const Tutorial = ({ navigation }) => {
   const refCar = useRef();
@@ -23,24 +27,29 @@ export const Tutorial = ({ navigation }) => {
     {
       index: 1,
       title: 'Bienvenido!',
-      image: TUTORIAL_IMAGE_1,
+      image: TUTORIAL_IMAGE_LESSONS,
     },
     {
       index: 2,
       title: 'Como jugar?',
-      image: TUTORIAL_IMAGE_1,
+      image: TUTORIAL_IMAGE_LESSONS,
     },
     {
       index: 3,
-      title: 'Vidas y monedas',
-      image: TUTORIAL_IMAGE_2,
+      title: 'Bonificaciones',
+      image: TUTORIAL_IMAGE_GAMIFICATION,
+    },
+    {
+      index: 4,
+      title: 'Mercado',
+      image: TUTORIAL_IMAGE_MARKET,
     },
   ];
 
   const Paginador = () => {
     return (
       <Pagination
-        dotsLength={3}
+        dotsLength={tutorialPages.length}
         activeDotIndex={paginationLessonIndex}
         containerStyle={{ backgroundColor: colors.BACKGROUND }}
         dotStyle={{
@@ -87,7 +96,7 @@ export const Tutorial = ({ navigation }) => {
       <View style={{ marginHorizontal: '5%', flex: 0.05 }}>
         <PrimaryButton
           text={'Finalizar'}
-          disabled={paginationLessonIndex != 2}
+          disabled={paginationLessonIndex != tutorialPages.length - 1}
           onPress={() => navigation.navigate(screens.HOME)}
         />
       </View>

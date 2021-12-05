@@ -13,6 +13,8 @@ export const TutorialCard = ({ text, image }) => {
           backgroundColor: colors.PRIMARY,
           borderTopRightRadius: 8,
           borderTopLeftRadius: 8,
+          justifyContent: 'center',
+          alignItems: 'center',
           width: '100%',
           paddingLeft: '5%',
         }}
@@ -24,11 +26,9 @@ export const TutorialCard = ({ text, image }) => {
         style={[
           {
             borderWidth: 3,
-            borderRadius: 20,
+            marginTop: '10%',
             width: Dimensions.get('window').width * 0.8,
-            height: Dimensions.get('window').height * 0.65,
-            alignItems: 'center',
-            justifyContent: 'center',
+            height: Dimensions.get('window').height * 0.6,
           },
           commonStyles.shadow,
         ]}
