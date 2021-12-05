@@ -58,6 +58,7 @@ const Home = ({ navigation }) => {
         }}
       >
         {/* <Button onPress={() => navigation.navigate(screens.TUTORIAL)} title={'hola'}></Button> */}
+
         <TalkBalloon
           backgroundColor={colors.BACKGROUND}
           borderColor={colors.DARK_LOGO}

@@ -13,8 +13,6 @@ export const TutorialCard = ({ text, image }) => {
           backgroundColor: colors.PRIMARY,
           borderTopRightRadius: 8,
           borderTopLeftRadius: 8,
-          justifyContent: 'center',
-          alignItems: 'center',
           width: '100%',
           paddingLeft: '5%',
         }}
