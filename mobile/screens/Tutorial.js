@@ -26,12 +26,12 @@ export const Tutorial = ({ navigation }) => {
   const tutorialPages = [
     {
       index: 1,
-      title: 'Bienvenido!',
+      title: '¡Bienvenido!',
       image: TUTORIAL_IMAGE_LESSONS,
     },
     {
       index: 2,
-      title: 'Como jugar?',
+      title: '¿Cómo jugar?',
       image: TUTORIAL_IMAGE_LESSONS,
     },
     {
