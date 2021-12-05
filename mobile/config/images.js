@@ -1,2 +1,3 @@
-export const TUTORIAL_IMAGE_1 = require('../assets/tutorial_1.png');
-export const TUTORIAL_IMAGE_2 = require('../assets/tutorial_2.png');
+export const TUTORIAL_IMAGE_MARKET = require('../assets/tutorial-market.png');
+export const TUTORIAL_IMAGE_LESSONS = require('../assets/tutorial-lessons.png');
+export const TUTORIAL_IMAGE_GAMIFICATION = require('../assets/tutorial-gamification.png');
