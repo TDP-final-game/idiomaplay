@@ -8,6 +8,7 @@ import UserService from '../services/userService';
 import { View, Text, StyleSheet, Dimensions, TextInput, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/user';
+import { screens } from '../config/screens';
 
 const SignupConfirmation = ({ navigation, route }) => {
   const { user } = route.params;
@@ -28,7 +29,7 @@ const SignupConfirmation = ({ navigation, route }) => {
           stats: data.stats,
         })
       );
-      return navigation.navigate('Home');
+      return navigation.navigate(screens.TUTORIAL);
     });
   };
 

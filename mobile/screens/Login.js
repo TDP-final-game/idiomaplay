@@ -5,6 +5,7 @@ import { colors } from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/user';
+import { screens } from '../config/screens';
 import { GoogleButton } from '../components/GoogleButton';
 import UserService from '../services/userService';
 import { CustomAlert } from '../components/CustomAlert';
@@ -80,7 +81,7 @@ const Login = ({ navigation }) => {
               stats: data.stats,
             })
           );
-          return navigation.navigate('Home');
+          return navigation.navigate(screens.HOME);
         }
       });
     }

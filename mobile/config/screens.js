@@ -4,4 +4,5 @@ export const screens = {
   UNIT_MODULES_LIST: 'UnitModulesList',
   UNITS_LIST: 'UnitsList',
   MARKET: 'Market',
+  TUTORIAL: 'Tutorial',
 };
