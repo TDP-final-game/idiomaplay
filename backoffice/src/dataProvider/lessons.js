@@ -1,31 +1,25 @@
-import { fetchUtils } from 'react-admin';
-import { stringify } from 'query-string';
+import { apiUrl, getChallengeId, httpClient } from './utils';
+import { mapExercise } from './lessonExercises';
 
-const apiUrl = window.__RUNTIME_CONFIG__?.REACT_APP_BACK_URL;
-const httpClient = fetchUtils.fetchJson;
+export const mapLesson = (unitId, lesson) => {
+	const lessonId = `${unitId}-lessons-${lesson.orderNumber}`;
+	return {
+		...lesson,
+		id: lessonId,
+		exercises: lesson.exercises.map((exercise, n) => mapExercise(lessonId, n, exercise)),
+	}
+}
 
-const dataProvider = {
-	getList: (resource, params) => {
-		const { page, perPage } = params.pagination;
-		const { field, order } = params.sort;
-
-		const query = {
-			sort: JSON.stringify([field, order]),
-			range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-			filter: JSON.stringify(params.filter),
-		};
-		const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
-		return httpClient(url).then(({ headers, json }) => ({
-			data: json,
-			total: json.length === 0 ? 0 : parseInt(headers.get('content-range'), 10),
-		}));
-	},
-
-	getOne: (resource, params) => {
-		return httpClient(`${apiUrl}/${resource}/${params.id}`).then(({json}) => ({
-			data: json,
+const lessons = {
+	getOne: async (resource, params) => {
+		const id = params.id.replace(/-/g, '/');
+		const unitId = params.id.split('-').slice(0, 2).join('-');
+		const url = `${apiUrl}/challenges/${await getChallengeId()}/${id}`;
+		const lesson = await httpClient(url).then(({json}) => ({
+			data: mapLesson(unitId, json),
 		}))
+		console.log('lesson', lesson)
+		return lesson
 	},
 
 	getMany: (resource, params) => {
@@ -95,6 +89,11 @@ const dataProvider = {
 		// 	method: 'DELETE',
 		// }).then(({ json }) => ({ data: json }));
 	}
+};
+
+const dataProvider = {
+	resources: ["lessons"],
+	dataProvider: lessons
 };
 
 export default dataProvider;
