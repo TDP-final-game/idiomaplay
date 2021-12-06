@@ -3,7 +3,7 @@ import { apiUrl, getChallengeId, httpClient } from './utils';
 export const mapExercise = (lessonId, exerciseId, exercise) => ({
 	...exercise,
 	id: `${lessonId}-exercises-${exerciseId}`,
-	orderNumber: exerciseId + 1
+	orderNumber: parseInt(exerciseId, 10) + 1
 })
 
 const lessonExercises = {
