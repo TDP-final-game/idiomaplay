@@ -5,6 +5,7 @@ import spanishMessages from "@blackbox-vision/ra-language-spanish";
 
 import UserList from './components/users/List';
 import UserEdit from './components/users/Edit';
+import Dashboard from './components/dashboards/Dashboard'
 
 import UnitList from './components/units/List';
 import UnitShow from './components/units/Show';
@@ -23,7 +24,7 @@ import authProvider from './authProvider';
 const i18nProvider = polyglotI18nProvider(() => ({...spanishMessages, ...translations}), 'es');
 
 const App = () => (
-	<Admin authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
+	<Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
 		<Resource name="users" list={UserList} edit={UserEdit} />
 		<Resource name="units" list={UnitList} show={UnitShow} edit={UnitEdit} />
 		<Resource name="lessons" show={LessonShow} edit={LessonEdit}/>
