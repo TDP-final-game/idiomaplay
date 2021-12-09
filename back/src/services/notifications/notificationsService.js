@@ -4,6 +4,7 @@ const { Expo } = require('expo-server-sdk');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const cron = require('node-cron');
 const { model: User } = require('../../model/users/user');
+const deleteDaysFromDate = require('../../utils/delete-days-from-date');
 
 
 const sendNotifications = async (filter, message) => {
@@ -47,12 +48,6 @@ const sendNotifications = async (filter, message) => {
 		return user.save();
 	}));
 	return { messages };
-};
-
-const deleteDaysFromDate = (days, date) => {
-	const newDate = new Date(date);
-	newDate.setDate(date.getDate() - days);
-	return newDate;
 };
 
 const sendDailyNotification = async () => {
