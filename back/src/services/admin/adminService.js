@@ -3,6 +3,8 @@
 const { model: DailyAccess } = require('../../model/data/dailyAccess');
 const { model: User } = require('../../model/users/user');
 const errors = require('./errors');
+const deleteDaysFromDate = require('../../utils/delete-days-from-date');
+
 
 const logIn = async (user, password) => {
 	if((user === process.env.ADMIN_USER) && (password === process.env.ADMIN_PASSWORD))
@@ -15,8 +17,8 @@ const getDailyAccessData = async (startDate, endDate) => {
 
 	const filter = {
 		$and: [
-			{ date: { $gte: startDate } },
-			{ date: { $lt: endDate } }
+			{ date: { $gte: new Date(startDate.setHours(0, 0, 0)) } },
+			{ date: { $lt: new Date(endDate.setHours(0, 0, 0)) } }
 		]
 	};
 
@@ -33,9 +35,14 @@ const saveAccess = async userId => {
 
 const getUserAccessData = async () => {
 
-	const dailyFilter = [];
-	const weeklyFilter = [];
-	const monthlyFilter = [];
+	const dailyFilter = { lastAccess: { $gte: deleteDaysFromDate(7, new Date(new Date().setHours(0, 0, 0))) } };
+	const weeklyFilter = {
+		$and: [
+			{ lastAccess: { $lte: deleteDaysFromDate(7, new Date(new Date().setHours(0, 0, 0))) } },
+			{ lastAccess: { $gte: deleteDaysFromDate(30, new Date(new Date().setHours(0, 0, 0))) } }
+		]
+	};
+	const monthlyFilter = { lastAccess: { $lte: deleteDaysFromDate(30, new Date(new Date().setHours(0, 0, 0))) } };
 
 	const [dailyAccess, weeklyAccess, monthlyAccess] = await Promise.all([
 		User.find(dailyFilter, null, null),
@@ -50,5 +57,6 @@ const getUserAccessData = async () => {
 module.exports = {
 	logIn,
 	getDailyAccessData,
+	getUserAccessData,
 	saveAccess
 };
