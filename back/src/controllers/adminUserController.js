@@ -14,8 +14,8 @@ const logIn = async (req, res) => {
 
 const getDailyAccessData = async (req, res) => {
 
-	const startDate = req.body.startDate || new Date();
-	const endDate = req.body.endDate || deleteDaysFromDate(7, new Date());
+	const startDate = req.query.params.startDate || new Date();
+	const endDate = req.query.params.endDate || deleteDaysFromDate(7, new Date());
 
 	if(startDate > endDate)
 		return res.status(STATUS_CODES.BAD_REQUEST).send({ message: 'Start date should be less than end date' });

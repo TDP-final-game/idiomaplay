@@ -4,6 +4,7 @@ import {Card} from '@material-ui/core';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css"
+import { getDailyAccessData, getUserAccessData } from '../../dataProvider/userLoginData';
 
 
 import {
@@ -73,17 +74,17 @@ export const dataPrincipal = {
             borderColor: 'rgb(255, 99, 132)',
             borderWidth: 2,
             fill: false,
-            data: labels.map(() => faker.datatype.number({min: 0, max: 100})),
+            data: await getDailyAccessData(),
         },
-        {
-            type: 'bar',
-            label: 'Dataset 2',
-            backgroundColor: 'rgb(75, 192, 192)',
-            data: labels.map(() => faker.datatype.number({min: 0, max: 100})),
-            borderColor: 'white',
-            fill: false,
-            borderWidth: 2,
-        }
+        // {
+        //     type: 'bar',
+        //     label: 'Dataset 2',
+        //     backgroundColor: 'rgb(75, 192, 192)',
+        //     data: labels.map(() => faker.datatype.number({min: 0, max: 100})),
+        //     borderColor: 'white',
+        //     fill: false,
+        //     borderWidth: 2,
+        // }
     ],
 };
 
@@ -92,7 +93,7 @@ export const dataSecondary = {
     datasets: [
         {
             label: '# of Votes',
-            data: [50, 20, 30],
+            data: await getUserAccessData(),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

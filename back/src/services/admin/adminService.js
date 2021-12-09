@@ -50,7 +50,7 @@ const getUserAccessData = async () => {
 		User.find(monthlyFilter, null, null)
 	]);
 
-	return { dailyAccess: dailyAccess.length, weeklyAccess: weeklyAccess.length, monthlyAccess: monthlyAccess.length };
+	return [dailyAccess.length, weeklyAccess.length, monthlyAccess.length];
 
 };
 
