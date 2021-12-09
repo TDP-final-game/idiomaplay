@@ -19,7 +19,6 @@ import {
     Legend,
 } from 'chart.js';
 import {Chart, Pie} from 'react-chartjs-2';
-import faker from 'faker';
 
 const styles = {
 
@@ -65,7 +64,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const labels = range(1, 30);
 
-export const dataPrincipal = {
+const getDataPrincipal = () => ({
     labels,
     datasets: [
         {
@@ -74,7 +73,7 @@ export const dataPrincipal = {
             borderColor: 'rgb(255, 99, 132)',
             borderWidth: 2,
             fill: false,
-            data: await getDailyAccessData(),
+            data: getDailyAccessData().then(data => data),
         },
         // {
         //     type: 'bar',
@@ -86,14 +85,14 @@ export const dataPrincipal = {
         //     borderWidth: 2,
         // }
     ],
-};
+});
 
-export const dataSecondary = {
+const getDataSecondary = async () => ({
     labels: ['Semanal', 'Diario', 'Mensual'],
     datasets: [
         {
             label: '# of Votes',
-            data: await getUserAccessData(),
+            data: getUserAccessData().then(data => data),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -107,7 +106,7 @@ export const dataSecondary = {
             borderWidth: 1,
         },
     ],
-};
+});
 
 
 const options = {
@@ -127,6 +126,8 @@ const Dashboard = () => {
         setStartDate(start);
         setEndDate(end);
     };
+    const dataPrincipal = getDataPrincipal();
+    const dataSecondary = getDataSecondary();
     return (
             <Card>
                 <DatePicker
