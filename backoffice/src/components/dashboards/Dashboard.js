@@ -64,7 +64,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const labels = range(1, 30);
 
-const getDataPrincipal = () => ({
+const getDailyAccessDataset = (data) => ({
     labels,
     datasets: [
         {
@@ -73,26 +73,17 @@ const getDataPrincipal = () => ({
             borderColor: 'rgb(255, 99, 132)',
             borderWidth: 2,
             fill: false,
-            data: getDailyAccessData().then(data => data),
-        },
-        // {
-        //     type: 'bar',
-        //     label: 'Dataset 2',
-        //     backgroundColor: 'rgb(75, 192, 192)',
-        //     data: labels.map(() => faker.datatype.number({min: 0, max: 100})),
-        //     borderColor: 'white',
-        //     fill: false,
-        //     borderWidth: 2,
-        // }
+            data
+        }
     ],
 });
 
-const getDataSecondary = async () => ({
+const getUserAccessDataset = (data) => ({
     labels: ['Semanal', 'Diario', 'Mensual'],
     datasets: [
         {
-            label: '# of Votes',
-            data: getUserAccessData().then(data => data),
+            label: 'Ingreso de los usuarios',
+            data,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -126,34 +117,41 @@ const Dashboard = () => {
         setStartDate(start);
         setEndDate(end);
     };
-    const dataPrincipal = getDataPrincipal();
-    const dataSecondary = getDataSecondary();
-    return (
-            <Card>
-                <DatePicker
-                    selected={startDate}
-                    onChange={onChange}
-                    startDate={startDate}
-                    endDate={endDate}
-                    selectsRange
-                    inline
-                    isClearable={true}
-                />
-                <Row style={styles.container}>
-                    <Col style={styles.dashboard}>
-                        <Chart type='bar' data={dataPrincipal}/>
-                    </Col>
-                    <Col style={styles.secondDash}>
+    const [dailyAccessData, setDailyAccessData] = useState([]);
+    const [userAccessData, setUserAccessData] = useState([]);
 
-                        <Row>
-                        {/*    Missing chart */}
-                        </Row>
-                        <Row>
-                            <Pie data={dataSecondary} options={options}/>
-                        </Row>
-                    </Col>
-                </Row>
-            </Card>
+    getDailyAccessData(startDate, endDate).then(data => setDailyAccessData(data));
+    getUserAccessData().then(data => setUserAccessData(data));
+
+    const dailyAccessDataset = getDailyAccessDataset(dailyAccessData);
+    const userAccessDataset = getUserAccessDataset(userAccessData);
+
+    return (
+        <Card>
+            <DatePicker
+                selected={startDate}
+                onChange={onChange}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                inline
+                isClearable={true}
+            />
+            <Row style={styles.container}>
+                <Col style={styles.dashboard}>
+                    <Chart type='bar' data={dailyAccessDataset}/>
+                </Col>
+                <Col style={styles.secondDash}>
+
+                    <Row>
+                    {/*    Missing chart */}
+                    </Row>
+                    <Row>
+                        <Pie data={userAccessDataset} options={options}/>
+                    </Row>
+                </Col>
+            </Row>
+        </Card>
     );
 }
 
