@@ -14,15 +14,14 @@ const logIn = async (req, res) => {
 
 const getDailyAccessData = async (req, res) => {
 
-	// const endDate = req.query.endDate || new Date();
-	// const startDate = req.query.startDate || deleteDaysFromDate(7, new Date());
-
-	const endDate = new Date();
-	const startDate = deleteDaysFromDate(7, new Date());
+	const endDate = req.query.endDate ? new Date(Date.parse(req.query.endDate)) : new Date();
+	// TODO: BY DEFAULT ONE WEEK, REPLACE TO ONE MONTH.
+	const startDate = req.query.startDate ? new Date(Date.parse(req.query.startDate)) : deleteDaysFromDate(7, new Date());
 
 	if(startDate > endDate)
 		return res.status(STATUS_CODES.BAD_REQUEST).send({ message: 'Start date should be less than end date' });
 
+	// TODO: PARSE BY DAY, RETURN AN ARRAY WITH THE QUANTITY OF EACH DAY WITH NO EMPTY DAYS
 	res.status(STATUS_CODES.OK).send(await adminUserService.getDailyAccessData(startDate, endDate));
 };
 
