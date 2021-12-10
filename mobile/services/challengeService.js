@@ -5,6 +5,10 @@ const _allUnitsPassed = function (units) {
   return units.every((unit) => unit.status === states.passed);
 };
 
+async function getTrophies() {
+  return (await api.get('/users/me/challengeAttempts')).data.filter(attempt => attempt.status === states.passed).length;
+}
+
 async function getChallenges(language) {
   let params = null;
   if (language!=='all') {
@@ -70,4 +74,5 @@ export default {
   getUnitsAttempts,
   attemptUnit,
   allUnitsPassed,
+  getTrophies
 };
