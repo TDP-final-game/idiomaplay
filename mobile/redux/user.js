@@ -35,7 +35,7 @@ const userSlice = createSlice({
 
     updateTrophies: (state) => {
       state.trophies += 1;
-    }
+    },
   },
 });
 

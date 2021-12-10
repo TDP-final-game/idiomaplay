@@ -43,7 +43,7 @@ export const UnitHeader = ({ returnButtonFunction, cartButtonFunction, unit, isE
 
       <View style={{ minWidth: '35%' }}>
         <Text style={getStyles(isExam).chapterText}>Unidad {unit}</Text>
-        <LifeAndCoins coins={user.coins} lives={user.lives} />
+        <LifeAndCoins coins={user.coins} lives={user.lives} trophies={user.trophies} />
       </View>
 
       <View style={{ marginRight: '3%' }}>

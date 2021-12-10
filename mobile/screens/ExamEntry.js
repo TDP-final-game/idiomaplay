@@ -13,6 +13,7 @@ import { LifeAndCoins } from '../components/LifeAndCoins';
 import { initResults } from '../redux/lesson';
 import UnitService from '../services/unitService';
 import challengeService from '../services/challengeService';
+import { updateTrophies } from '../redux/user';
 
 const ExamEntry = ({ navigation, route }) => {
   const { challengeAttemptId, unitOrderNumber, lessonOrderNumber, rewards, isExam, challengeName } =
@@ -165,6 +166,7 @@ const ExamEntry = ({ navigation, route }) => {
     challengeService.allUnitsPassed(challengeAttemptId).then((allPassed) => {
       if (allPassed) {
         setSubtitle(`Desafio ${challengeName} finalizado con éxito!`);
+        dispatch(updateTrophies());
         setCurrentLessonState(lessonState.RETURN_TO_HOME);
       } else {
         setSubtitle(`Unidad ${unitOrderNumber} finalizada con éxito`);

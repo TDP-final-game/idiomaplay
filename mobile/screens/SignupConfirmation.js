@@ -27,6 +27,7 @@ const SignupConfirmation = ({ navigation, route }) => {
           imageUrl: user.photoUrl,
           name: data.firstName + ' ' + data.lastName,
           stats: data.stats,
+          trophies: 0,
         })
       );
       return navigation.navigate(screens.TUTORIAL);
