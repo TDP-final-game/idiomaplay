@@ -2,6 +2,7 @@ import { Show, SimpleShowLayout, TextField, ArrayField } from 'react-admin';
 
 import UnitList from '../units/List';
 import Breadcrumbs from '../Breadcrumbs';
+import CreateButton from '../CreateButton';
 
 const ChallengeShow = props => (
 	<>
@@ -16,6 +17,7 @@ const ChallengeShow = props => (
 				<ArrayField source="units">
 					<UnitList/>
 				</ArrayField>
+				<CreateButton label="Agregar unidad"/>
 			</SimpleShowLayout>
 		</Show>
 	</>

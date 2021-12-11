@@ -2,6 +2,7 @@ import { Show, SimpleShowLayout, TextField, NumberField, ArrayField } from 'reac
 
 import LessonList from '../lessons/List';
 import Breadcrumbs from '../Breadcrumbs';
+import CreateButton from '../CreateButton';
 
 const UnitShow = props => (
 	<>
@@ -15,6 +16,7 @@ const UnitShow = props => (
 				<ArrayField source="lessons">
 					<LessonList unitId={`units-${props.id}`}/>
 				</ArrayField>
+				<CreateButton label="Agregar Lección"/>
 			</SimpleShowLayout>
 		</Show>
 	</>
