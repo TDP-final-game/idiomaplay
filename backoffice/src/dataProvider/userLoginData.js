@@ -4,6 +4,7 @@ const apiUrl = window.__RUNTIME_CONFIG__?.REACT_APP_BACK_URL;
 
 export const getDailyAccessData = async (startDate) => {
 
+    console.log('date: ', startDate.toISOString());
     const response = await axios.get(`${apiUrl}/adminUsers/data/dailyAccess?startDate=${startDate.toISOString()}}`);
     return response.data;
 };

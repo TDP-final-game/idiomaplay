@@ -42,6 +42,18 @@ const styles = {
         // borderRadius: '7pt',
         // background: 'blue',
         order: 2,
+    },
+    
+    datepickerContainer: {
+        display: 'flex',
+        // textAlign: 'center',
+    },
+    
+    datepickerRow: {
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        textAlign: 'center',
     }
 }
 
@@ -111,11 +123,6 @@ const options = {
 
 const Dashboard = () => {
     const [startDate, setStartDate] = useState(new Date());
-
-    const onChange = (dates) => {
-        const [start] = dates;
-        setStartDate(start);
-    };
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
 
@@ -127,15 +134,17 @@ const Dashboard = () => {
 
     return (
         <Card>
-            <DatePicker
-                selected={startDate}
-                onChange={onChange}
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                inline
-                isClearable={true}
-            />
+            <Row style={styles.datepickerRow}>
+                <div style={styles.datepickerContainer}>
+                    <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        dateFormat="MM/yyyy"
+                        showMonthYearPicker
+                        showFullMonthYearPicker
+                    />
+                </div>
+            </Row>
             <Row style={styles.container}>
                 <Col style={styles.dashboard}>
                     <Chart type='bar' data={dailyAccessDataset}/>
