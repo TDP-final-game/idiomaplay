@@ -15,14 +15,35 @@ const logIn = async (user, password) => {
 
 const getDailyAccessData = async (startDate, endDate) => {
 
+	startDate = new Date(startDate.setHours(0, 0, 0));
+	endDate = new Date(endDate.setHours(0, 0, 0));
+
 	const filter = {
 		$and: [
-			{ date: { $gte: new Date(startDate.setHours(0, 0, 0)) } },
-			{ date: { $lt: new Date(endDate.setHours(0, 0, 0)) } }
+			{ date: { $gte: startDate } },
+			{ date: { $lt: endDate } }
 		]
 	};
 
-	return DailyAccess.find(filter, null, null);
+	const accessDetected = await DailyAccess.find(filter, null, null);
+
+	const accessDetectedPerDay = accessDetected.reduce((data, { date }) => {
+		const key = new Date(date.setHours(0, 0, 0)).toIsoString();
+		if(!data[key])
+			data[key] = 0;
+		data[key] += 1;
+		return data;
+	}, {});
+
+	const accessDetectedFormatted = [];
+
+	for(const date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+		const key = new Date(date.setHours(0, 0, 0)).toIsoString();
+		const accessDetectedThatDay = accessDetectedPerDay[key] || 0;
+		accessDetectedFormatted.push(accessDetectedThatDay);
+	}
+
+	return accessDetectedFormatted;
 };
 
 const saveAccess = async userId => {
@@ -33,24 +54,40 @@ const saveAccess = async userId => {
 	});
 };
 
-const getUserAccessData = async () => {
+const getUserAccessData = async (startDate, endDate) => {
 
-	const dailyFilter = { lastAccess: { $gte: deleteDaysFromDate(7, new Date(new Date().setHours(0, 0, 0))) } };
-	const weeklyFilter = {
+	startDate = new Date(startDate.setHours(0, 0, 0));
+	endDate = new Date(endDate.setHours(0, 0, 0));
+
+	const filter = {
 		$and: [
-			{ lastAccess: { $lte: deleteDaysFromDate(7, new Date(new Date().setHours(0, 0, 0))) } },
-			{ lastAccess: { $gte: deleteDaysFromDate(30, new Date(new Date().setHours(0, 0, 0))) } }
+			{ date: { $gte: startDate } },
+			{ date: { $lt: endDate } }
 		]
 	};
-	const monthlyFilter = { lastAccess: { $lte: deleteDaysFromDate(30, new Date(new Date().setHours(0, 0, 0))) } };
 
-	const [dailyAccess, weeklyAccess, monthlyAccess] = await Promise.all([
-		User.find(dailyFilter, null, null),
-		User.find(weeklyFilter, null, null),
-		User.find(monthlyFilter, null, null)
-	]);
+	const accessDetected = await DailyAccess.find(filter, null, null);
 
-	return [dailyAccess.length, weeklyAccess.length, monthlyAccess.length];
+	const accessDetectedDatesPerUser = accessDetected.reduce((data, { user, date }) => {
+		if(!data[user])
+			data[user] = new Set(); // filters the access on the same date
+		data[user].add(new Date(date.setHours(0, 0, 0)).toIsoString());
+		return data;
+	}, {});
+
+	const ammountOfAccessPerUserPerDate = Object.values(accessDetectedDatesPerUser).map(data => data.length);
+
+	const accessDetectedFormated = ammountOfAccessPerUserPerDate.reduce((data, numberOfAccessOfTheUser) => {
+		if(numberOfAccessOfTheUser >= 20)
+			data.daily += 1;
+		else if(numberOfAccessOfTheUser >= 7)
+			data.weekly += 1;
+		else
+			data.monthly += 1;
+		return data;
+	}, { daily: 0, weekly: 0, monthly: 0 });
+
+	return [accessDetectedFormated.daily, accessDetectedFormated.weekly, accessDetectedFormated.monthly];
 
 };
 

@@ -111,17 +111,16 @@ const options = {
 
 const Dashboard = () => {
     const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(null);
+
     const onChange = (dates) => {
-        const [start, end] = dates;
+        const [start] = dates;
         setStartDate(start);
-        setEndDate(end);
     };
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
 
-    getDailyAccessData(startDate, endDate).then(data => setDailyAccessData(data));
-    getUserAccessData().then(data => setUserAccessData(data));
+    getDailyAccessData(startDate).then(data => setDailyAccessData(data));
+    getUserAccessData(startDate).then(data => setUserAccessData(data));
 
     const dailyAccessDataset = getDailyAccessDataset(dailyAccessData);
     const userAccessDataset = getUserAccessDataset(userAccessData);
