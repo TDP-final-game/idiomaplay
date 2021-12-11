@@ -1,5 +1,4 @@
 import {
-	List,
 	Datagrid,
 	NumberField,
 	TextField,
@@ -7,25 +6,21 @@ import {
 	EditButton
 } from 'react-admin';
 
-import Breadcrumbs from '../Breadcrumbs';
+const UnitShowButton = ({record}) => {
+	return <ShowButton to={`/units/${record.id}/show`}/>
+}
 
-const UnitList = props => (
-	<>
-		<div>
-			<Breadcrumbs {...props}/>
-		</div>
-		<List {...props}
-					bulkActionButtons={false}
-					exporter={false}
-		>
-			<Datagrid rowClick="edit">
-				<NumberField source="orderNumber"/>
-				<TextField source="name"/>
-				<ShowButton/>
-				<EditButton/>
-			</Datagrid>
-		</List>
-	</>
+const UnitEditButton = ({record}) => {
+	return <EditButton to={`/units/${record.id}`}/>
+}
+
+const UnitList = () => (
+		<Datagrid rowClick="edit">
+			<NumberField source="orderNumber"/>
+			<TextField source="name"/>
+			<UnitShowButton/>
+			<UnitEditButton/>
+		</Datagrid>
 );
 
 export default UnitList;

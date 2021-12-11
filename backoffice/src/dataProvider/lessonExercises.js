@@ -1,4 +1,4 @@
-import { apiUrl, getChallengeId, httpClient } from './utils';
+import { apiUrl, httpClient } from './utils';
 
 export const mapExercise = (lessonId, exerciseId, exercise) => ({
 	...exercise,
@@ -9,9 +9,9 @@ export const mapExercise = (lessonId, exerciseId, exercise) => ({
 const lessonExercises = {
 	getOne: async (resource, params) => {
 		const id = params.id.replace(/-/g, '/');
-		const lessonId = params.id.split('-').slice(0, 4).join('-');
+		const lessonId = params.id.split('-').slice(0, 6).join('-');
 		const exerciseId = params.id.split('-').slice(-1);
-		const exercise = await httpClient(`${apiUrl}/challenges/${await getChallengeId()}/${id}`).then(({json}) => ({
+		const exercise = await httpClient(`${apiUrl}/${id}`).then(({json}) => ({
 			data: mapExercise(lessonId, exerciseId, json),
 		}))
 		console.log('exercise', exercise);
