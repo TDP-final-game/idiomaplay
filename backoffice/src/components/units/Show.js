@@ -16,7 +16,7 @@ const UnitShow = props => (
 				<ArrayField source="lessons">
 					<LessonList unitId={`units-${props.id}`}/>
 				</ArrayField>
-				<CreateButton label="Agregar Lección"/>
+				<CreateButton label="Agregar Lección" to={"/lessons/create"}/>
 			</SimpleShowLayout>
 		</Show>
 	</>

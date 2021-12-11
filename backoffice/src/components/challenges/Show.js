@@ -17,7 +17,7 @@ const ChallengeShow = props => (
 				<ArrayField source="units">
 					<UnitList/>
 				</ArrayField>
-				<CreateButton label="Agregar unidad"/>
+				<CreateButton label="Agregar unidad" to={"/units/create"}/>
 			</SimpleShowLayout>
 		</Show>
 	</>

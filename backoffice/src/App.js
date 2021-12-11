@@ -12,9 +12,11 @@ import ChallengeEdit from './components/challenges/Edit';
 
 import UnitShow from './components/units/Show';
 import UnitEdit from './components/units/Edit';
+import UnitCreate from "./components/units/Create";
 
 import LessonShow from './components/lessons/Show';
 import LessonEdit from './components/lessons/Edit';
+import LessonCreate from "./components/lessons/Create";
 
 import ExerciseShow from './components/exercises/Show';
 import ExerciseEdit from './components/exercises/Edit';
@@ -29,8 +31,8 @@ const App = () => (
 	<Admin authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
 		<Resource name="users" list={UserList} edit={UserEdit} />
 		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} edit={ChallengeEdit}/>
-		<Resource name="units" show={UnitShow} edit={UnitEdit} />
-		<Resource name="lessons" show={LessonShow} edit={LessonEdit}/>
+		<Resource name="units" show={UnitShow} edit={UnitEdit} create={UnitCreate}/>
+		<Resource name="lessons" show={LessonShow} edit={LessonEdit} create={LessonCreate}/>
 		<Resource name="lessonExercises" show={ExerciseShow} edit={ExerciseEdit}/>
 	</Admin>
 );
