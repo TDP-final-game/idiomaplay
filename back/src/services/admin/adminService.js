@@ -28,7 +28,7 @@ const getDailyAccessData = async (startDate, endDate) => {
 	const accessDetected = await DailyAccess.find(filter, null, null);
 
 	const accessDetectedPerDay = accessDetected.reduce((data, { date }) => {
-		const key = new Date(date.setHours(0, 0, 0)).toIsoString();
+		const key = new Date(date.setHours(0, 0, 0)).toISOString();
 		if(!data[key])
 			data[key] = 0;
 		data[key] += 1;
@@ -38,7 +38,7 @@ const getDailyAccessData = async (startDate, endDate) => {
 	const accessDetectedFormatted = [];
 
 	for(const date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-		const key = new Date(date.setHours(0, 0, 0)).toIsoString();
+		const key = new Date(date.setHours(0, 0, 0)).toISOString();
 		const accessDetectedThatDay = accessDetectedPerDay[key] || 0;
 		accessDetectedFormatted.push(accessDetectedThatDay);
 	}
@@ -71,7 +71,7 @@ const getUserAccessData = async (startDate, endDate) => {
 	const accessDetectedDatesPerUser = accessDetected.reduce((data, { user, date }) => {
 		if(!data[user])
 			data[user] = new Set(); // filters the access on the same date
-		data[user].add(new Date(date.setHours(0, 0, 0)).toIsoString());
+		data[user].add(new Date(date.setHours(0, 0, 0)).toISOString());
 		return data;
 	}, {});
 

@@ -2,7 +2,7 @@
 
 module.exports = someDateOfTheMonth => {
 
-	const someDateOfTheMonthParsed = Date.parse(someDateOfTheMonth);
+	const someDateOfTheMonthParsed = new Date(Date.parse(someDateOfTheMonth));
 
 	const startDateParsed = new Date(someDateOfTheMonthParsed.getFullYear(), someDateOfTheMonthParsed.getMonth(), 1);
 
