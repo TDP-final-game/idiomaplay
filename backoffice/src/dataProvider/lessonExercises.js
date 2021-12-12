@@ -62,13 +62,21 @@ const lessonExercises = {
 		// }).then(({ json }) => ({ data: json }));
 	},
 
-	create: (resource, params) => {
-		// httpClient(`${apiUrl}/${resource}`, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(params.data),
-		// }).then(({json}) => ({
-		// 	data: {...params.data, id: json.id},
-		// }))
+	create: async (resource, params) => {
+		const resourceUrl = `/challenges/${params.data.challengeId}/units/${params.data.unitOrderNumber}/lessons/${params.data.lessonOrderNumber}/exercises`;
+
+
+		params.data.options.forEach((option) => option['correct'] = option.correct ?? false)
+
+
+		console.log(params.data);
+		const response = await httpClient(
+			`${apiUrl}${resourceUrl}`, {
+			method: 'POST',
+			body: JSON.stringify(params.data),
+		})
+
+		return { data: { ...params.data, id: response.json._id} };	
 	},
 
 	delete: (resource, params) => {

@@ -2,23 +2,39 @@ import { Show, SimpleShowLayout, TextField, ArrayField } from 'react-admin';
 
 import ExerciseList from '../exercises/List';
 import Breadcrumbs from '../Breadcrumbs';
+import CreateButton from '../CreateButton';
 
-const LessonShow = props => (
+const LessonShow = props => {
+
+	const challengeId = props.id.split('-')[1];
+	const unitOrderNumber = props.id.split('-')[3];
+	const lessonOrderNumber = props.id.split('-')[5];
+	
+	return (
 	<>
 		<div>
 			<Breadcrumbs {...props}/>
 		</div>
 		<Show {...props}>
 			<SimpleShowLayout>
-				<TextField source="orderNumber"/>
-				<TextField source="name"/>
-				<ArrayField source="exercises">
+				
+				<div style={{ display: 'inline', float: 'left', marginLeft: '20px' }}>
+					<TextField source="orderNumber"/>
+					<TextField source="name"/>
+					<TextField source="description" />
+				</div>
+			
+				<ArrayField label="Ejercicios" source="exercises">
 					<ExerciseList lessonId={`${props.id}`}/>
 				</ArrayField>
+				<CreateButton label="Agregar Ejercicio" to={{
+					pathname: '/lessonExercises/create',
+					state: {record: { challengeId, unitOrderNumber, lessonOrderNumber } } }
+				}/>
 			</SimpleShowLayout>
 		</Show>
 	</>
-);
+)};
 
 
 export default LessonShow;
