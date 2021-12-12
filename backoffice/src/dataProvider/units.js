@@ -69,12 +69,12 @@ const units = {
 	},
 
 	create: (resource, params) => {
-		// httpClient(`${apiUrl}/${resource}`, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(params.data),
-		// }).then(({json}) => ({
-		// 	data: {...params.data, id: json.id},
-		// }))
+		httpClient(`${apiUrl}/${resource}`, {
+			method: 'POST',
+			body: JSON.stringify(params.data),
+		}).then(({json}) => ({
+			data: {...params.data, id: json.id},
+		}))
 	},
 
 	delete: (resource, params) => {

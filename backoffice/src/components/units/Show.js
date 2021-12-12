@@ -13,7 +13,8 @@ const UnitShow = props => (
 			<SimpleShowLayout>
 				<NumberField source="orderNumber"/>
 				<TextField source="name"/>
-				<ArrayField source="lessons">
+				<TextField source="description"/>
+				<ArrayField label="Lecciones" source="lessons">
 					<LessonList unitId={`units-${props.id}`}/>
 				</ArrayField>
 				<CreateButton label="Agregar Lección" to={"/lessons/create"}/>

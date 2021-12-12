@@ -14,10 +14,10 @@ const ChallengeShow = props => (
 				<TextField source="name" />
 				<TextField source="language" />
 				<TextField source="difficulty" />
-				<ArrayField source="units">
+				<ArrayField label="Unidades" source="units">
 					<UnitList/>
 				</ArrayField>
-				<CreateButton label="Agregar unidad" to={"/units/create"}/>
+				<CreateButton label="Agregar unidad" to={"/units/create"} challengeId={props.id}/>
 			</SimpleShowLayout>
 		</Show>
 	</>

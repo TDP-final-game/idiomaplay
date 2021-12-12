@@ -11,6 +11,7 @@ const UnitEdit = props => (
 			<SimpleForm>
 				<TextField source="orderNumber"/>
 				<TextInput source="name"/>
+				<TextInput source="description"/>
 			</SimpleForm>
 		</Edit>
 	</>

@@ -9,7 +9,7 @@ const LessonCreate = props => {
     return (
         <Create {...props}>
             <SimpleForm>
-                <TextInput label="Nombre de la leccion" source="name" />
+                <TextInput source="name" />
             </SimpleForm>
         </Create>
     );

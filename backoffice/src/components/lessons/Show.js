@@ -13,7 +13,7 @@ const LessonShow = props => (
 			<SimpleShowLayout>
 				<TextField source="orderNumber"/>
 				<TextField source="name"/>
-				<ArrayField source="exercises">
+				<ArrayField label="Ejercicios" source="exercises">
 					<ExerciseList lessonId={`${props.id}`}/>
 				</ArrayField>
 				<CreateButton label="Agregar Ejercicio"/>

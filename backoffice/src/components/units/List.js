@@ -18,6 +18,7 @@ const UnitList = () => (
 		<Datagrid rowClick="edit">
 			<NumberField source="orderNumber"/>
 			<TextField source="name"/>
+			<TextField source="description"/>
 			<UnitShowButton/>
 			<UnitEditButton/>
 		</Datagrid>
