@@ -6,11 +6,12 @@ const adminService = require('../admin/adminService');
 const errors = require('./usersErrors');
 
 const createUser = async ({ email, ...props }) => {
-	const user = await User.findOne({ email });
+	let user = await User.findOne({ email });
 	if(user)
 		throw errors.UserAlreadyRegistered();
+	user = await (new User({ email, ...props })).save();
 	await adminService.saveAccess(user._id);
-	return (new User({ email, ...props })).save();
+	return user;
 };
 
 const logIn = async ({ email }) => {
