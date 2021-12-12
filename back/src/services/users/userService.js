@@ -2,20 +2,24 @@
 
 const { model: User } = require('../../model/users/user');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
+const adminService = require('../admin/adminService');
 const errors = require('./usersErrors');
 
 const createUser = async ({ email, ...props }) => {
-	const user = await User.findOne({ email });
+	let user = await User.findOne({ email });
 	if(user)
 		throw errors.UserAlreadyRegistered();
 
-	return (new User({ email, ...props })).save();
+	user = await (new User({ email, ...props })).save();
+	await adminService.saveAccess(user._id);
+	return user;
 };
 
 const logIn = async ({ email }) => {
 	const user = await User.findOne({ email });
 	if(!user)
 		throw errors.UserNotRegistered();
+	await adminService.saveAccess(user._id);
 	return user;
 };
 
