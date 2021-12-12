@@ -1,5 +1,5 @@
 // import * as React from "react";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {Card} from '@material-ui/core';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker  from 'react-datepicker';
@@ -150,14 +150,21 @@ const optionsLine =  {
 }
 
 const Dashboard = () => {
-    const [startDate] = useState(new Date());
+    const startDate = useMemo(() => {
+      return new Date()
+    }, []);
+
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
-    
-    const updateDashboards = (startDate) => { 
+
+    const onChangeDashboard = (startDate) => {
         getDailyAccessData(startDate).then(data => setDailyAccessData(data));
         getUserAccessData(startDate).then(data => setUserAccessData(data));
     }
+
+    useEffect( () => {
+        onChangeDashboard(startDate)
+    }, [])
 
     const dailyAccessDataset = getDailyAccessDataset(dailyAccessData);
     const userAccessDataset = getUserAccessDataset(userAccessData);
@@ -174,7 +181,7 @@ const Dashboard = () => {
                     <DatePicker 
                         className="datepicker"
                         selected={startDate}
-                        onChange={startDate => updateDashboards(startDate)}
+                        onChange={startDate => onChangeDashboard(startDate)}
                         dateFormat="MM/yyyy"
                         showMonthYearPicker
                         showFullMonthYearPicker

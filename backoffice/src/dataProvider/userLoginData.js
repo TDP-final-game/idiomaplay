@@ -13,3 +13,6 @@ export const getUserAccessData = async (startDate) => {
     const response = await axios.get(`${apiUrl}/adminUsers/data/usersAccess?startDate=${startDate.toISOString()}`);
     return response.data;
 };
+
+
+
