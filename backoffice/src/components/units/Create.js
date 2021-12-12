@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Create,
+    Create, NumberInput,
     SimpleForm, TextField,
     TextInput,
 } from 'react-admin';
@@ -9,7 +9,7 @@ const UnitCreate = props => {
     return (
         <Create {...props}>
             <SimpleForm>
-                <TextField source="orderNumber"/>
+                <NumberInput source="orderNumber"/>
                 <TextInput source="name" />
                 <TextInput source="description" />
             </SimpleForm>
