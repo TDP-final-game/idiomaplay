@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import {Card} from '@material-ui/core';
 import { Row, Col} from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
+import DatePicker  from 'react-datepicker';
+import Stat from './Stat';
 import "react-datepicker/dist/react-datepicker.css"
 import { getDailyAccessData, getUserAccessData } from '../../dataProvider/userLoginData';
+import "./dashboard.css";
 
 
 import {
@@ -39,18 +41,16 @@ const styles = {
     secondDash: {
         width: '25%',
         flexDirection: 'row',
-        // borderRadius: '7pt',
-        // background: 'blue',
         order: 2,
     },
     
     datepickerContainer: {
         display: 'flex',
-        // textAlign: 'center',
     },
     
     datepickerRow: {
         display: 'flex',
+        margin: '5px',
         justifyContent: 'center',
         width: '100%',
         textAlign: 'center',
@@ -81,17 +81,19 @@ const getDailyAccessDataset = (data) => ({
     datasets: [
         {
             type: 'line',
-            label: 'Dataset 1',
+            label: 'Ingreso de los usuarios',
             borderColor: 'rgb(255, 99, 132)',
             borderWidth: 2,
             fill: false,
-            data
+            scaleSteps: 1,
+            data,
         }
     ],
+
 });
 
 const getUserAccessDataset = (data) => ({
-    labels: ['Semanal', 'Diario', 'Mensual'],
+    labels: ['Diario', 'Semanal', 'Mensual'],
     datasets: [
         {
             label: 'Ingreso de los usuarios',
@@ -112,50 +114,84 @@ const getUserAccessDataset = (data) => ({
 });
 
 
-const options = {
+const optionsPie = {
     plugins: {
         legend: {
             display: true,
-            position: 'right'
+            position: 'bottom'
+        }
+    }
+}
+
+const optionsLine =  {
+    responsive: true,
+    hover: {
+        mode: 'index',
+        intersec: false
+    },
+    scales: {
+        x: {
+        title: {
+            display: true,
+            text: 'Día'
+        }
+        },
+        y: {
+        title: {
+            display: true,
+        },
+        min: 0,
+        ticks: {
+            // forces step size to be 50 units
+            stepSize: 1
+        }
         }
     }
 }
 
 const Dashboard = () => {
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate] = useState(new Date());
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
-
-    getDailyAccessData(startDate).then(data => setDailyAccessData(data));
-    getUserAccessData(startDate).then(data => setUserAccessData(data));
+    
+    const updateDashboards = (startDate) => { 
+        getDailyAccessData(startDate).then(data => setDailyAccessData(data));
+        getUserAccessData(startDate).then(data => setUserAccessData(data));
+    }
 
     const dailyAccessDataset = getDailyAccessDataset(dailyAccessData);
     const userAccessDataset = getUserAccessDataset(userAccessData);
 
     return (
-        <Card>
+        <Card >
+            <Row style={styles.titleRow}>
+                <Row style={styles.datepickerRow}>
+                    <span className="dateTitle">Mes del grafico:</span>
+                </Row>
+            </Row>
             <Row style={styles.datepickerRow}>
                 <div style={styles.datepickerContainer}>
-                    <DatePicker
+                    <DatePicker 
+                        className="datepicker"
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={startDate => updateDashboards(startDate)}
                         dateFormat="MM/yyyy"
                         showMonthYearPicker
                         showFullMonthYearPicker
+                        minDate={new Date('11-01-2021')}
                     />
                 </div>
             </Row>
             <Row style={styles.container}>
-                <Col style={styles.dashboard}>
-                    <Chart type='bar' data={dailyAccessDataset}/>
+                <Col style={styles.dashboard} className="featuredItem">
+                    <Chart type='bar' data={dailyAccessDataset} options={optionsLine}/>
                 </Col>
                 <Col style={styles.secondDash}>
-
-                    <Row>
-                    {/*    Missing chart */}
+                    <Row className="statItem">
+                        <Stat />
                     </Row>
-                    <Row>
-                        <Pie data={userAccessDataset} options={options}/>
+                    <Row className="pieChartItem">
+                        <Pie data={userAccessDataset} options={optionsPie}/>
                     </Row>
                 </Col>
             </Row>
