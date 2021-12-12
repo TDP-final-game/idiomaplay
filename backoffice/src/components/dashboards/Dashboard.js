@@ -5,7 +5,7 @@ import { Row, Col} from 'react-bootstrap';
 import DatePicker  from 'react-datepicker';
 import Stat from './Stat';
 import "react-datepicker/dist/react-datepicker.css"
-import { getDailyAccessData, getUserAccessData } from '../../dataProvider/userLoginData';
+import { getDailyAccessData, getUserAccessData, getDailyUnitsFinishedData } from '../../dataProvider/userLoginData';
 import "./dashboard.css";
 
 
@@ -76,7 +76,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const labels = range(1, 30);
 
-const getDailyAccessDataset = (data) => ({
+const getDailyAccessDataset = (dailyAccessData, dailyUnitsFinishedData) => ({
     labels,
     datasets: [
         {
@@ -86,13 +86,21 @@ const getDailyAccessDataset = (data) => ({
             borderWidth: 2,
             fill: false,
             scaleSteps: 1,
-            data,
+            data: dailyAccessData,
+        },
+        {
+            type: 'bar',
+            label: 'Ingreso de los usuarios',
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 2,
+            fill: false,
+            scaleSteps: 1,
+            data: dailyUnitsFinishedData,
         }
     ],
-
 });
 
-const getUserAccessDataset = (data) => ({
+const getUserAccessDataset = data => ({
     labels: ['Diario', 'Semanal', 'Mensual'],
     datasets: [
         {
@@ -112,7 +120,6 @@ const getUserAccessDataset = (data) => ({
         },
     ],
 });
-
 
 const optionsPie = {
     plugins: {
@@ -156,17 +163,19 @@ const Dashboard = () => {
 
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
+    const [dailyUnitsFinishedData, setdailyUnitsFinishedData] = useState([]);
 
     const onChangeDashboard = (startDate) => {
         getDailyAccessData(startDate).then(data => setDailyAccessData(data));
         getUserAccessData(startDate).then(data => setUserAccessData(data));
+        getDailyUnitsFinishedData(startDate).then(data => setdailyUnitsFinishedData(data));
     }
 
     useEffect( () => {
         onChangeDashboard(startDate)
     }, [])
 
-    const dailyAccessDataset = getDailyAccessDataset(dailyAccessData);
+    const dailyAccessDataset = getDailyAccessDataset(dailyAccessData, dailyUnitsFinishedData);
     const userAccessDataset = getUserAccessDataset(userAccessData);
 
     return (

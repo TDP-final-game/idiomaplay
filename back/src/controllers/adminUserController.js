@@ -24,8 +24,15 @@ const getUserAccessData = async (req, res) => {
 	res.status(STATUS_CODES.OK).send(await adminUserService.getUserAccessData(startDate, endDate));
 };
 
+const getDailyUnitsFinished = async (req, res) => {
+
+	const { startDate, endDate } = parseStartDateEndDate(req.query.startDate);
+	res.status(STATUS_CODES.OK).send(await adminUserService.getDailyUnitsFinished(startDate, endDate));
+};
+
 module.exports = {
 	logIn,
 	getDailyAccessData,
-	getUserAccessData
+	getUserAccessData,
+	getDailyUnitsFinished
 };
