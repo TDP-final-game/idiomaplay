@@ -9,6 +9,7 @@ const createUser = async ({ email, ...props }) => {
 	let user = await User.findOne({ email });
 	if(user)
 		throw errors.UserAlreadyRegistered();
+
 	user = await (new User({ email, ...props })).save();
 	await adminService.saveAccess(user._id);
 	return user;

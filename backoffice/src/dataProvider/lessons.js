@@ -1,4 +1,4 @@
-import { apiUrl, getChallengeId, httpClient } from './utils';
+import { apiUrl, httpClient } from './utils';
 import { mapExercise } from './lessonExercises';
 
 export const mapLesson = (unitId, lesson) => {
@@ -13,8 +13,8 @@ export const mapLesson = (unitId, lesson) => {
 const lessons = {
 	getOne: async (resource, params) => {
 		const id = params.id.replace(/-/g, '/');
-		const unitId = params.id.split('-').slice(0, 2).join('-');
-		const url = `${apiUrl}/challenges/${await getChallengeId()}/${id}`;
+		const unitId = params.id.split('-').slice(0, 4).join('-');
+		const url = `${apiUrl}/${id}`;
 		const lesson = await httpClient(url).then(({json}) => ({
 			data: mapLesson(unitId, json),
 		}))

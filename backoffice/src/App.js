@@ -7,7 +7,10 @@ import UserList from './components/users/List';
 import UserEdit from './components/users/Edit';
 import Dashboard from './components/dashboards/Dashboard'
 
-import UnitList from './components/units/List';
+import ChallengeList from './components/challenges/List';
+import ChallengeShow from './components/challenges/Show';
+import ChallengeEdit from './components/challenges/Edit';
+
 import UnitShow from './components/units/Show';
 import UnitEdit from './components/units/Edit';
 
@@ -26,7 +29,8 @@ const i18nProvider = polyglotI18nProvider(() => ({...spanishMessages, ...transla
 const App = () => (
 	<Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
 		<Resource name="users" list={UserList} edit={UserEdit} />
-		<Resource name="units" list={UnitList} show={UnitShow} edit={UnitEdit} />
+		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} edit={ChallengeEdit}/>
+		<Resource name="units" show={UnitShow} edit={UnitEdit} />
 		<Resource name="lessons" show={LessonShow} edit={LessonEdit}/>
 		<Resource name="lessonExercises" show={ExerciseShow} edit={ExerciseEdit}/>
 	</Admin>

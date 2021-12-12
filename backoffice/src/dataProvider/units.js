@@ -1,31 +1,23 @@
-import { apiUrl, getChallengeId, headers, httpClient } from './utils';
+import { apiUrl, httpClient } from './utils';
 
 import { mapLesson } from './lessons';
 
-const mapUnit = unit => ({
+export const mapUnit = (challengeId, unit) => {
+	const unitId = `${challengeId}-units-${unit.orderNumber}`;
+	return {
 	...unit,
-	lessons: unit.lessons.map(lesson => mapLesson(`units-${unit.orderNumber}`, lesson)),
-	id: unit.orderNumber
-})
+		lessons: unit.lessons.map(lesson => mapLesson(unitId, lesson)),
+		id: unitId
+	}
+};
 
 const units = {
-	getList: async (resource, params) => {
-		const url = `${apiUrl}/challenges/${await getChallengeId()}/${resource}`;
-		const units = await httpClient(url, {headers}).then(({json}) => ({
-			data: json.map(mapUnit),
-			total: json.length,
-		}));
-
-		console.log('units', units);
-
-		return units
-	},
-
 	getOne: async (resource, params) => {
-		const url = `${apiUrl}/challenges/${await getChallengeId()}/${resource}/${params.id}`;
-
+		const id = params.id.replace(/-/g, '/');
+		const challengeId = params.id.split('-').slice(0, 2).join('-');
+		const url = `${apiUrl}/${id}`;
 		const unit = await httpClient(url).then(({json}) => ({
-			data: mapUnit(json),
+			data: mapUnit(challengeId, json),
 		}))
 
 		console.log('unit', unit);
