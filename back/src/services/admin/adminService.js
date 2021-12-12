@@ -13,18 +13,19 @@ const logIn = async (user, password) => {
 	throw errors.UserNotRegistered();
 };
 
-const getDailyAccessData = async (startDate, endDate) => {
-
-	startDate = new Date(startDate.setHours(0, 0, 0));
-	endDate = new Date(endDate.setHours(0, 0, 0));
-
-	const filter = {
+const filterMaker = (startDate, endDate) => {
+	const startDateObject = new Date(startDate.setHours(0, 0, 0));
+	const endDateObject = new Date(endDate.setHours(0, 0, 0));
+	return {
 		$and: [
-			{ date: { $gte: startDate } },
-			{ date: { $lt: endDate } }
+			{ date: { $gte: startDateObject } },
+			{ date: { $lt: endDateObject } }
 		]
 	};
+}
 
+const getDailyAccessData = async (startDate, endDate) => {
+	const filter = filterMaker(startDate, endDate)
 	const accessDetected = await DailyAccess.find(filter, null, null);
 
 	const accessDetectedPerDay = accessDetected.reduce((data, { date }) => {
@@ -55,17 +56,7 @@ const saveAccess = async userId => {
 };
 
 const getUserAccessData = async (startDate, endDate) => {
-
-	startDate = new Date(startDate.setHours(0, 0, 0));
-	endDate = new Date(endDate.setHours(0, 0, 0));
-
-	const filter = {
-		$and: [
-			{ date: { $gte: startDate } },
-			{ date: { $lt: endDate } }
-		]
-	};
-
+	const filter = filterMaker(startDate, endDate)
 	const accessDetected = await DailyAccess.find(filter, null, null);
 
 	const accessDetectedDatesPerUser = accessDetected.reduce((data, { user, date }) => {
