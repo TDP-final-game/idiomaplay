@@ -20,6 +20,7 @@ import LessonCreate from "./components/lessons/Create";
 
 import ExerciseShow from './components/exercises/Show';
 import ExerciseEdit from './components/exercises/Edit';
+import ExerciseCreate from "./components/exercises/Create";
 
 import translations from './translations';
 import dataProvider from './dataProvider/index';
@@ -33,7 +34,7 @@ const App = () => (
 		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} edit={ChallengeEdit}/>
 		<Resource name="units" show={UnitShow} edit={UnitEdit} create={UnitCreate}/>
 		<Resource name="lessons" show={LessonShow} edit={LessonEdit} create={LessonCreate}/>
-		<Resource name="lessonExercises" show={ExerciseShow} edit={ExerciseEdit}/>
+		<Resource name="lessonExercises" show={ExerciseShow} edit={ExerciseEdit} create={ExerciseCreate}/>
 	</Admin>
 );
 

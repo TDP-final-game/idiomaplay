@@ -33,7 +33,15 @@ const modelMessages = {
 				description: 'Descripcion',
 				language: 'Idioma'
 			}
-		}
+		},
+		lessonExercises: {
+			name: 'Ejercio |||| Ejercicios',
+			fields: {
+				type: 'Tipo',
+				statement: 'Consigna',
+				options: 'Opciones',
+			}
+		},
 	}
 }
 

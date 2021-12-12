@@ -19,8 +19,8 @@ const UnitList = () => (
 			<NumberField source="orderNumber"/>
 			<TextField source="name"/>
 			<TextField source="description"/>
-			<UnitShowButton/>
-			<UnitEditButton/>
+			<UnitShowButton />
+			<UnitEditButton />
 		</Datagrid>
 );
 

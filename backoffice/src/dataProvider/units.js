@@ -68,13 +68,15 @@ const units = {
 		// }).then(({ json }) => ({ data: json }));
 	},
 
-	create: (resource, params) => {
-		httpClient(`${apiUrl}/${resource}`, {
+
+	create: async (resource, params) => {
+		const response = await httpClient(
+			`${apiUrl}/challenges/${params.data.challengeId}/${resource}`, {
 			method: 'POST',
 			body: JSON.stringify(params.data),
-		}).then(({json}) => ({
-			data: {...params.data, id: json.id},
-		}))
+		})
+
+		return { data: { ...params.data, id: response.json._id} };
 	},
 
 	delete: (resource, params) => {

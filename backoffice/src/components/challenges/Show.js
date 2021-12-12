@@ -17,11 +17,11 @@ const ChallengeShow = props => (
 				<ArrayField label="Unidades" source="units">
 					<UnitList/>
 				</ArrayField>
-				<CreateButton label="Agregar unidad" to={"/units/create"} challengeId={props.id}/>
+				<CreateButton label="Agregar unidad" to={{pathname: "/units/create", state: { record: {challengeId: props.id}}}} />
 			</SimpleShowLayout>
 		</Show>
 	</>
 );
 
-
+                                    
 export default ChallengeShow;
