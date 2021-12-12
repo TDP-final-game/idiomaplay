@@ -7,7 +7,7 @@ const { expect } = chai;
 const ChallengeExample = require('./support/challenge');
 const UserExample = require('./support/user');
 
-describe('/challenges', () => {
+describe.skip('/challenges', () => {
 	// Authentication
 	beforeEach(async function() {
 		const userExample = new UserExample(this.app);

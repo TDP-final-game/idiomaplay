@@ -24,7 +24,7 @@ const filterMaker = (startDate, endDate) => {
 };
 
 const getDailyAccessData = async (startDate, endDate) => {
-	const filter = filterMaker(startDate, endDate)
+	const filter = filterMaker(startDate, endDate);
 	const accessDetected = await DailyAccess.find(filter, null, null);
 
 	const accessDetectedPerDay = accessDetected.reduce((data, { date }) => {
