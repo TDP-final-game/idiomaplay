@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-    Create,
-    SimpleForm, 
-    TextInput
+    Create, NumberInput,
+    SimpleForm, TextField,
+    TextInput,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
