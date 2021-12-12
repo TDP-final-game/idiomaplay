@@ -3,6 +3,7 @@
 const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 const { model: userModel } = require('../../model/users/user');
+const { model: DailyUnits } = require('../../model/data/dailyUnits');
 const STATUSES = require('../../constants/statuses.json');
 
 const errors = require('./challengeAttemptErrors');
@@ -76,6 +77,12 @@ const attemptExamExercise = async (challengeAttemptId, unitOrderNumber, exercise
 		throw errors.ChallengeAttemptNotFound();
 
 	await challengeAttempt.attemptExamExercise({ unitOrderNumber, exerciseOrderNumber, answer });
+
+	if(challengeAttempt.getUnitAttempt(unitOrderNumber).isExamPassed()) {
+		const dailyUnit = new DailyUnits({ challenge: challengeAttempt.challenge, unitOrderNumber, date: new Date() });
+		await dailyUnit.save();
+	}
+
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt.getExercise(exerciseOrderNumber);
 };
 
