@@ -91,8 +91,8 @@ const getDailyAccessDataset = (dailyAccessData, dailyUnitsFinishedData) => ({
         {
             type: 'bar',
             label: 'Unidades de los usuarios',
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor:'rgb(255, 99, 132)',
+            backgroundColor: 'rgb(75, 192, 192)',
+            borderColor: 'white',
             borderWidth: 1,
             fill: true,
             scaleSteps: 1,
