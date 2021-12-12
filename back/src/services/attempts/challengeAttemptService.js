@@ -4,6 +4,7 @@ const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 const { model: userModel } = require('../../model/users/user');
 const { model: DailyUnits } = require('../../model/data/dailyUnits');
+const { model: ExamStats } = require('../../model/data/examStats');
 const STATUSES = require('../../constants/statuses.json');
 
 const errors = require('./challengeAttemptErrors');
@@ -73,12 +74,32 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 
 const attemptExamExercise = async (challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer) => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
-	if(!challengeAttempt)
+	console.log('asdjdsnfgsngfojsndfogsdn');
+	if(!challengeAttempt) {
 		throw errors.ChallengeAttemptNotFound();
 
+	}
 	await challengeAttempt.attemptExamExercise({ unitOrderNumber, exerciseOrderNumber, answer });
 
+
 	if(challengeAttempt.getUnitAttempt(unitOrderNumber).isExamPassed()) {
+		let examStat = await ExamStats.findOne({ _id: challengeAttemptId });
+
+		const examAttempt = await challengeAttempt.getUnitAttempt(unitOrderNumber).examAttempt;
+		const examDuration = ((new Date()) - examAttempt.startDate) / 1000;
+		if(!examStat) {
+			examStat = new ExamStats(
+				{
+					totalDuration: examDuration,
+					numberOfExams: 1,
+					date: (new Date()).toLocaleDateString()
+				});
+			await examStat.save();
+		} else {
+			examStat.totalDuration += examDuration;
+			examStat.numberOfExams += 1;
+			await examStat.save();
+		}
 		const dailyUnit = new DailyUnits({ challenge: challengeAttempt.challenge, unitOrderNumber, date: new Date() });
 		await dailyUnit.save();
 	}

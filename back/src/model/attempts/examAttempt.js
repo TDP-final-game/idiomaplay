@@ -97,7 +97,7 @@ ExamAttempt.methods.abort = function() {
 	user.addReward(this.reward);
 };
 
-ExamAttempt.methods.attemptExercise = async function({ exerciseOrderNumber, answer }) {
+ExamAttempt.methods.attemptExercise = function({ exerciseOrderNumber, answer }) {
 	const exercise = this.getExercise(exerciseOrderNumber);
 
 	if(Date.now() > this.expirationDate)

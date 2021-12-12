@@ -47,7 +47,9 @@ const getDailyAccessData = async (startDate, endDate) => {
 };
 
 const saveAccess = async userId => {
-	return new DailyAccess({ userId, date: new Date() });
+	const access = new DailyAccess({ userId, date: new Date() });
+	await access.save();
+	return access;
 };
 
 const getUserAccessData = async (startDate, endDate) => {
