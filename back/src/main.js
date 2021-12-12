@@ -9,7 +9,7 @@ const notificationsService = require('./services/notifications/notificationsServ
 
 const main = async () => {
 	const app = await appCallback();
-	const port = process.env.PORT || 3000;
+	const port = process.env.PORT || 3001;
 	let result = await app.listen(port);
 	notificationsService.start();
 
