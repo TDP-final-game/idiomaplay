@@ -74,34 +74,27 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 
 const attemptExamExercise = async (challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer) => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
-	console.log('asdjdsnfgsngfojsndfogsdn');
-	if(!challengeAttempt) {
+
+	if(!challengeAttempt)
 		throw errors.ChallengeAttemptNotFound();
 
-	}
 	await challengeAttempt.attemptExamExercise({ unitOrderNumber, exerciseOrderNumber, answer });
 
-
 	if(challengeAttempt.getUnitAttempt(unitOrderNumber).isExamPassed()) {
-		let examStat = await ExamStats.findOne({ _id: challengeAttemptId });
 
 		const examAttempt = await challengeAttempt.getUnitAttempt(unitOrderNumber).examAttempt;
 		const examDuration = ((new Date()) - examAttempt.startDate) / 1000;
-		if(!examStat) {
-			examStat = new ExamStats(
-				{
-					totalDuration: examDuration,
-					numberOfExams: 1,
-					date: (new Date()).toLocaleDateString()
-				});
-			await examStat.save();
-		} else {
-			examStat.totalDuration += examDuration;
-			examStat.numberOfExams += 1;
-			await examStat.save();
-		}
+
+		const examStat = new ExamStats(
+			{
+				totalDuration: examDuration,
+				unitOrderNumber,
+				challengeAttemptId,
+				date: new Date(new Date().setHours(0, 0, 0))
+			});
+
 		const dailyUnit = new DailyUnits({ challenge: challengeAttempt.challenge, unitOrderNumber, date: new Date() });
-		await dailyUnit.save();
+		await Promise.all([examStat.save(), dailyUnit.save()]);
 	}
 
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt.getExercise(exerciseOrderNumber);

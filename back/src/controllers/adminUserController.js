@@ -30,9 +30,17 @@ const getDailyUnitsFinished = async (req, res) => {
 	res.status(STATUS_CODES.OK).send(await adminUserService.getDailyUnitsFinished(startDate, endDate));
 };
 
+const getUnitAverageResolutionTime = async (req, res) => {
+
+	const { startDate, endDate } = parseStartDateEndDate(req.query.startDate);
+	res.status(STATUS_CODES.OK).send(await adminUserService.getUnitAverageResolutionTime(startDate, endDate));
+};
+
+
 module.exports = {
 	logIn,
 	getDailyAccessData,
 	getUserAccessData,
-	getDailyUnitsFinished
+	getDailyUnitsFinished,
+	getUnitAverageResolutionTime
 };

@@ -102,11 +102,26 @@ const getDailyUnitsFinished = async (startDate, endDate) => {
 	return unitsDetectedPerDayFormatted;
 };
 
+const getUnitAverageResolutionTime = async (startDate, endDate) => {
+
+	const filter = filterMaker(startDate, endDate);
+
+	const examsFinishedDetected = await DailyUnits.find(filter, null, null);
+
+	const averageTimeOnUnitResolution = examsFinishedDetected.reduce((accum, data) => {
+		accum.sumOfDurationTime += data.totalDuration;
+		accum.unitsCompleted += 1;
+		return accum;
+	}, { sumOfDurationTime: 0, unitsCompleted: 0 });
+
+	return averageTimeOnUnitResolution.unitsCompleted ? averageTimeOnUnitResolution.sumOfDurationTime / averageTimeOnUnitResolution.unitsCompleted : 0;
+};
 
 module.exports = {
 	logIn,
 	getDailyAccessData,
 	getUserAccessData,
 	saveAccess,
-	getDailyUnitsFinished
+	getDailyUnitsFinished,
+	getUnitAverageResolutionTime
 };

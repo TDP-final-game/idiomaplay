@@ -7,7 +7,8 @@ const mongoose = require('mongoose');
  */
 const ExamStats = new mongoose.Schema({
 	date: { type: Date, required: true },
-	numberOfExams: { type: Number, required: true },
+	challengeAttemptId: { type: mongoose.Schema.Types.ObjectId, required: true },
+	unitOrderNumber: { type: Number, required: true },
 	totalDuration: { type: Number, required: true }
 });
 
