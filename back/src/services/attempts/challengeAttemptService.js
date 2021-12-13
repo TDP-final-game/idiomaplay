@@ -32,7 +32,6 @@ const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber);
 };
 
-
 const lifesCheck = async challengeAttempt => {
 	const user = await userModel.findOne({ _id: challengeAttempt.user });
 
@@ -127,12 +126,12 @@ const getChallenge = async challengeAttemptId => {
 };
 
 module.exports = {
-	attemptChallenge,
 	attemptUnit,
 	attemptExam,
-	attemptLesson,
-	attemptExamExercise,
-	attemptLessonExercise,
 	getChallenge,
-	abortExamAttempt
+	attemptLesson,
+	attemptChallenge,
+	abortExamAttempt,
+	attemptExamExercise,
+	attemptLessonExercise
 };

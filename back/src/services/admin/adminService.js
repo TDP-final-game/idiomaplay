@@ -2,6 +2,7 @@
 
 const { model: DailyAccess } = require('../../model/data/dailyAccess');
 const { model: DailyUnits } = require('../../model/data/dailyUnits');
+const { model: ExamStats } = require('../../model/data/examStats');
 const errors = require('./errors');
 
 
@@ -106,7 +107,7 @@ const getUnitAverageResolutionTime = async (startDate, endDate) => {
 
 	const filter = filterMaker(startDate, endDate);
 
-	const examsFinishedDetected = await DailyUnits.find(filter, null, null);
+	const examsFinishedDetected = await ExamStats.find(filter, null, null);
 
 	const averageTimeOnUnitResolution = examsFinishedDetected.reduce((accum, data) => {
 		accum.sumOfDurationTime += data.totalDuration;
