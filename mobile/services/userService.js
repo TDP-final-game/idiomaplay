@@ -7,6 +7,7 @@ const NOT_ENOUGHT_MONEY_ERROR = 'No tiene las monedas suficientes!';
 async function createUser(firstName, lastName, email) {
   const expoPushToken = await registerForPushNotificationsAsync();
   const response = await api.post('/users', { firstName, lastName, email, expoPushToken });
+  console.log(response)
   authenticate(response.data.id);
   return response.data;
 }

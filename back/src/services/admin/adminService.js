@@ -2,6 +2,7 @@
 
 const { model: DailyAccess } = require('../../model/data/dailyAccess');
 const { model: DailyUnits } = require('../../model/data/dailyUnits');
+const { model: ExamStats } = require('../../model/data/examStats');
 const errors = require('./errors');
 
 
@@ -47,7 +48,9 @@ const getDailyAccessData = async (startDate, endDate) => {
 };
 
 const saveAccess = async userId => {
-	return new DailyAccess({ userId, date: new Date() });
+	const access = new DailyAccess({ userId, date: new Date() });
+	await access.save();
+	return access;
 };
 
 const getUserAccessData = async (startDate, endDate) => {
@@ -100,11 +103,26 @@ const getDailyUnitsFinished = async (startDate, endDate) => {
 	return unitsDetectedPerDayFormatted;
 };
 
+const getUnitAverageResolutionTime = async (startDate, endDate) => {
+
+	const filter = filterMaker(startDate, endDate);
+
+	const examsFinishedDetected = await ExamStats.find(filter, null, null);
+
+	const averageTimeOnUnitResolution = examsFinishedDetected.reduce((accum, data) => {
+		accum.sumOfDurationTime += data.totalDuration;
+		accum.unitsCompleted += 1;
+		return accum;
+	}, { sumOfDurationTime: 0, unitsCompleted: 0 });
+
+	return averageTimeOnUnitResolution.unitsCompleted ? averageTimeOnUnitResolution.sumOfDurationTime / averageTimeOnUnitResolution.unitsCompleted : 0;
+};
 
 module.exports = {
 	logIn,
 	getDailyAccessData,
 	getUserAccessData,
 	saveAccess,
-	getDailyUnitsFinished
+	getDailyUnitsFinished,
+	getUnitAverageResolutionTime
 };
