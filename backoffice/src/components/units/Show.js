@@ -5,8 +5,6 @@ import Breadcrumbs from '../Breadcrumbs';
 import CreateButton from '../CreateButton';
 import ExamExerciseList from "../examExercises/List";
 
-import ExamExerciseList from '../examExercises/List'
-
 const UnitShow = props => {
 
 	const challengeId = props.id.split('-')[1];

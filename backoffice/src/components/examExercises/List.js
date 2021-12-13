@@ -8,7 +8,7 @@ const ExerciseShowButton = ({record}) => {
 	return <ShowButton to={`/examExercises/${record.id}/show`}/>
 }
 
-const ExerciseList = ({unitId}) => (
+const ExerciseList = () => (
 	<Datagrid>
 		<TextField source="orderNumber"/>
 		<TextField source="statement"/>
