@@ -1,5 +1,5 @@
 // import * as React from "react";
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Card} from '@material-ui/core';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker  from 'react-datepicker';
@@ -34,22 +34,22 @@ const styles = {
         padding: '5px',
         borderRadius: '7pt',
         // background: 'red',
-        fontFamily: 'Helvetica', 
+        fontFamily: 'Helvetica',
         order: 1,
         alignItems: 'stretch'
     },
     secondDash: {
         width: '25%',
         flexDirection: 'row',
-        fontFamily: 'Helvetica', 
+        fontFamily: 'Helvetica',
         order: 2,
     },
-    
+
     datepickerContainer: {
         display: 'flex',
         flexDirection: 'row'
     },
-    
+
     datepickerRow: {
         display: 'flex',
         margin: '15px',
@@ -160,10 +160,6 @@ const optionsLine =  {
 }
 
 const Dashboard = () => {
-    const startDate = useMemo(() => {
-      return new Date()
-    }, []);
-
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
     const [dailyUnitsFinishedData, setdailyUnitsFinishedData] = useState([]);
@@ -176,9 +172,11 @@ const Dashboard = () => {
         getUnitAverageResolutionTime(startDate).then(data => setAverageResolutionTime(data));
     }
 
+    const [startDate, setStartDate] = useState(new Date())
+
     useEffect( () => {
         onChangeDashboard(startDate)
-    }, [])
+    }, [startDate])
 
     const dailyAccessDataset = getDailyAccessDataset(dailyAccessData, dailyUnitsFinishedData);
     const userAccessDataset = getUserAccessDataset(userAccessData);
@@ -191,10 +189,10 @@ const Dashboard = () => {
                 </Col>
                 <Col style={styles.datepickerRow}>
                     <div style={styles.datepickerContainer}>
-                        <DatePicker 
+                        <DatePicker
                             className="datepicker"
                             selected={startDate}
-                            onChange={startDate => onChangeDashboard(startDate)}
+                            onChange={startDate => setStartDate(startDate)}
                             dateFormat="MM/yyyy"
                             showMonthYearPicker
                             showFullMonthYearPicker
@@ -203,7 +201,7 @@ const Dashboard = () => {
                     </div>
                 </Col>
             </Row>
-           
+
             <Row style={styles.container}>
                 <Col style={styles.dashboard} className="featuredItem">
                     <Chart type='bar' data={dailyAccessDataset} options={optionsLine}/>
