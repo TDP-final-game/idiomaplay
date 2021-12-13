@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Create, NumberInput,
-    SimpleForm, TextField,
+    SimpleForm,
     TextInput,
 } from 'react-admin';
 import { useLocation } from 'react-router';
