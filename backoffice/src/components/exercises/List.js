@@ -4,15 +4,15 @@ import {
 	ShowButton
 } from 'react-admin';
 
-const ExerciseShowButton = ({lessonId}) => {
-	return <ShowButton to={`/lessonExercises/${lessonId}/show`}/>
+const ExerciseShowButton = ({record}) => {
+	return <ShowButton to={`/lessonExercises/${record.id}/show`}/>
 }
 
-const ExerciseList = ({lessonId}) => (
+const ExerciseList = () => (
 	<Datagrid>
 		<TextField source="orderNumber"/>
 		<TextField source="statement"/>
-		<ExerciseShowButton lessonId={lessonId}/>
+		<ExerciseShowButton/>
 	</Datagrid>
 );
 
