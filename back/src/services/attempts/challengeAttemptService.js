@@ -3,6 +3,8 @@
 const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 const { model: userModel } = require('../../model/users/user');
+const { model: DailyUnits } = require('../../model/data/dailyUnits');
+const { model: ExamStats } = require('../../model/data/examStats');
 const STATUSES = require('../../constants/statuses.json');
 
 const errors = require('./challengeAttemptErrors');
@@ -29,7 +31,6 @@ const attemptUnit = async (challengeAttemptId, unitOrderNumber) => {
 	await challengeAttempt.attemptUnit({ unitOrderNumber });
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber);
 };
-
 
 const lifesCheck = async challengeAttempt => {
 	const user = await userModel.findOne({ _id: challengeAttempt.user });
@@ -72,10 +73,29 @@ const attemptLesson = async (challengeAttemptId, unitOrderNumber, lessonOrderNum
 
 const attemptExamExercise = async (challengeAttemptId, unitOrderNumber, exerciseOrderNumber, answer) => {
 	const challengeAttempt = await challengeAttemptModel.findOne({ _id: challengeAttemptId });
+
 	if(!challengeAttempt)
 		throw errors.ChallengeAttemptNotFound();
 
 	await challengeAttempt.attemptExamExercise({ unitOrderNumber, exerciseOrderNumber, answer });
+
+	if(challengeAttempt.getUnitAttempt(unitOrderNumber).isExamPassed()) {
+
+		const examAttempt = await challengeAttempt.getUnitAttempt(unitOrderNumber).examAttempt;
+		const examDuration = ((new Date()) - examAttempt.startDate) / 1000;
+
+		const examStat = new ExamStats(
+			{
+				totalDuration: examDuration,
+				unitOrderNumber,
+				challengeAttemptId,
+				date: new Date(new Date().setHours(0, 0, 0))
+			});
+
+		const dailyUnit = new DailyUnits({ challenge: challengeAttempt.challenge, unitOrderNumber, date: new Date() });
+		await Promise.all([examStat.save(), dailyUnit.save()]);
+	}
+
 	return (await challengeAttempt.save()).getUnitAttempt(unitOrderNumber).examAttempt.getExercise(exerciseOrderNumber);
 };
 
@@ -106,12 +126,12 @@ const getChallenge = async challengeAttemptId => {
 };
 
 module.exports = {
-	attemptChallenge,
 	attemptUnit,
 	attemptExam,
-	attemptLesson,
-	attemptExamExercise,
-	attemptLessonExercise,
 	getChallenge,
-	abortExamAttempt
+	attemptLesson,
+	attemptChallenge,
+	abortExamAttempt,
+	attemptExamExercise,
+	attemptLessonExercise
 };

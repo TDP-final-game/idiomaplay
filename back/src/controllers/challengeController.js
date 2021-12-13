@@ -40,6 +40,31 @@ const listChallenges = async (req, res) => {
 	}
 };
 
+const getUnits = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId } = req.params;
+		const { units } = await challengeService.findChallenge(challengeId);
+		res.status(STATUS_CODES.OK).send(units);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
+const getUnit = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(unit);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
 const addUnit = async (req, res) => {
 	// #swagger.tags = ['Challenge']
 
@@ -52,6 +77,20 @@ const addUnit = async (req, res) => {
 		return res.status(error.statusCode).send(error.description);
 	}
 };
+
+const getLessons = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(unit.lessons);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
 
 const addLesson = async (req, res) => {
 	// #swagger.tags = ['Challenge']
@@ -87,6 +126,34 @@ const getExam = async (req, res) => {
 		const response = await challengeService.getExam(challengeId, Number(unitOrderNumber));
 		res.status(STATUS_CODES.OK)
 			.send(response);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
+const getLesson = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber, lessonOrderNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		const lesson = unit.getLesson(parseInt(lessonOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(lesson);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
+const getLessonExercises = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber, lessonOrderNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		const lesson = unit.getLesson(parseInt(lessonOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(lesson.exercises);
 	} catch(error) {
 		return res.status(error.statusCode).send(error.description);
 	}
@@ -131,6 +198,21 @@ const listChallengeAttempts = async (req, res) => {
 	}
 };
 
+const getLessonExercise = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber, lessonOrderNumber, exerciseNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		const lesson = unit.getLesson(parseInt(lessonOrderNumber, 10));
+		const exercise = lesson.exercises[parseInt(exerciseNumber, 10)];
+		res.status(STATUS_CODES.OK).send(exercise);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
 module.exports = {
 	findChallenge,
 	createChallenge,
@@ -141,5 +223,11 @@ module.exports = {
 	getExam,
 	addExerciseToLesson,
 	addExerciseToExam,
-	listChallengeAttempts
+	listChallengeAttempts,
+	getUnits,
+	getLessons,
+	getLessonExercises,
+	getLesson,
+	getLessonExercise,
+	getUnit
 };

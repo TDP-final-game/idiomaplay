@@ -8,7 +8,40 @@ const modelMessages = {
 				lastAccess: 'Último acceso',
 				enabled: 'Habilitado',
 			},
-		}
+		},
+		units: {
+			name: 'Unidad |||| Unidades',
+			fields: {
+				name: 'Nombre',
+				orderNumber: 'Numero de orden',
+				description: 'Descripcion'
+			}
+		},
+		lessons: {
+			name: 'Leccion |||| Lecciones',
+			fields: {
+				name: 'Nombre',
+				orderNumber: 'Numero de orden',
+				description: 'Descripcion'
+			}
+		},
+		challenges: {
+			name: 'Desafio |||| Desafios',
+			fields: {
+				name: 'Nombre',
+				difficulty: 'Dificultad',
+				description: 'Descripcion',
+				language: 'Idioma'
+			}
+		},
+		lessonExercises: {
+			name: 'Ejercio |||| Ejercicios',
+			fields: {
+				type: 'Tipo',
+				statement: 'Consigna',
+				options: 'Opciones',
+			}
+		},
 	}
 }
 

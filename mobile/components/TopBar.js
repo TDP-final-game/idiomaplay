@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { colors } from '../config/colors';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LifeAndCoins } from './LifeAndCoins';
 import { commonStyles } from '../config/styles';
@@ -54,7 +54,7 @@ export const TopBar = ({ cartButtonFunction, cartButtonPressed }) => {
 
       <View>
         <Text style={styles.primaryText}>IdiomaPlay</Text>
-        <LifeAndCoins coins={user.coins} lives={user.lives} />
+        <LifeAndCoins coins={user.coins} lives={user.lives} trophies={user.trophies} />
       </View>
 
       <View style={{ marginRight: '3%' }}>

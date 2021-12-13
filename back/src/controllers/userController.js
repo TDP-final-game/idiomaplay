@@ -51,7 +51,6 @@ const list = async (req, res) => {
 
 const get = async (req, res) => {
 	// #swagger.tags = ['User']
-
 	const { userId } = req.params;
 	const user = await userService.get(userId);
 	res.status(STATUS_CODES.OK).send(user);

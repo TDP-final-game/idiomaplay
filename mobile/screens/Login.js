@@ -9,6 +9,7 @@ import { screens } from '../config/screens';
 import { GoogleButton } from '../components/GoogleButton';
 import UserService from '../services/userService';
 import { CustomAlert } from '../components/CustomAlert';
+import ChallengeService from '../services/challengeService';
 
 const Login = ({ navigation }) => {
   const iconSize = 200;
@@ -68,10 +69,11 @@ const Login = ({ navigation }) => {
         }
       });
     } else {
-      UserService.logIn(user.email /*va el access token*/).then((data) => {
+      UserService.logIn(user.email /*va el access token*/).then(async (data) => {
         if (!data.id) {
           setShowNotRegisteredAlert(true);
         } else {
+          const trophies = await ChallengeService.getTrophies();
           dispatch(
             logIn({
               email: user.email,
@@ -79,6 +81,7 @@ const Login = ({ navigation }) => {
               imageUrl: user.photoUrl,
               name: data.firstName + ' ' + data.lastName,
               stats: data.stats,
+              trophies: trophies,
             })
           );
           return navigation.navigate(screens.HOME);

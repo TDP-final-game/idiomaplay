@@ -13,6 +13,7 @@ import { TutorialCard } from '../components/TutorialCard';
 import { PrimaryButton } from '../components/PrimaryButton';
 
 import {
+  TUTORIAL_IMAGE_HOME,
   TUTORIAL_IMAGE_MARKET,
   TUTORIAL_IMAGE_LESSONS,
   TUTORIAL_IMAGE_GAMIFICATION,
@@ -26,12 +27,12 @@ export const Tutorial = ({ navigation }) => {
   const tutorialPages = [
     {
       index: 1,
-      title: '¡Bienvenido!',
-      image: TUTORIAL_IMAGE_LESSONS,
+      title: 'Pantalla inicial',
+      image: TUTORIAL_IMAGE_HOME,
     },
     {
       index: 2,
-      title: '¿Cómo jugar?',
+      title: 'Unidades',
       image: TUTORIAL_IMAGE_LESSONS,
     },
     {
@@ -69,7 +70,7 @@ export const Tutorial = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.welcomeTextContainer}>
-        <Text style={styles.welcomeMessage}>Tutorial</Text>
+        <Text style={styles.welcomeMessage}>¡Bienvenido a IdiomaPlay!</Text>
       </View>
 
       <View style={{ flex: 0.7 }}>
