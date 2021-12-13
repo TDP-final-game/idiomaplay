@@ -18,8 +18,10 @@ import {
     PointElement,
     LineElement,
     Legend,
+    registerables as registerablesJS
 } from 'chart.js';
 import {Chart, Pie} from 'react-chartjs-2';
+ChartJS.register(...registerablesJS);
 
 const styles = {
 
