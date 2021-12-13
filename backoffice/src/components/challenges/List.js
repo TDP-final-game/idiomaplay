@@ -2,8 +2,7 @@ import {
 	List,
 	Datagrid,
 	TextField,
-	ShowButton,
-	EditButton
+	ShowButton
 } from 'react-admin';
 
 import Breadcrumbs from '../Breadcrumbs';
@@ -17,12 +16,11 @@ const ChallengeList = props => (
 					bulkActionButtons={false}
 					exporter={false}
 		>
-			<Datagrid rowClick="edit">
+			<Datagrid rowClick="show">
 				<TextField source="name" />
 				<TextField source="language" />
 				<TextField source="difficulty" />
 				<ShowButton/>
-				<EditButton/>
 			</Datagrid>
 		</List>
 	</>

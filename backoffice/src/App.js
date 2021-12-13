@@ -31,11 +31,11 @@ const i18nProvider = polyglotI18nProvider(() => ({...spanishMessages, ...transla
 
 const App = () => (
 	<Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
-		<Resource name="users" list={UserList} edit={UserEdit} />
-		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} edit={ChallengeEdit}/>
-		<Resource name="units" show={UnitShow} edit={UnitEdit} create={UnitCreate}/>
-		<Resource name="lessons" show={LessonShow} edit={LessonEdit} create={LessonCreate}/>
-		<Resource name="lessonExercises" show={ExerciseShow} edit={ExerciseEdit} create={ExerciseCreate}/>
+		<Resource name="users" list={UserList} />
+		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} />
+		<Resource name="units" show={UnitShow} create={UnitCreate}/>
+		<Resource name="lessons" show={LessonShow} create={LessonCreate}/>
+		<Resource name="lessonExercises" show={ExerciseShow} create={ExerciseCreate}/>
 	</Admin>
 );
 
