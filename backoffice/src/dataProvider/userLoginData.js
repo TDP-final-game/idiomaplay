@@ -19,7 +19,7 @@ export const getDailyUnitsFinishedData = async startDate => {
 
 export const getUnitAverageResolutionTime = async startDate => {
     const response = await axios.get(`${apiUrl}/adminUsers/data/unitAverageResolutionTime?startDate=${startDate.toISOString()}`);
-    return response.data;
+    return response.data.unitAverageResolutionTime;
 };
 
 

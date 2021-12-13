@@ -34,23 +34,26 @@ const styles = {
         padding: '5px',
         borderRadius: '7pt',
         // background: 'red',
+        fontFamily: 'Helvetica', 
         order: 1,
         alignItems: 'stretch'
     },
     secondDash: {
         width: '25%',
         flexDirection: 'row',
+        fontFamily: 'Helvetica', 
         order: 2,
     },
     
     datepickerContainer: {
         display: 'flex',
+        flexDirection: 'row'
     },
     
     datepickerRow: {
         display: 'flex',
-        margin: '5px',
-        justifyContent: 'center',
+        margin: '15px',
+        // justifyContent: 'center',
         width: '100%',
         textAlign: 'center',
     }
@@ -183,23 +186,24 @@ const Dashboard = () => {
     return (
         <Card >
             <Row style={styles.titleRow}>
-                <Row style={styles.datepickerRow}>
-                    <span className="dateTitle">Mes del grafico:</span>
-                </Row>
+                <Col style={styles.datepickerRow}>
+                    <span className="dateTitle">Mes del grafico</span>
+                </Col>
+                <Col style={styles.datepickerRow}>
+                    <div style={styles.datepickerContainer}>
+                        <DatePicker 
+                            className="datepicker"
+                            selected={startDate}
+                            onChange={startDate => onChangeDashboard(startDate)}
+                            dateFormat="MM/yyyy"
+                            showMonthYearPicker
+                            showFullMonthYearPicker
+                            minDate={new Date('11-01-2021')}
+                        />
+                    </div>
+                </Col>
             </Row>
-            <Row style={styles.datepickerRow}>
-                <div style={styles.datepickerContainer}>
-                    <DatePicker 
-                        className="datepicker"
-                        selected={startDate}
-                        onChange={startDate => onChangeDashboard(startDate)}
-                        dateFormat="MM/yyyy"
-                        showMonthYearPicker
-                        showFullMonthYearPicker
-                        minDate={new Date('11-01-2021')}
-                    />
-                </div>
-            </Row>
+           
             <Row style={styles.container}>
                 <Col style={styles.dashboard} className="featuredItem">
                     <Chart type='bar' data={dailyAccessDataset} options={optionsLine}/>
@@ -209,9 +213,8 @@ const Dashboard = () => {
                         <div>
                             <span className="featuredTitle">Promedio de resolución</span>
                             <div className="featuredMoneyContainer">
-                                <span className="featuredMoney">{unitAverageResolutionTime}</span>
+                                <span className="featuredMoney">{Number((unitAverageResolutionTime).toFixed(2))} en minutos</span>
                             </div>
-                            {/* <span className="featuredSub">Compared to last month</span> */}
                         </div>
                     </Row>
                     <Row className="pieChartItem">
