@@ -167,7 +167,8 @@ const Dashboard = () => {
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
     const [dailyUnitsFinishedData, setdailyUnitsFinishedData] = useState([]);
-    const [unitAverageResolutionTime, setAverageResolutionTime] = useState([]);
+    const [unitAverageResolutionTime, setAverageResolutionTime] = useState(0);
+
 
     const onChangeDashboard = (startDate) => {
         getDailyAccessData(startDate).then(data => setDailyAccessData(data));
