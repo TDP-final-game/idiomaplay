@@ -22,9 +22,13 @@ const UnitCreate = props => {
                 <TextInput source="orderNumber"/>
                 <TextInput source="name" />
                 <TextInput source="description" />
+                <NumberInput label="Duracion del examen (min)" source="durationInMinutes" />
+                <TextInput label="Nombre del examen" source="examName" />
+                <TextInput label="Descripcion del examen" source="examDescription" />
             </SimpleForm>
         </Create>
     );
 };
 
 export default UnitCreate;
+
