@@ -3,9 +3,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {Card} from '@material-ui/core';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker  from 'react-datepicker';
-import Stat from './Stat';
 import "react-datepicker/dist/react-datepicker.css"
-import { getDailyAccessData, getUserAccessData, getDailyUnitsFinishedData } from '../../dataProvider/userLoginData';
+import { getDailyAccessData, getUserAccessData, getDailyUnitsFinishedData, getUnitAverageResolutionTime } from '../../dataProvider/userLoginData';
 import "./dashboard.css";
 
 
@@ -165,11 +164,13 @@ const Dashboard = () => {
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
     const [dailyUnitsFinishedData, setdailyUnitsFinishedData] = useState([]);
+    const [unitAverageResolutionTime, setAverageResolutionTime] = useState([]);
 
     const onChangeDashboard = (startDate) => {
         getDailyAccessData(startDate).then(data => setDailyAccessData(data));
         getUserAccessData(startDate).then(data => setUserAccessData(data));
         getDailyUnitsFinishedData(startDate).then(data => setdailyUnitsFinishedData(data));
+        getUnitAverageResolutionTime(startDate).then(data => setAverageResolutionTime(data));
     }
 
     useEffect( () => {
@@ -205,7 +206,13 @@ const Dashboard = () => {
                 </Col>
                 <Col style={styles.secondDash}>
                     <Row className="statItem">
-                        <Stat />
+                        <div>
+                            <span className="featuredTitle">Promedio de resolución</span>
+                            <div className="featuredMoneyContainer">
+                                <span className="featuredMoney">{unitAverageResolutionTime}</span>
+                            </div>
+                            {/* <span className="featuredSub">Compared to last month</span> */}
+                        </div>
                     </Row>
                     <Row className="pieChartItem">
                         <Pie data={userAccessDataset} options={optionsPie}/>
