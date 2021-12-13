@@ -2,11 +2,18 @@ import { apiUrl, httpClient } from './utils';
 
 import { mapLesson } from './lessons';
 
+const mapExercise = (challengeId, unitOrderNumber, exerciseId, exercise) => ({
+	...exercise,
+	id: `${challengeId}-units-${unitOrderNumber}-exercises-${exerciseId}`,
+	orderNumber: parseInt(exerciseId, 10) + 1
+})
+
 export const mapUnit = (challengeId, unit) => {
 	const unitId = `${challengeId}-units-${unit.orderNumber}`;
 	return {
-	...unit,
+		...unit,
 		lessons: unit.lessons.map(lesson => mapLesson(unitId, lesson)),
+		examExercises: unit.exam.exercises.map((exercise, n) => mapExercise(challengeId, unit.orderNumber, n, exercise)),
 		id: unitId
 	}
 };
@@ -18,7 +25,7 @@ const units = {
 		const url = `${apiUrl}/${id}`;
 		const unit = await httpClient(url).then(({json}) => ({
 			data: mapUnit(challengeId, json),
-		}))
+		}));
 
 		console.log('unit', unit);
 		return unit

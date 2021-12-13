@@ -9,14 +9,15 @@ export const mapExercise = (lessonId, exerciseId, exercise) => ({
 const examExercises = {
     getOne: async (resource, params) => {
         console.log('PARAMS:', params);
-        const id = params.id.replace(/-/g, '/');
-        const lessonId = params.id.split('-').slice(0, 6).join('-');
-        const exerciseId = params.id.split('-').slice(-1);
-        const exercise = await httpClient(`${apiUrl}/${id}`).then(({json}) => ({
-            data: mapExercise(lessonId, exerciseId, json),
+        const id = params.id.split('-')[1];
+        const unitOrderNumber = params.id.split('-')[3];
+        const exerciseId = params.id.split('-')[5];
+
+        const exercise = await httpClient(`${apiUrl}/challenges/${id}/units/${unitOrderNumber}/exams`).then(({json}) => ({
+            data: json.exercises[exerciseId],
         }));
-        console.log('exercise', exercise);
-        return exercise;
+
+        return { data: { ...exercise.data, id: params.id} };
     },
 
     getMany: (resource, params) => {
