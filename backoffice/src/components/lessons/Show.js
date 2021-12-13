@@ -9,7 +9,7 @@ const LessonShow = props => {
 	const challengeId = props.id.split('-')[1];
 	const unitOrderNumber = props.id.split('-')[3];
 	const lessonOrderNumber = props.id.split('-')[5];
-	
+
 	return (
 	<>
 		<div>
@@ -17,13 +17,10 @@ const LessonShow = props => {
 		</div>
 		<Show {...props}>
 			<SimpleShowLayout>
-				
-				<div style={{ display: 'inline', float: 'left', marginLeft: '20px' }}>
-					<TextField source="orderNumber"/>
-					<TextField source="name"/>
-					<TextField source="description" />
-				</div>
-			
+				<TextField source="orderNumber"/>
+				<TextField source="name"/>
+				<TextField source="description" />
+
 				<ArrayField label="Ejercicios" source="exercises">
 					<ExerciseList lessonId={`${props.id}`}/>
 				</ArrayField>

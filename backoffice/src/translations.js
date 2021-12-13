@@ -12,7 +12,7 @@ const modelMessages = {
 		units: {
 			name: 'Unidad |||| Unidades',
 			fields: {
-				name: 'Nombre',
+				name: 'Nombre de la unidad',
 				orderNumber: 'Numero de orden',
 				description: 'Descripcion'
 			}
@@ -37,11 +37,22 @@ const modelMessages = {
 		lessonExercises: {
 			name: 'Ejercio |||| Ejercicios',
 			fields: {
+				orderNumber: "Numero",
 				type: 'Tipo',
-				statement: 'Consigna',
+				statement: 'Texto',
 				options: 'Opciones',
 			}
 		},
+		examExercises: {
+			name: 'Ejercicio |||| Ejercicios',
+			fields: {
+				orderNumber: "Numero",
+				type: 'Tipo',
+				statement: 'Texto',
+				options: 'Opciones',
+			}
+		},
+
 	}
 }
 

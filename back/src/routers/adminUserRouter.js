@@ -14,4 +14,6 @@ router.get('/data/usersAccess', adminUserController.getUserAccessData);
 
 router.get('/data/dailyUnitsFinished', adminUserController.getDailyUnitsFinished);
 
+router.get('/data/unitAverageResolutionTime', adminUserController.getUnitAverageResolutionTime);
+
 module.exports = router;

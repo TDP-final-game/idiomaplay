@@ -3,9 +3,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {Card} from '@material-ui/core';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker  from 'react-datepicker';
-import Stat from './Stat';
 import "react-datepicker/dist/react-datepicker.css"
-import { getDailyAccessData, getUserAccessData, getDailyUnitsFinishedData } from '../../dataProvider/userLoginData';
+import { getDailyAccessData, getUserAccessData, getDailyUnitsFinishedData, getUnitAverageResolutionTime } from '../../dataProvider/userLoginData';
 import "./dashboard.css";
 
 
@@ -35,23 +34,26 @@ const styles = {
         padding: '5px',
         borderRadius: '7pt',
         // background: 'red',
+        fontFamily: 'Helvetica', 
         order: 1,
         alignItems: 'stretch'
     },
     secondDash: {
         width: '25%',
         flexDirection: 'row',
+        fontFamily: 'Helvetica', 
         order: 2,
     },
     
     datepickerContainer: {
         display: 'flex',
+        flexDirection: 'row'
     },
     
     datepickerRow: {
         display: 'flex',
-        margin: '5px',
-        justifyContent: 'center',
+        margin: '15px',
+        // justifyContent: 'center',
         width: '100%',
         textAlign: 'center',
     }
@@ -165,11 +167,13 @@ const Dashboard = () => {
     const [dailyAccessData, setDailyAccessData] = useState([]);
     const [userAccessData, setUserAccessData] = useState([]);
     const [dailyUnitsFinishedData, setdailyUnitsFinishedData] = useState([]);
+    const [unitAverageResolutionTime, setAverageResolutionTime] = useState(0);
 
     const onChangeDashboard = (startDate) => {
         getDailyAccessData(startDate).then(data => setDailyAccessData(data));
         getUserAccessData(startDate).then(data => setUserAccessData(data));
         getDailyUnitsFinishedData(startDate).then(data => setdailyUnitsFinishedData(data));
+        getUnitAverageResolutionTime(startDate).then(data => setAverageResolutionTime(data));
     }
 
     useEffect( () => {
@@ -182,30 +186,36 @@ const Dashboard = () => {
     return (
         <Card >
             <Row style={styles.titleRow}>
-                <Row style={styles.datepickerRow}>
-                    <span className="dateTitle">Mes del grafico:</span>
-                </Row>
+                <Col style={styles.datepickerRow}>
+                    <span className="dateTitle">Mes del grafico</span>
+                </Col>
+                <Col style={styles.datepickerRow}>
+                    <div style={styles.datepickerContainer}>
+                        <DatePicker 
+                            className="datepicker"
+                            selected={startDate}
+                            onChange={startDate => onChangeDashboard(startDate)}
+                            dateFormat="MM/yyyy"
+                            showMonthYearPicker
+                            showFullMonthYearPicker
+                            minDate={new Date('11-01-2021')}
+                        />
+                    </div>
+                </Col>
             </Row>
-            <Row style={styles.datepickerRow}>
-                <div style={styles.datepickerContainer}>
-                    <DatePicker 
-                        className="datepicker"
-                        selected={startDate}
-                        onChange={startDate => onChangeDashboard(startDate)}
-                        dateFormat="MM/yyyy"
-                        showMonthYearPicker
-                        showFullMonthYearPicker
-                        minDate={new Date('11-01-2021')}
-                    />
-                </div>
-            </Row>
+           
             <Row style={styles.container}>
                 <Col style={styles.dashboard} className="featuredItem">
                     <Chart type='bar' data={dailyAccessDataset} options={optionsLine}/>
                 </Col>
                 <Col style={styles.secondDash}>
                     <Row className="statItem">
-                        <Stat />
+                        <div>
+                            <span className="featuredTitle">Promedio de resolución</span>
+                            <div className="featuredMoneyContainer">
+                                <span className="featuredMoney">{Number((unitAverageResolutionTime).toFixed(2))} en minutos</span>
+                            </div>
+                        </div>
                     </Row>
                     <Row className="pieChartItem">
                         <Pie data={userAccessDataset} options={optionsPie}/>
