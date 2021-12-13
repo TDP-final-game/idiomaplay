@@ -12,10 +12,10 @@ const ExerciseShow = props => (
 				<TextField source="orderNumber"/>
 				<TextField source="type"/>
 				<TextField source="statement"/>
-				<ArrayField source="options">
+				<ArrayField label="Opciones" source="options">
 					<Datagrid>
-						<TextField source="text"/>
-						<BooleanField source="correct"/>
+						<TextField label="Enunciado" source="text"/>
+						<BooleanField label="Es correcta" source="correct"/>
 					</Datagrid>
 				</ArrayField>
 			</SimpleShowLayout>

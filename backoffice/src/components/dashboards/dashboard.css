@@ -3,7 +3,6 @@
     display: flex;
     justify-content: space-between;
   }
-  
 
   
   .featuredTitle{
@@ -13,7 +12,7 @@
   .dateTitle{
       font-size: 25px;
       padding-right: 1%;
-      font-weight: 550;
+      font-family: Helvetica;
   }
   
   .featuredMoneyContainer{
@@ -24,7 +23,7 @@
   
   .featuredMoney{
       font-size: 30px;
-      font-weight: 600;
+      font-weight: 100;
   }
   
   .featuredMoneyRate{

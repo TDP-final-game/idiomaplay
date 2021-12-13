@@ -77,13 +77,31 @@ const units = {
 
 
 	create: async (resource, params) => {
-		const response = await httpClient(
+		const examBody = {
+			name: params.data.examName,
+			description: params.data.examDescription,
+			durationInMinutes: params.data.durationInMinutes
+		};
+
+		const unitBody = {
+			name: params.data.name,
+			description: params.data.description,
+			orderNumber: params.data.orderNumber
+		};
+
+		const responseUnit = await httpClient(
 			`${apiUrl}/challenges/${params.data.challengeId}/${resource}`, {
 			method: 'POST',
-			body: JSON.stringify(params.data),
-		})
+			body: JSON.stringify(unitBody),
+		});
 
-		return { data: { ...params.data, id: response.json._id} };
+		await httpClient(
+			`${apiUrl}/challenges/${params.data.challengeId}/${resource}/${params.data.orderNumber}/exams`, {
+				method: 'POST',
+				body: JSON.stringify(examBody),
+		});
+
+		return { data: { ...params.data, id: responseUnit.json._id} };
 	},
 
 	delete: (resource, params) => {

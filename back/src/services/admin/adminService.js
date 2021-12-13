@@ -2,6 +2,7 @@
 
 const { model: DailyAccess } = require('../../model/data/dailyAccess');
 const { model: DailyUnits } = require('../../model/data/dailyUnits');
+const { model: ExamStats } = require('../../model/data/examStats');
 const errors = require('./errors');
 
 
@@ -27,18 +28,22 @@ const getDailyAccessData = async (startDate, endDate) => {
 	const filter = filterMaker(startDate, endDate);
 	const accessDetected = await DailyAccess.find(filter, null, null);
 
+	console.log(accessDetected)
+
 	const accessDetectedPerDay = accessDetected.reduce((data, { date }) => {
-		const key = new Date(date.setHours(0, 0, 0)).toISOString();
+		const key = new Date(date.setHours(0, 0, 0)).toLocaleDateString();
 		if(!data[key])
 			data[key] = 0;
 		data[key] += 1;
 		return data;
 	}, {});
 
+	console.log(accessDetectedPerDay);
+
 	const accessDetectedFormatted = [];
 
 	for(const date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-		const key = new Date(date.setHours(0, 0, 0)).toISOString();
+		const key = new Date(date.setHours(0, 0, 0)).toLocaleDateString();
 		const accessDetectedThatDay = accessDetectedPerDay[key] || 0;
 		accessDetectedFormatted.push(accessDetectedThatDay);
 	}
@@ -47,7 +52,9 @@ const getDailyAccessData = async (startDate, endDate) => {
 };
 
 const saveAccess = async userId => {
-	return new DailyAccess({ userId, date: new Date() });
+	const access = new DailyAccess({ userId, date: new Date() });
+	await access.save();
+	return access;
 };
 
 const getUserAccessData = async (startDate, endDate) => {
@@ -57,7 +64,7 @@ const getUserAccessData = async (startDate, endDate) => {
 	const accessDetectedDatesPerUser = accessDetected.reduce((data, { userId, date }) => {
 		if(!data[userId])
 			data[userId] = new Set(); // filters the access on the same date
-		data[userId].add(new Date(date.setHours(0, 0, 0)).toISOString());
+		data[userId].add(new Date(date.setHours(0, 0, 0)).toLocaleDateString());
 		return data;
 	}, {});
 
@@ -82,7 +89,7 @@ const getDailyUnitsFinished = async (startDate, endDate) => {
 	const unitsDetected = await DailyUnits.find(filter, null, null);
 
 	const unitsDetectedPerDay = unitsDetected.reduce((data, { date }) => {
-		const key = new Date(date.setHours(0, 0, 0)).toISOString();
+		const key = new Date(date.setHours(0, 0, 0)).toLocaleDateString();
 		if(!data[key])
 			data[key] = 0;
 		data[key] += 1;
@@ -92,7 +99,7 @@ const getDailyUnitsFinished = async (startDate, endDate) => {
 	const unitsDetectedPerDayFormatted = [];
 
 	for(const date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-		const key = new Date(date.setHours(0, 0, 0)).toISOString();
+		const key = new Date(date.setHours(0, 0, 0)).toLocaleDateString();
 		const unitsDetectedThatDay = unitsDetectedPerDay[key] || 0;
 		unitsDetectedPerDayFormatted.push(unitsDetectedThatDay);
 	}
@@ -100,11 +107,26 @@ const getDailyUnitsFinished = async (startDate, endDate) => {
 	return unitsDetectedPerDayFormatted;
 };
 
+const getUnitAverageResolutionTime = async (startDate, endDate) => {
+
+	const filter = filterMaker(startDate, endDate);
+
+	const examsFinishedDetected = await ExamStats.find(filter, null, null);
+
+	const averageTimeOnUnitResolution = examsFinishedDetected.reduce((accum, data) => {
+		accum.sumOfDurationTime += data.totalDuration;
+		accum.unitsCompleted += 1;
+		return accum;
+	}, { sumOfDurationTime: 0, unitsCompleted: 0 });
+
+	return averageTimeOnUnitResolution.unitsCompleted ? averageTimeOnUnitResolution.sumOfDurationTime / averageTimeOnUnitResolution.unitsCompleted : 0;
+};
 
 module.exports = {
 	logIn,
 	getDailyAccessData,
 	getUserAccessData,
 	saveAccess,
-	getDailyUnitsFinished
+	getDailyUnitsFinished,
+	getUnitAverageResolutionTime
 };

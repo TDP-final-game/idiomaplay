@@ -3,6 +3,7 @@ import { Show, SimpleShowLayout, TextField, NumberField, ArrayField } from 'reac
 import LessonList from '../lessons/List';
 import Breadcrumbs from '../Breadcrumbs';
 import CreateButton from '../CreateButton';
+import ExamExerciseList from "../examExercises/List";
 
 import ExamExerciseList from '../examExercises/List'
 
