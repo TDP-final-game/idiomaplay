@@ -13,19 +13,17 @@ import { useLocation } from 'react-router';
 
 const ExerciseCreate = props => {
     const location = useLocation();
-    const { challengeId, unitOrderNumber, lessonOrderNumber } = location.state.record;
+    const { challengeId, unitOrderNumber } = location.state.record;
 
-    const auxUrl = `challenges-${challengeId}-units-${unitOrderNumber}-lessons-${lessonOrderNumber}`;
-    const redirect = `/lessons/${auxUrl}/show`;
-
+    const auxUrl = `challenges-${challengeId}-units-${unitOrderNumber}`;
+    const redirect = `/units/${auxUrl}/show`;
 
     return (
         <Create {...props}>
-			<SimpleForm redirect={redirect} initialValues={{challengeId, unitOrderNumber, lessonOrderNumber}}>
+			<SimpleForm redirect={redirect} initialValues={{challengeId, unitOrderNumber}}>
 		   		<TextInput source="challengeId" label="Identificador del Desafio" disabled/>
 				<TextInput source="unitOrderNumber" label="Número de orden de la Unidad" disabled/>
-				<TextInput source="lessonOrderNumber" label="Número de orden de la Leccion" disabled/>
-				<TextInput source="statement" fullWidth/>
+				<TextInput source="statement" label="Texto" fullWidth/>
 
 				<RadioButtonGroupInput source="type" choices={[
 					{id: 'listening', name: 'Escuchar audio'},

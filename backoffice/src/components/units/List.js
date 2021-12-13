@@ -2,25 +2,19 @@ import {
 	Datagrid,
 	NumberField,
 	TextField,
-	ShowButton,
-	EditButton
+	ShowButton
 } from 'react-admin';
 
 const UnitShowButton = ({record}) => {
 	return <ShowButton to={`/units/${record.id}/show`}/>
 }
 
-const UnitEditButton = ({record}) => {
-	return <EditButton to={`/units/${record.id}`}/>
-}
-
 const UnitList = () => (
-		<Datagrid rowClick="edit">
+		<Datagrid rowClick="show">
 			<NumberField source="orderNumber"/>
 			<TextField source="name"/>
 			<TextField source="description"/>
 			<UnitShowButton />
-			<UnitEditButton />
 		</Datagrid>
 );
 

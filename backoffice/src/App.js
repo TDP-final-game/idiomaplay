@@ -9,19 +9,18 @@ import Dashboard from './components/dashboards/Dashboard'
 
 import ChallengeList from './components/challenges/List';
 import ChallengeShow from './components/challenges/Show';
-import ChallengeEdit from './components/challenges/Edit';
 
 import UnitShow from './components/units/Show';
-import UnitEdit from './components/units/Edit';
 import UnitCreate from "./components/units/Create";
 
 import LessonShow from './components/lessons/Show';
-import LessonEdit from './components/lessons/Edit';
 import LessonCreate from "./components/lessons/Create";
 
 import ExerciseShow from './components/exercises/Show';
-import ExerciseEdit from './components/exercises/Edit';
-import ExerciseCreate from "./components/exercises/Create";
+import ExerciseCreate from './components/exercises/Create';
+
+import ExamExerciseCreate from './components/examExercises/Create';
+import ExamExerciseShow from './components/examExercises/Show';
 
 import translations from './translations';
 import dataProvider from './dataProvider/index';
@@ -31,11 +30,12 @@ const i18nProvider = polyglotI18nProvider(() => ({...spanishMessages, ...transla
 
 const App = () => (
 	<Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
-		<Resource name="users" list={UserList} edit={UserEdit} />
-		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} edit={ChallengeEdit}/>
-		<Resource name="units" show={UnitShow} edit={UnitEdit} create={UnitCreate}/>
-		<Resource name="lessons" show={LessonShow} edit={LessonEdit} create={LessonCreate}/>
-		<Resource name="lessonExercises" show={ExerciseShow} edit={ExerciseEdit} create={ExerciseCreate}/>
+		<Resource name="users" list={UserList} edit={UserEdit}/>
+		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} />
+		<Resource name="units" show={UnitShow} create={UnitCreate}/>
+		<Resource name="lessons" show={LessonShow} create={LessonCreate}/>
+		<Resource name="lessonExercises" show={ExerciseShow} create={ExerciseCreate}/>
+		<Resource name="examExercises" create={ExamExerciseCreate} show={ExamExerciseShow} />
 	</Admin>
 );
 
