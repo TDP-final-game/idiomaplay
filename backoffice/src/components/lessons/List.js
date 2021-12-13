@@ -12,6 +12,7 @@ const LessonList = ({unitId}) => (
 	<Datagrid>
 		<NumberField source="orderNumber"/>
 		<TextField source="name"/>
+		<TextField source="description"/>
 		<LessonShowButton unitId={unitId}/>
 		<LessonEditButton/>
 	</Datagrid>
