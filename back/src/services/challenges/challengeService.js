@@ -24,10 +24,11 @@ const deleteChallenges = () => {
 };
 
 const deleteChallenge = async challengeId => {
-	const challenge = findChallenge(challengeId);
+	const challenge = await findChallenge(challengeId);
 	if(!(challenge.units.length === 0))
 		throw errors.ChallengeNotDeletable('Please delete all units before deleting challenge');
-	const challengeAttempts = challengeAttemptModel.find({ challenge: challengeId });
+
+	const challengeAttempts = await challengeAttemptModel.find({ challenge: challengeId });
 	if(challengeAttempts.length !== 0)
 		throw errors.ChallengeNotDeletable('Challenge already attempted');
 
