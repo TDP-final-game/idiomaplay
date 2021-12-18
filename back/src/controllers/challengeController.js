@@ -40,6 +40,15 @@ const listChallenges = async (req, res) => {
 	}
 };
 
+const deleteChallenge = async (req, res) => {
+	try {
+		const response = await challengeService.deleteChallenge(req.params.challengeId);
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+}
+
 const getUnits = async (req, res) => {
 	// #swagger.tags = ['Challenge']
 
@@ -229,5 +238,6 @@ module.exports = {
 	getLessonExercises,
 	getLesson,
 	getLessonExercise,
-	getUnit
+	getUnit,
+	deleteChallenge
 };

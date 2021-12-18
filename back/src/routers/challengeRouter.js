@@ -14,6 +14,7 @@ router.post('/', challengeController.createChallenge);
 router.get('/', challengeController.listChallenges);
 router.get('/:challengeId', challengeController.findChallenge);
 router.get('/:challengeId/attempts', challengeController.listChallengeAttempts);
+router.delete('/:challengeId', challengeController.deleteChallenge);
 
 router.get('/:challengeId/units', challengeController.getUnits);
 router.post('/:challengeId/units', challengeController.addUnit);
