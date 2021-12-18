@@ -2,10 +2,12 @@ import {
 	List,
 	Datagrid,
 	TextField,
-	ShowButton
+	ShowButton,
+	DeleteButton
 } from 'react-admin';
 
 import Breadcrumbs from '../Breadcrumbs';
+import CreateButton from "../CreateButton";
 
 const ChallengeList = props => (
 	<>
@@ -19,10 +21,17 @@ const ChallengeList = props => (
 			<Datagrid rowClick="show">
 				<TextField source="name" />
 				<TextField source="language" />
+				<TextField source="description" />
 				<TextField source="difficulty" />
 				<ShowButton/>
+				<DeleteButton undoable={false} />
 			</Datagrid>
 		</List>
+		<div style={{marginTop: "1%"}}>
+		<CreateButton label="Agregar Desafio" to={{
+			pathname: '/challenges/create',
+		}}/>
+		</div>
 	</>
 );
 
