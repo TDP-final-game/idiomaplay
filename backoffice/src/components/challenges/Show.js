@@ -13,6 +13,7 @@ const ChallengeShow = props => (
 			<SimpleShowLayout>
 				<TextField source="name" />
 				<TextField source="language" />
+				<TextField source="description" />
 				<TextField source="difficulty" />
 				<ArrayField label="Unidades" source="units">
 					<UnitList/>
@@ -23,5 +24,5 @@ const ChallengeShow = props => (
 	</>
 );
 
-                                    
+
 export default ChallengeShow;

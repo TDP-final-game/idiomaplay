@@ -9,6 +9,7 @@ import Dashboard from './components/dashboards/Dashboard'
 
 import ChallengeList from './components/challenges/List';
 import ChallengeShow from './components/challenges/Show';
+import ChallengeCreate from './components/challenges/Create';
 
 import UnitShow from './components/units/Show';
 import UnitCreate from "./components/units/Create";
@@ -31,7 +32,7 @@ const i18nProvider = polyglotI18nProvider(() => ({...spanishMessages, ...transla
 const App = () => (
 	<Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
 		<Resource name="users" list={UserList} edit={UserEdit}/>
-		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} />
+		<Resource name="challenges" list={ChallengeList} show={ChallengeShow} create={ChallengeCreate}/>
 		<Resource name="units" show={UnitShow} create={UnitCreate}/>
 		<Resource name="lessons" show={LessonShow} create={LessonCreate}/>
 		<Resource name="lessonExercises" show={ExerciseShow} create={ExerciseCreate}/>
