@@ -3,11 +3,16 @@ import {
 	Datagrid,
 	TextField,
 	ShowButton,
-	DeleteButton
+	DeleteButton,
+	CardActions
 } from 'react-admin';
 
 import Breadcrumbs from '../Breadcrumbs';
 import CreateButton from "../CreateButton";
+
+const NoneActions = props => (
+	<CardActions />
+);
 
 const ChallengeList = props => (
 	<>
@@ -17,6 +22,7 @@ const ChallengeList = props => (
 		<List {...props}
 					bulkActionButtons={false}
 					exporter={false}
+			  		actions={<NoneActions/>}
 		>
 			<Datagrid rowClick="show">
 				<TextField source="name" />
