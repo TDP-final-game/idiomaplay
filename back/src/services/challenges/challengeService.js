@@ -3,6 +3,8 @@
 const { model: challengeModel } = require('../../model/challenges/challenge');
 const { model: challengeAttemptModel } = require('../../model/attempts/challengeAttempt');
 
+const errors = require('./errors');
+
 const { pageSize } = require('../../constants/pagination_default.json');
 
 const findChallenge = challengeId => {
@@ -19,6 +21,19 @@ const listChallenges = async ({ pageNumber = 0, language }) => {
 
 const deleteChallenges = () => {
 	return challengeModel.deleteMany();
+};
+
+const deleteChallenge = async challengeId => {
+	const challenge = await findChallenge(challengeId);
+	if(!(challenge.units.length === 0))
+		throw errors.ChallengeNotDeletable('Please delete all units before deleting challenge');
+
+	const challengeAttempts = await challengeAttemptModel.find({ challenge: challengeId });
+	if(challengeAttempts.length !== 0)
+		throw errors.ChallengeNotDeletable('Challenge already attempted');
+
+	const deletedChallenge = await challengeModel.deleteOne({ _id: challengeId });
+	return deletedChallenge;
 };
 
 const createChallenge = async challengeData => {
@@ -91,7 +106,7 @@ const addExerciseToExam = async (challengeId, unitOrderNumber, exercise) => {
 };
 
 const listChallengeAttempts = challengeId => {
-	return challengeAttemptModel.find({ challengeId });
+	return challengeAttemptModel.find({ challenge: challengeId });
 };
 
 module.exports = {
@@ -105,5 +120,6 @@ module.exports = {
 	addExerciseToLesson,
 	addExerciseToExam,
 	deleteChallenges,
-	listChallengeAttempts
+	listChallengeAttempts,
+	deleteChallenge
 };

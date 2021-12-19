@@ -30,6 +30,23 @@ const challenges = {
 		console.log('challenge', challenge);
 		return challenge
 	},
+
+	delete: async (resource, params) => {
+		const challenge = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+			method: 'DELETE',
+		}).then(({json}) => ({data: json}))
+		return challenge;
+	},
+
+	create: async (resource, params) => {
+		const response = await httpClient(
+			`${apiUrl}/challenges`, {
+				method: 'POST',
+				body: JSON.stringify(params.data),
+			})
+
+		return { data: { ...params.data, id: response.json._id} };
+	},
 };
 
 const dataProvider = {

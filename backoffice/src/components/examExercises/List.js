@@ -5,7 +5,7 @@ import {
 } from 'react-admin';
 
 const ExerciseShowButton = ({record}) => {
-	return <ShowButton to={`/lessonExercises/${record.id}/show`}/>
+	return <ShowButton to={`/examExercises/${record.id}/show`}/>
 }
 
 const ExerciseList = () => (

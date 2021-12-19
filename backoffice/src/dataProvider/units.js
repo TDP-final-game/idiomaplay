@@ -2,11 +2,18 @@ import { apiUrl, httpClient } from './utils';
 
 import { mapLesson } from './lessons';
 
+const mapExercise = (challengeId, unitOrderNumber, exerciseId, exercise) => ({
+	...exercise,
+	id: `${challengeId}-units-${unitOrderNumber}-exercises-${exerciseId}`,
+	orderNumber: parseInt(exerciseId, 10) + 1
+})
+
 export const mapUnit = (challengeId, unit) => {
 	const unitId = `${challengeId}-units-${unit.orderNumber}`;
 	return {
-	...unit,
+		...unit,
 		lessons: unit.lessons.map(lesson => mapLesson(unitId, lesson)),
+		examExercises: unit.exam.exercises.map((exercise, n) => mapExercise(challengeId, unit.orderNumber, n, exercise)),
 		id: unitId
 	}
 };
@@ -18,7 +25,7 @@ const units = {
 		const url = `${apiUrl}/${id}`;
 		const unit = await httpClient(url).then(({json}) => ({
 			data: mapUnit(challengeId, json),
-		}))
+		}));
 
 		console.log('unit', unit);
 		return unit
@@ -70,19 +77,39 @@ const units = {
 
 
 	create: async (resource, params) => {
-		const response = await httpClient(
+		const examBody = {
+			name: params.data.examName,
+			description: params.data.examDescription,
+			durationInMinutes: params.data.durationInMinutes
+		};
+
+		const unitBody = {
+			name: params.data.name,
+			description: params.data.description,
+			orderNumber: params.data.orderNumber
+		};
+
+		const responseUnit = await httpClient(
 			`${apiUrl}/challenges/${params.data.challengeId}/${resource}`, {
 			method: 'POST',
-			body: JSON.stringify(params.data),
-		})
+			body: JSON.stringify(unitBody),
+		});
 
-		return { data: { ...params.data, id: response.json._id} };
+		await httpClient(
+			`${apiUrl}/challenges/${params.data.challengeId}/${resource}/${params.data.orderNumber}/exams`, {
+				method: 'POST',
+				body: JSON.stringify(examBody),
+		});
+
+		return { data: { ...params.data, id: responseUnit.json._id} };
 	},
 
-	delete: (resource, params) => {
-		// httpClient(`${apiUrl}/${resource}/${params.id}`, {
-		// 	method: 'DELETE',
-		// }).then(({json}) => ({data: json}))
+	delete: async (resource, params) => {
+		const splitParams = params.id.split('-');
+		const unit = await httpClient(`${apiUrl}/challenges/${splitParams[1]}/units/${splitParams[3]}`, {
+			method: 'DELETE',
+		}).then(({json}) => ({data: json}));
+		return unit;
 	},
 
 	deleteMany: (resource, params) => {

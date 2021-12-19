@@ -3,25 +3,28 @@ import {
 	NumberField,
 	TextField,
 	ShowButton,
-	EditButton
+	DeleteButton
 } from 'react-admin';
 
 const UnitShowButton = ({record}) => {
 	return <ShowButton to={`/units/${record.id}/show`}/>
 }
 
-const UnitEditButton = ({record}) => {
-	return <EditButton to={`/units/${record.id}`}/>
+const UnitDeleteButton = ({record}) => {
+	console.log(record);
+	return <DeleteButton resource={'units'} undoable={false} record={record}/>
 }
 
-const UnitList = () => (
-		<Datagrid rowClick="edit">
+const UnitList = () => {
+	return (
+		<Datagrid rowClick="show">
 			<NumberField source="orderNumber"/>
 			<TextField source="name"/>
 			<TextField source="description"/>
 			<UnitShowButton />
-			<UnitEditButton />
+			<UnitDeleteButton />
 		</Datagrid>
-);
+	);
+}
 
 export default UnitList;

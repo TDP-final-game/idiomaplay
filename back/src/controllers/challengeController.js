@@ -40,6 +40,15 @@ const listChallenges = async (req, res) => {
 	}
 };
 
+const deleteChallenge = async (req, res) => {
+	try {
+		const response = await challengeService.deleteChallenge(req.params.challengeId);
+		res.status(STATUS_CODES.OK).send(response);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+}
+
 const getUnits = async (req, res) => {
 	// #swagger.tags = ['Challenge']
 
@@ -59,6 +68,21 @@ const getUnit = async (req, res) => {
 		const { challengeId, unitOrderNumber } = req.params;
 		const challenge = await challengeService.findChallenge(challengeId);
 		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		res.status(STATUS_CODES.OK).send(unit);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
+const deleteUnit = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		challenge.units = challenge.units.filter(unitElem => unitElem.orderNumber !== parseInt(unitOrderNumber, 10));
+		await challenge.save();
 		res.status(STATUS_CODES.OK).send(unit);
 	} catch(error) {
 		return res.status(error.statusCode).send(error.description);
@@ -229,5 +253,7 @@ module.exports = {
 	getLessonExercises,
 	getLesson,
 	getLessonExercise,
-	getUnit
+	getUnit,
+	deleteChallenge,
+	deleteUnit
 };

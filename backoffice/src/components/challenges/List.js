@@ -3,10 +3,16 @@ import {
 	Datagrid,
 	TextField,
 	ShowButton,
-	EditButton
+	DeleteButton,
+	CardActions
 } from 'react-admin';
 
 import Breadcrumbs from '../Breadcrumbs';
+import CreateButton from "../CreateButton";
+
+const NoneActions = props => (
+	<CardActions />
+);
 
 const ChallengeList = props => (
 	<>
@@ -16,15 +22,22 @@ const ChallengeList = props => (
 		<List {...props}
 					bulkActionButtons={false}
 					exporter={false}
+			  		actions={<NoneActions/>}
 		>
-			<Datagrid rowClick="edit">
+			<Datagrid rowClick="show">
 				<TextField source="name" />
 				<TextField source="language" />
+				<TextField source="description" />
 				<TextField source="difficulty" />
 				<ShowButton/>
-				<EditButton/>
+				<DeleteButton undoable={false} />
 			</Datagrid>
 		</List>
+		<div style={{marginTop: "1%"}}>
+		<CreateButton label="Agregar Desafio" to={{
+			pathname: '/challenges/create',
+		}}/>
+		</div>
 	</>
 );
 

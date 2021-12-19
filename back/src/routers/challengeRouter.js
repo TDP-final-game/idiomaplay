@@ -14,10 +14,12 @@ router.post('/', challengeController.createChallenge);
 router.get('/', challengeController.listChallenges);
 router.get('/:challengeId', challengeController.findChallenge);
 router.get('/:challengeId/attempts', challengeController.listChallengeAttempts);
+router.delete('/:challengeId', challengeController.deleteChallenge);
 
 router.get('/:challengeId/units', challengeController.getUnits);
 router.post('/:challengeId/units', challengeController.addUnit);
 router.get('/:challengeId/units/:unitOrderNumber', challengeController.getUnit);
+router.delete('/:challengeId/units/:unitOrderNumber', challengeController.deleteUnit);
 
 router.post('/:challengeId/units/:unitOrderNumber/exams', challengeController.addExam);
 router.get('/:challengeId/units/:unitOrderNumber/exams', challengeController.getExam);
