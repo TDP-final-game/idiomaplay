@@ -74,6 +74,21 @@ const getUnit = async (req, res) => {
 	}
 };
 
+const deleteUnit = async (req, res) => {
+	// #swagger.tags = ['Challenge']
+
+	try {
+		const { challengeId, unitOrderNumber } = req.params;
+		const challenge = await challengeService.findChallenge(challengeId);
+		const unit = challenge.getUnit(parseInt(unitOrderNumber, 10));
+		challenge.units = challenge.units.filter(unitElem => unitElem.orderNumber !== parseInt(unitOrderNumber, 10));
+		await challenge.save();
+		res.status(STATUS_CODES.OK).send(unit);
+	} catch(error) {
+		return res.status(error.statusCode).send(error.description);
+	}
+};
+
 const addUnit = async (req, res) => {
 	// #swagger.tags = ['Challenge']
 
@@ -239,5 +254,6 @@ module.exports = {
 	getLesson,
 	getLessonExercise,
 	getUnit,
-	deleteChallenge
+	deleteChallenge,
+	deleteUnit
 };

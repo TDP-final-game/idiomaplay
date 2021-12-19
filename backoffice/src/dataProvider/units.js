@@ -104,10 +104,12 @@ const units = {
 		return { data: { ...params.data, id: responseUnit.json._id} };
 	},
 
-	delete: (resource, params) => {
-		// httpClient(`${apiUrl}/${resource}/${params.id}`, {
-		// 	method: 'DELETE',
-		// }).then(({json}) => ({data: json}))
+	delete: async (resource, params) => {
+		const splitParams = params.id.split('-');
+		const unit = await httpClient(`${apiUrl}/challenges/${splitParams[1]}/units/${splitParams[3]}`, {
+			method: 'DELETE',
+		}).then(({json}) => ({data: json}));
+		return unit;
 	},
 
 	deleteMany: (resource, params) => {
