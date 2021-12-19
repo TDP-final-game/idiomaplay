@@ -36,6 +36,24 @@ const deleteChallenge = async challengeId => {
 	return deletedChallenge;
 };
 
+const deleteUnit = async (challengeId, unitOrderNumber) => {
+	const challenge = await findChallenge(challengeId);
+	const unit = challenge.getUnit(unitOrderNumber);
+
+	if (!(unit.lessons.length === 0))
+		throw errors.UnitNotDeletable('Please delete all lessons before deleting unit');
+
+	const challengeAttempts = await challengeAttemptModel.find({ challenge: challengeId });
+	if(challengeAttempts.length !== 0)
+		throw errors.UnitNotDeletable('The challenge which unit belongs has been already started');
+
+	challenge.units = challenge.units.filter(unitElem => unitElem.orderNumber !== unitOrderNumber);
+	await challenge.save();
+
+	return unit;
+};
+
+
 const createChallenge = async challengeData => {
 	return challengeModel.create({
 		name: challengeData.name,
