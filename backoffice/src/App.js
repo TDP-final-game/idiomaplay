@@ -5,7 +5,7 @@ import spanishMessages from "@blackbox-vision/ra-language-spanish";
 
 import UserList from './components/users/List';
 import UserEdit from './components/users/Edit';
-import Dashboard from './components/dashboards/Dashboard'
+import Dashboard from './components/dashboards/Dashboard';
 
 import ChallengeList from './components/challenges/List';
 import ChallengeShow from './components/challenges/Show';
