@@ -11,8 +11,8 @@ const UnitShowButton = ({record}) => {
 }
 
 const UnitDeleteButton = ({record}) => {
-	console.log(record);
-	return <DeleteButton resource={'units'} undoable={false} record={record}/>
+	const challengeId = record.id.split('-')[1];
+	return <DeleteButton resource={'units'} undoable={false} record={record} redirect={`/challenges/${challengeId}/show`} />
 }
 
 const UnitList = () => {
