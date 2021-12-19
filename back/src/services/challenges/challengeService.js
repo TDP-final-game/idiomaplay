@@ -139,5 +139,6 @@ module.exports = {
 	addExerciseToExam,
 	deleteChallenges,
 	listChallengeAttempts,
-	deleteChallenge
+	deleteChallenge, 
+	deleteUnit
 };
