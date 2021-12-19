@@ -79,7 +79,7 @@ const deleteUnit = async (req, res) => {
 
 	try {
 		const { challengeId, unitOrderNumber } = req.params;
-		const deletedUnit = challengeService.deleteUnit(challengeId, parseInt(unitOrderNumber, 10));
+		const deletedUnit = await challengeService.deleteUnit(challengeId, parseInt(unitOrderNumber, 10));
 		res.status(STATUS_CODES.OK).send(deletedUnit);
 	} catch(error) {
 		return res.status(error.statusCode).send(error.description);
