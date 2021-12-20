@@ -1,8 +1,8 @@
 // import * as React from "react";
 import React, { useState, useEffect } from 'react';
-import {Card} from '@material-ui/core';
-import { Row, Col} from 'react-bootstrap';
-import DatePicker  from 'react-datepicker';
+import { Card } from '@material-ui/core';
+import { Row, Col } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css"
 import { getDailyAccessData, getUserAccessData, getDailyUnitsFinishedData, getUnitAverageResolutionTime } from '../../dataProvider/userLoginData';
 import "./dashboard.css";
@@ -20,7 +20,7 @@ import {
     Legend,
     registerables as registerablesJS
 } from 'chart.js';
-import {Chart, Pie} from 'react-chartjs-2';
+import { Chart, Pie } from 'react-chartjs-2';
 ChartJS.register(...registerablesJS);
 
 const styles = {
@@ -78,10 +78,13 @@ function range(start, end) {
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const labels = range(1, 30);
+// const labels = range(1, 30);
 
 const getDailyAccessDataset = (dailyAccessData, dailyUnitsFinishedData) => ({
-    labels,
+    labels: [...Object.keys(dailyAccessData)].map(key => {
+        let numberKey = Number(key);
+        return numberKey += 1;
+    }),
     datasets: [
         {
             type: 'line',
@@ -135,7 +138,7 @@ const optionsPie = {
     }
 }
 
-const optionsLine =  {
+const optionsLine = {
     responsive: true,
     hover: {
         mode: 'index',
@@ -143,20 +146,20 @@ const optionsLine =  {
     },
     scales: {
         x: {
-        title: {
-            display: true,
-            text: 'Día'
-        }
+            title: {
+                display: true,
+                text: 'Día'
+            }
         },
         y: {
-        title: {
-            display: true,
-        },
-        min: 0,
-        ticks: {
-            // forces step size to be 50 units
-            stepSize: 1
-        }
+            title: {
+                display: true,
+            },
+            min: 0,
+            ticks: {
+                // forces step size to be 50 units
+                stepSize: 1
+            }
         }
     }
 }
@@ -176,12 +179,28 @@ const Dashboard = () => {
 
     const [startDate, setStartDate] = useState(new Date())
 
-    useEffect( () => {
+    useEffect(() => {
         onChangeDashboard(startDate)
     }, [startDate])
 
     const dailyAccessDataset = getDailyAccessDataset(dailyAccessData, dailyUnitsFinishedData);
     const userAccessDataset = getUserAccessDataset(userAccessData);
+
+
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const locale = {
+        localize: {
+            month: n => months[n]
+        },
+        formatLong: {}
+    }
+
+    const millisToMinutesAndSeconds = millis => {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    }
 
     return (
         <Card >
@@ -193,6 +212,7 @@ const Dashboard = () => {
                     <div style={styles.datepickerContainer}>
                         <DatePicker
                             className="datepicker"
+                            locale={locale}
                             selected={startDate}
                             onChange={startDate => setStartDate(startDate)}
                             dateFormat="MM/yyyy"
@@ -206,19 +226,19 @@ const Dashboard = () => {
 
             <Row style={styles.container}>
                 <Col style={styles.dashboard} className="featuredItem">
-                    <Chart type='bar' data={dailyAccessDataset} options={optionsLine}/>
+                    <Chart type='bar' data={dailyAccessDataset} options={optionsLine} />
                 </Col>
                 <Col style={styles.secondDash}>
                     <Row className="statItem">
                         <div>
                             <span className="featuredTitle">Promedio de resolución</span>
                             <div className="featuredMoneyContainer">
-                                <span className="featuredMoney">{Number((unitAverageResolutionTime).toFixed(2))} en minutos</span>
+                                <span className="featuredMoney">{millisToMinutesAndSeconds(unitAverageResolutionTime)} en minutos</span>
                             </div>
                         </div>
                     </Row>
                     <Row className="pieChartItem">
-                        <Pie data={userAccessDataset} options={optionsPie}/>
+                        <Pie data={userAccessDataset} options={optionsPie} />
                     </Row>
                 </Col>
             </Row>
